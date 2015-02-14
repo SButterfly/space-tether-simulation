@@ -38,37 +38,22 @@ public class MainView implements Frameable {
         initialStateView = new InitialStateView(new PendulumModel());
         initialStateView.addSubmitListener(e -> OnSubmit(e));
         initialStateView.setBackground(Color.BLUE);
-
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.anchor = GridBagConstraints.EAST;
-        c.insets = new Insets(5, 5, 5, 5);
-        panel.add(initialStateView, c);
+        panel.add(initialStateView, getConstraint(0,0,1,1));
 
         traceView = new AddTraceView();
         traceView.addSubmitListener(e -> OnAdd(e));
         traceView.setBackground(Color.CYAN);
-
-        c.gridy = 1;
-        panel.add(traceView, c);
+        panel.add(traceView, getConstraint(0,1,1,1));
 
         traceListView = new TraceListView();
         traceListView.addRemoveListener(e -> chart.removeTrace(e));
         traceListView.addRemoveAllListener(e -> chart.removeAllTraces());
         traceListView.setBackground(Color.YELLOW);
-
-        c.gridy = 2;
-        panel.add(traceListView, c);
+        panel.add(traceListView, getConstraint(0,2,1,1));
 
         chart = new Chart2D();
         chart.setMinimumSize(new Dimension(500, 500));
-        c.gridx = 1;
-        c.gridy = 0;
-        c.gridheight = 3;
-        c.gridwidth = 2;
-        panel.add(chart, c);
+        panel.add(chart, getConstraint(1,0,2,3));
 
         menuView = new MenuView();
         menuView.addSettingsActionListener(e -> NavigationController.Open(new SettingsView()));
@@ -79,6 +64,18 @@ public class MainView implements Frameable {
         rootPanel.add(menuView);
         rootPanel.add(panel);
         //rootPanel.add(additionalLineView.getComponent());
+    }
+
+    private GridBagConstraints getConstraint(int gridX, int gridY, int gridwidth, int gridheight){
+        GridBagConstraints c = new GridBagConstraints();
+        //c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = gridX;
+        c.gridy = gridY;
+        //c.anchor = GridBagConstraints.EAST;
+        c.gridheight = gridheight;
+        c.gridwidth = gridwidth;
+        c.insets = new Insets(5, 5, 5, 5);
+        return c;
     }
 
     @Override

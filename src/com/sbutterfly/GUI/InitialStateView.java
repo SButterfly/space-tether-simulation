@@ -32,7 +32,7 @@ public class InitialStateView extends JPanel {
         JButton submitButton = new JButton();
         submitButton.setText("Расчитать");
         submitButton.addActionListener(e -> {
-            for (SubmitListener listener : list) {
+            for (SubmitListener<ODEBaseModel> listener : list) {
                 listener.OnSubmit(model);
             }
         });
@@ -94,26 +94,13 @@ public class InitialStateView extends JPanel {
 
         for (int i = 0, n = settables.size(); i < n; i+=2, lastRow++){
 
-            GridBagConstraints c = new GridBagConstraints();
-
             if (i < n) {
 
-                c.gridx = 0;
-                c.gridy = lastRow;
-                c.gridwidth = 1;
-                c.gridheight = 1;
-                c.fill = GridBagConstraints.HORIZONTAL;
-                c.anchor = GridBagConstraints.EAST;
-                c.insets = new Insets(0, 10, 0, 10);
-
                 JLabel label = new JLabel(nameList.get(i) + ":");
-                panel.add(label, c);
+                panel.add(label, getConstraint(0, lastRow, 1, 1));
 
-                JTextField textField = new JTextField(valueList.get(i) + "", 30);
-                c.gridx = 1;
-                c.gridwidth = 1 + (i == n-1 ? 2 : 0);
-                c.anchor = GridBagConstraints.WEST;
-                panel.add(textField, c);
+                JTextField textField = new JTextField(valueList.get(i) + "");
+                panel.add(textField, getConstraint(1, lastRow, 1 + (i == n-1 ? 2 : 0), 1));
 
                 final int finalI = i;
                 saveButton.addActionListener(e -> settables.get(finalI).OnSet(Double.parseDouble(textField.getText())));
@@ -121,22 +108,11 @@ public class InitialStateView extends JPanel {
 
             if (i + 1 < n) {
 
-                c.gridx = 2;
-                c.gridy = lastRow;
-                c.gridwidth = 1;
-                c.gridheight = 1;
-                c.fill = GridBagConstraints.HORIZONTAL;
-                c.anchor = GridBagConstraints.EAST;
-                c.insets = new Insets(0, 10, 0, 10);
-
                 JLabel label = new JLabel(nameList.get(i + 1) + ":");
-                panel.add(label, c);
+                panel.add(label, getConstraint(2, lastRow, 1, 1));
 
-                JTextField textField = new JTextField(valueList.get(i + 1) + "", 30);
-                c.gridx = 3;
-                c.gridwidth = 1;
-                c.anchor = GridBagConstraints.WEST;
-                panel.add(textField, c);
+                JTextField textField = new JTextField(valueList.get(i + 1) + "");
+                panel.add(textField, getConstraint(3, lastRow, 1, 1));
 
                 final int finalI = i + 1;
                 saveButton.addActionListener(e -> settables.get(finalI).OnSet(Double.parseDouble(textField.getText())));
@@ -154,6 +130,18 @@ public class InitialStateView extends JPanel {
 
     private static interface Settable {
         void OnSet(double value);
+    }
+
+    private GridBagConstraints getConstraint(int gridX, int gridY, int gridwidth, int gridheight){
+        GridBagConstraints c = new GridBagConstraints();
+        //c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = gridX;
+        c.gridy = gridY;
+        c.anchor = GridBagConstraints.WEST;
+        c.gridheight = gridheight;
+        c.gridwidth = gridwidth;
+        c.insets = new Insets(0, 10, 0, 10);
+        return c;
     }
 }
 
