@@ -60,10 +60,7 @@ public class TraceListView extends JPanel {
 
         JLabel label = new JLabel(trace.getName());
         JCheckBox checkBox = new JCheckBox("", true);
-        checkBox.addChangeListener(e -> {
-            boolean vis = checkBox.isVisible();
-            trace.setVisible(vis);
-        });
+        checkBox.addChangeListener(e -> trace.setVisible(checkBox.isSelected()));
         JButton button = new JButton("DEL");
         button.addActionListener(e -> {
             listPanel.remove(label);
@@ -78,6 +75,7 @@ public class TraceListView extends JPanel {
 
         int row = list.size();
         trace.setColor(getColor(row));
+        label.setForeground(trace.getColor());
         listPanel.add(label, getConstraint(0, row+1));
         listPanel.add(checkBox, getConstraint(1, row+1));
         listPanel.add(button, getConstraint(2, row+1));
@@ -104,7 +102,7 @@ public class TraceListView extends JPanel {
         if (i == 1) return Color.RED;
         if (i == 2) return Color.CYAN;
         if (i == 3) return Color.GREEN;
-        return Color.YELLOW;
+        return Color.DARK_GRAY;
     }
 
     private ArrayList<ActionListener> addListeners = new ArrayList<>();
@@ -143,9 +141,7 @@ public class TraceListView extends JPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = gridX;
         c.gridy = gridY;
-        c.anchor = GridBagConstraints.EAST;
         c.insets = new Insets(5, 5, 5, 5);
-
         return c;
     }
 }

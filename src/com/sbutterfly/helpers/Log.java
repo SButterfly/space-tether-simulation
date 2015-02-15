@@ -19,7 +19,7 @@ public class Log {
 
     static {
         format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS");
-        format.setTimeZone(TimeZone.getDefault());
+        format.setTimeZone(TimeZone.getTimeZone("Etc/GMT-4"));
     }
 
     public static void Write(LogLvl loglvl, String tag, String message){

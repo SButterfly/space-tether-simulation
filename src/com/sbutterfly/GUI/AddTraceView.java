@@ -37,40 +37,31 @@ public class AddTraceView extends JPanel {
         yComboBox.addActionListener(e -> OnSelectionChanged());
         xComboBox = new JComboBox<>();
         xComboBox.addActionListener(e -> OnSelectionChanged());
-        nameTextField = new JTextField();
+        nameTextField = new MyJTextField();
 
         submitButton = new JButton("Добавить");
         submitButton.addActionListener(e -> OnAdd());
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.EAST;
-        c.insets = new Insets(0, 10, 0, 10);
-        c.gridx = 0;
-        c.gridy = 0;
-        add(ylabel, c);
-        c.gridy = 1;
-        add(xlabel, c);
-        c.gridy = 2;
-        add(namelabel, c);
+        add(ylabel, getConstraint(0, 0).get());
+        add(xlabel, getConstraint(0, 1).get());
+        add(namelabel, getConstraint(0, 2).get());
 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.WEST;
-        c.insets = new Insets(0, 10, 0, 10);
-        c.gridx = 1;
-        c.gridy = 0;
-        add(yComboBox, c);
-        c.gridy = 1;
-        add(xComboBox, c);
-        c.gridy = 2;
-        add(nameTextField, c);
+        add(yComboBox, getConstraint(1, 0).weightX(1).get());
+        add(xComboBox, getConstraint(1, 1).weightX(1).get());
+        add(nameTextField, getConstraint(1, 2).weightX(1).get());
 
-        c.gridy = 3;
-        c.gridx = 1;
-        c.weightx = 2;
-        add(submitButton, c);
+        add(submitButton, getConstraint(0, 3).gridWidth(2).fill(GridBagConstraints.NONE).anchor(GridBagConstraints.EAST).get());
 
         Log.Debug(this, "GUI was created");
+    }
+
+    @Override
+    public void setEnabled(boolean value) {
+        super.setEnabled(value);
+        yComboBox.setEnabled(value);
+        xComboBox.setEnabled(value);
+        nameTextField.setEnabled(value);
+        submitButton.setEnabled(value);
     }
 
     public void Init(ODEBaseModel model){
@@ -135,5 +126,9 @@ public class AddTraceView extends JPanel {
         Index yIndex;
         Index xIndex;
         String name;
+    }
+
+    private Constraint getConstraint(int gridX, int gridY){
+        return Constraint.New(gridX, gridY).fill(GridBagConstraints.HORIZONTAL).insets(3, 5);
     }
 }

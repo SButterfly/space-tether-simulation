@@ -57,9 +57,14 @@ public class MenuView extends JMenuBar {
 
         add(fileMenu);
 
-        settingsItem = new JMenuItem("Настройки");
-        settingsItem.setFont(font);
-        add(settingsItem);
+        JMenu settingsMenu = new JMenu("Настройки");
+        settingsMenu.setFont(font);
+
+        settingsItem = new JMenuItem("Настройки интегрирования");
+        settingsMenu.setFont(font);
+        settingsMenu.add(settingsItem);
+
+        add(settingsMenu);
 
         JMenu aboutMenu = new JMenu("О программе");
         aboutMenu.setFont(font);

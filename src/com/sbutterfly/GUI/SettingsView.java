@@ -12,6 +12,7 @@ import java.awt.*;
  * Created by Sergei on 01.02.2015.
  */
 public class SettingsView implements Frameable {
+
     private JPanel panel;
     private JFrame frame;
     private JComboBox<String> comboBox;
@@ -131,7 +132,7 @@ public class SettingsView implements Frameable {
             frame = new JFrame("Настройки");
             frame.getContentPane().add(getComponent());
             frame.pack();
-            frame.setSize(500, 500);
+            frame.setSize(400, 200);
         }
         return frame;
     }

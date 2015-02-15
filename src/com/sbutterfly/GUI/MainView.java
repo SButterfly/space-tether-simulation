@@ -21,7 +21,6 @@ public class MainView implements Frameable {
     private InitialStateView initialStateView;
     private AddTraceView traceView;
     private TraceListView traceListView;
-    private AdditionalLineView additionalLineView;
 
     public MainView() {
         createGUI();
@@ -52,26 +51,25 @@ public class MainView implements Frameable {
         panel.add(traceListView, getConstraint(0,2,1,1));
 
         chart = new Chart2D();
-        chart.setMinimumSize(new Dimension(500, 500));
-        panel.add(chart, getConstraint(1,0,2,3));
+        chart.setPreferredSize(new Dimension(700, 500));
+        chart.setMinimumSize(chart.getPreferredSize());
+        chart.setPaintLabels(false);
+        GridBagConstraints constraints = getConstraint(1,0,1,3);
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        panel.add(chart, constraints);
 
         menuView = new MenuView();
         menuView.addSettingsActionListener(e -> NavigationController.Open(new SettingsView()));
         menuView.setBackground(Color.YELLOW);
-
-        //additionalLineView = new AdditionalLineView();
-
-        rootPanel.add(menuView);
         rootPanel.add(panel);
-        //rootPanel.add(additionalLineView.getComponent());
     }
 
     private GridBagConstraints getConstraint(int gridX, int gridY, int gridwidth, int gridheight){
         GridBagConstraints c = new GridBagConstraints();
-        //c.fill = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.BOTH;
         c.gridx = gridX;
         c.gridy = gridY;
-        //c.anchor = GridBagConstraints.EAST;
         c.gridheight = gridheight;
         c.gridwidth = gridwidth;
         c.insets = new Insets(5, 5, 5, 5);
@@ -82,16 +80,16 @@ public class MainView implements Frameable {
     public JFrame getFrame() {
         if (frame == null) {
             frame = new JFrame("My Program Change TITLE!!!");
+            frame.setJMenuBar(menuView);
             frame.getContentPane().add(rootPanel);
             frame.pack();
-            frame.setSize(500, 500);
+            frame.setSize(1000, 700);
         }
         return frame;
     }
 
     private ODEBaseModel model;
     public void OnSubmit(ODEBaseModel model) {
-        chart.removeAllTraces();
         traceView.Init(model);
         this.model = model;
     }

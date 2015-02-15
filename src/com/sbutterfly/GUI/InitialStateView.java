@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class InitialStateView extends JPanel {
 
     private ODEBaseModel model;
+    private int lastRow = 0;
 
     public InitialStateView(ODEBaseModel model)
     {
@@ -21,13 +22,10 @@ public class InitialStateView extends JPanel {
     }
 
     private void createGUI() {
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setLayout(new GridBagLayout());
 
         JLabel headerLabel = new JLabel();
         headerLabel.setText("Начальные параметры");
-
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridBagLayout());
 
         JButton submitButton = new JButton();
         submitButton.setText("Расчитать");
@@ -37,17 +35,15 @@ public class InitialStateView extends JPanel {
             }
         });
 
-        setAdditionalParams(panel, submitButton);
-        setStartParams(panel, submitButton);
+        add(headerLabel, getConstraint(0, lastRow++, 1, 1).gridWidth(4).get());
 
-        add(headerLabel);
-        add(panel);
-        add(submitButton);
+        setAdditionalParams(this, submitButton);
+        setStartParams(this, submitButton);
+
+        add(submitButton, getConstraint(0, lastRow, 4, 1).fill(GridBagConstraints.NONE).anchor(GridBagConstraints.EAST).get());
 
         Log.Debug(this, "GUI was created");
     }
-
-    private int lastRow = 0;
 
     private void setAdditionalParams(JPanel panel, JButton saveButton) {
 
@@ -97,10 +93,10 @@ public class InitialStateView extends JPanel {
             if (i < n) {
 
                 JLabel label = new JLabel(nameList.get(i) + ":");
-                panel.add(label, getConstraint(0, lastRow, 1, 1));
+                panel.add(label, getConstraint(0, lastRow, 1, 1).get());
 
-                JTextField textField = new JTextField(valueList.get(i) + "");
-                panel.add(textField, getConstraint(1, lastRow, 1 + (i == n-1 ? 2 : 0), 1));
+                JTextField textField = new MyJTextField(valueList.get(i) + "");
+                panel.add(textField, getConstraint(1, lastRow, 1 + (i == n-1 ? 2 : 0), 1).get());
 
                 final int finalI = i;
                 saveButton.addActionListener(e -> settables.get(finalI).OnSet(Double.parseDouble(textField.getText())));
@@ -109,10 +105,10 @@ public class InitialStateView extends JPanel {
             if (i + 1 < n) {
 
                 JLabel label = new JLabel(nameList.get(i + 1) + ":");
-                panel.add(label, getConstraint(2, lastRow, 1, 1));
+                panel.add(label, getConstraint(2, lastRow, 1, 1).get());
 
-                JTextField textField = new JTextField(valueList.get(i + 1) + "");
-                panel.add(textField, getConstraint(3, lastRow, 1, 1));
+                JTextField textField = new MyJTextField(valueList.get(i + 1) + "");
+                panel.add(textField, getConstraint(3, lastRow, 1, 1).get());
 
                 final int finalI = i + 1;
                 saveButton.addActionListener(e -> settables.get(finalI).OnSet(Double.parseDouble(textField.getText())));
@@ -132,16 +128,11 @@ public class InitialStateView extends JPanel {
         void OnSet(double value);
     }
 
-    private GridBagConstraints getConstraint(int gridX, int gridY, int gridwidth, int gridheight){
-        GridBagConstraints c = new GridBagConstraints();
-        //c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = gridX;
-        c.gridy = gridY;
-        c.anchor = GridBagConstraints.WEST;
-        c.gridheight = gridheight;
-        c.gridwidth = gridwidth;
-        c.insets = new Insets(0, 10, 0, 10);
-        return c;
+    private Constraint getConstraint(int gridX, int gridY, int gridWidth, int gridHeight){
+        return Constraint.New(gridX, gridY, gridWidth, gridHeight)
+                .fill(GridBagConstraints.HORIZONTAL)
+                .weightX(1)
+                .insets(3, 5);
     }
 }
 
