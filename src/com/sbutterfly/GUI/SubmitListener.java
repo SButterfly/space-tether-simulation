@@ -1,5 +1,5 @@
 package com.sbutterfly.GUI;
 
 public interface SubmitListener<T> {
-    void OnSubmit(T e);
+    void onSubmit(T e);
 }

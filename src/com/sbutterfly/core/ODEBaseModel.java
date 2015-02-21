@@ -1,8 +1,10 @@
-package com.sbutterfly.differential;
+package com.sbutterfly.core;
 
-import info.monitorenter.gui.chart.*;
+import com.sbutterfly.differential.*;
+import info.monitorenter.gui.chart.ITrace2D;
 
-import java.beans.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 /**
@@ -10,29 +12,43 @@ import java.util.ArrayList;
  */
 public abstract class ODEBaseModel {
 
+    private final ArrayList<PropertyChangeListener> listeners = new ArrayList<>();
     private TimeVector[] vectors;
 
     public abstract double getODETime();
+
     public abstract int getNumberOfIterations();
+
     public abstract ODEMethod getMethod();
+
     public abstract Function getFunction();
 
     public abstract int size();
+
     public abstract int additionalSize();
 
     public abstract String[] names();
+
     public abstract String[] additionalNames();
 
     public abstract TimeVector getStartVector();
+
     public abstract double getStartParameter(int index);
+
     public abstract void setStartParameter(int index, double v);
 
     public abstract double getAdditionalParameter(int index);
+
     public abstract void setAdditionalParameter(int index, double v);
+
+    public boolean hasValues() {
+        return vectors != null;
+    }
 
     public synchronized TimeVector[] values(){
         return values(true);
     }
+
     public synchronized TimeVector[] values(boolean useCache){
         if (vectors == null || !useCache) {
             Differential differential = new Differential(getFunction(), getStartVector(), getODETime(), getNumberOfIterations(), getMethod());
@@ -66,7 +82,6 @@ public abstract class ODEBaseModel {
         }
     }
 
-    private final ArrayList<PropertyChangeListener> listeners = new ArrayList<>();
     public void addPropertyChangeListener(PropertyChangeListener listener){
         listeners.add(listener);
     }

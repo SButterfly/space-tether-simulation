@@ -3,7 +3,7 @@ package com.sbutterfly.GUI;
 import com.sbutterfly.GUI.Controls.JImageButton;
 import com.sbutterfly.GUI.Panels.Constraint;
 import com.sbutterfly.GUI.Panels.JGridBagPanel;
-import com.sbutterfly.helpers.Log;
+import com.sbutterfly.utils.Log;
 import info.monitorenter.gui.chart.ITrace2D;
 
 import javax.swing.*;
@@ -42,20 +42,7 @@ public class TraceListView extends JGridBagPanel {
         listPanel.add(deletePanel, getConstraint(2, 0));
 
         deleteAllButton = new JButton("Удалить все");
-        deleteAllButton.addActionListener(e -> {
-            for (Item item : list) {
-                listPanel.remove(item.button);
-                listPanel.remove(item.checkBox);
-                listPanel.remove(item.label);
-            }
-            list.clear();
-            itemsCount = 0;
-            listPanel.updateUI();
-            updateDeleteAllButtonState();
-            for (ActionListener listener : removeAllListeners) {
-                listener.actionPerformed(e);
-            }
-        });
+        deleteAllButton.addActionListener(e -> clear());
 
         add(listPanel, Constraint.create(0, 0).weightX(1));
         add(new JPanel(), Constraint.create(0, 1).weightX(1).weightY(1));
@@ -78,7 +65,7 @@ public class TraceListView extends JGridBagPanel {
             itemsCount--;
             updateDeleteAllButtonState();
             for (SubmitListener<ITrace2D> listener : removeListeners){
-                listener.OnSubmit(trace);
+                listener.onSubmit(trace);
             }
         });
 
@@ -146,6 +133,21 @@ public class TraceListView extends JGridBagPanel {
 
     private void updateDeleteAllButtonState() {
         deleteAllButton.setEnabled(itemsCount != 0);
+    }
+
+    public void clear() {
+        for (Item item : list) {
+            listPanel.remove(item.button);
+            listPanel.remove(item.checkBox);
+            listPanel.remove(item.label);
+        }
+        list.clear();
+        itemsCount = 0;
+        listPanel.updateUI();
+        updateDeleteAllButtonState();
+        for (ActionListener listener : removeAllListeners) {
+            listener.actionPerformed(new ActionEvent(this, 0, "removeAll"));
+        }
     }
 
     private class Item {

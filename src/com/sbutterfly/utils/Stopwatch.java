@@ -1,4 +1,4 @@
-package com.sbutterfly.helpers;
+package com.sbutterfly.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,8 +8,8 @@ import java.util.Date;
  */
 public class Stopwatch {
 
-    private long startTime;
     private static SimpleDateFormat format = new SimpleDateFormat("mm:ss.SSS");
+    private long startTime;
 
     public Stopwatch() {
         startTime = System.currentTimeMillis();

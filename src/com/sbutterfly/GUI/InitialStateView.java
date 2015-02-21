@@ -3,8 +3,8 @@ package com.sbutterfly.GUI;
 import com.sbutterfly.GUI.Controls.MyJTextField;
 import com.sbutterfly.GUI.Panels.Constraint;
 import com.sbutterfly.GUI.Panels.JGridBagPanel;
-import com.sbutterfly.differential.ODEBaseModel;
-import com.sbutterfly.helpers.Log;
+import com.sbutterfly.core.ODEBaseModel;
+import com.sbutterfly.utils.Log;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +34,7 @@ public class InitialStateView extends JGridBagPanel {
         submitButton.setText("Расчитать");
         submitButton.addActionListener(e -> {
             for (SubmitListener<ODEBaseModel> listener : list) {
-                listener.OnSubmit(model);
+                listener.onSubmit(model);
             }
         });
 

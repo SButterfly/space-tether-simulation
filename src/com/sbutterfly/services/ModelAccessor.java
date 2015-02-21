@@ -1,6 +1,6 @@
 package com.sbutterfly.services;
 
-import com.sbutterfly.differential.ODEBaseModel;
+import com.sbutterfly.core.ODEBaseModel;
 
 /**
  * Created by Sergei on 12.02.2015.

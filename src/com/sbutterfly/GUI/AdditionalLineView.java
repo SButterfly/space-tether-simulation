@@ -1,6 +1,6 @@
 package com.sbutterfly.GUI;
 
-import com.sbutterfly.helpers.Log;
+import com.sbutterfly.utils.Log;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

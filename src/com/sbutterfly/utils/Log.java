@@ -1,4 +1,4 @@
-package com.sbutterfly.helpers;
+package com.sbutterfly.utils;
 
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
@@ -34,64 +34,32 @@ public class Log {
         write(logLvl, tag, String.format(format, args));
     }
 
-    public static void debug(String tag, String message) {
-        write(LogLvl.Debug, tag, message);
-    }
-
     public static void debug(String tag, String format, Object... args) {
         write(LogLvl.Debug, tag, format, args);
-    }
-
-    public static void debug(Object tagObj, String message) {
-        debug(getObjectTag(tagObj), message);
     }
 
     public static void debug(Object tagObj, String format, Object... args) {
         debug(getObjectTag(tagObj), format, args);
     }
 
-    public static void info(String tag, String message) {
-        write(LogLvl.Info, tag, message);
-    }
-
     public static void info(String tag, String format, Object... args) {
         write(LogLvl.Info, tag, format, args);
-    }
-
-    public static void info(Object tagObj, String message) {
-        info(getObjectTag(tagObj), message);
     }
 
     public static void info(Object tagObj, String format, Object... args) {
         info(getObjectTag(tagObj), format, args);
     }
 
-    public static void warning(String tag, String message) {
-        write(LogLvl.Warning, tag, message);
-    }
-
     public static void warning(String tag, String format, Object... args) {
         write(LogLvl.Warning, tag, format, args);
-    }
-
-    public static void warning(Object tagObj, String message) {
-        warning(getObjectTag(tagObj), message);
     }
 
     public static void warning(Object tagObj, String format, Object... args) {
         warning(getObjectTag(tagObj), format, args);
     }
 
-    public static void error(String tag, String message) {
-        write(LogLvl.Error, tag, message);
-    }
-
     public static void error(String tag, String format, Object... args) {
         write(LogLvl.Error, tag, format, args);
-    }
-
-    public static void error(Object tagObj, String message) {
-        error(getObjectTag(tagObj), message);
     }
 
     public static void error(Object tagObj, String format, Object... args) {

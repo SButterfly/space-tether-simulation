@@ -1,6 +1,10 @@
 package com.sbutterfly.pendulum;
 
-import com.sbutterfly.differential.*;
+import com.sbutterfly.core.ODEBaseModel;
+import com.sbutterfly.differential.Function;
+import com.sbutterfly.differential.ODEMethod;
+import com.sbutterfly.differential.TimeVector;
+import com.sbutterfly.differential.Vector;
 import com.sbutterfly.services.AppSettings;
 
 /**
@@ -8,13 +12,12 @@ import com.sbutterfly.services.AppSettings;
  */
 public class PendulumModel extends ODEBaseModel {
 
+    private final TimeVector startVector = new TimeVector(size());
+    private final Vector additionalVector = new Vector(additionalSize());
     public PendulumModel() {
         setAdditionalParameter(0, 3);
         setStartParameter(0, 5);
     }
-
-    private final TimeVector startVector = new TimeVector(size());
-    private final Vector additionalVector = new Vector(additionalSize());
 
     @Override
     public double getODETime() {

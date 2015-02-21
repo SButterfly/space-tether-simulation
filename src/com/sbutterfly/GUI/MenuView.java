@@ -1,6 +1,6 @@
 package com.sbutterfly.GUI;
 
-import com.sbutterfly.helpers.Log;
+import com.sbutterfly.utils.Log;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +14,7 @@ public class MenuView extends JMenuBar {
     private JMenuItem newItem;
     private JMenuItem openItem;
     private JMenuItem saveItem;
+    @Deprecated
     private JMenuItem saveAsItem;
     private JMenuItem printItem;
 
@@ -27,7 +28,6 @@ public class MenuView extends JMenuBar {
     }
 
     private void createGUI() {
-
         Font font = new Font("Verdana", Font.PLAIN, 11);
 
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 20));
@@ -46,10 +46,6 @@ public class MenuView extends JMenuBar {
         saveItem = new JMenuItem("Сохранить");
         saveItem.setFont(font);
         fileMenu.add(saveItem);
-
-        saveAsItem = new JMenuItem("Сохранить как");
-        saveAsItem.setFont(font);
-        fileMenu.add(saveAsItem);
 
         printItem = new JMenuItem("Напечатать ??");
         printItem.setFont(font);
@@ -90,6 +86,7 @@ public class MenuView extends JMenuBar {
         saveItem.addActionListener(listener);
     }
 
+    @Deprecated
     public void addSaveAsActionListener(ActionListener listener){
         saveAsItem.addActionListener(listener);
     }

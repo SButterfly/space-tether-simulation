@@ -3,9 +3,9 @@ package com.sbutterfly.GUI;
 import com.sbutterfly.GUI.Controls.MyJTextField;
 import com.sbutterfly.GUI.Panels.Constraint;
 import com.sbutterfly.GUI.Panels.JGridBagPanel;
+import com.sbutterfly.core.ODEBaseModel;
 import com.sbutterfly.differential.Index;
-import com.sbutterfly.differential.ODEBaseModel;
-import com.sbutterfly.helpers.Log;
+import com.sbutterfly.utils.Log;
 
 import javax.swing.*;
 import java.awt.*;
@@ -113,7 +113,7 @@ public class AddTraceView extends JGridBagPanel {
             traceable.name = name;
             traceable.xIndex = Index.toIndex(xIndex);
             traceable.yIndex = Index.toIndex(yIndex);
-            listener.OnSubmit(traceable);
+            listener.onSubmit(traceable);
         }
     }
 
