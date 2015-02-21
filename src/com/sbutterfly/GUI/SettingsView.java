@@ -1,5 +1,8 @@
 package com.sbutterfly.GUI;
 
+import com.sbutterfly.GUI.Controls.MyJTextField;
+import com.sbutterfly.GUI.Panels.Constraint;
+import com.sbutterfly.GUI.Panels.JGridBagPanel;
 import com.sbutterfly.differential.EulerODEMethod;
 import com.sbutterfly.differential.ODEMethod;
 import com.sbutterfly.differential.RungeKuttaODEMethod;
@@ -13,15 +16,16 @@ import java.awt.*;
  */
 public class SettingsView implements Frameable {
 
-    private JPanel panel;
+    private JGridBagPanel panel;
     private JFrame frame;
     private JComboBox<String> comboBox;
     private JTextField timeTextField;
+    private JButton saveButton;
+    private JButton cancelButton;
 
     public JComponent getComponent() {
         if (panel == null) {
-            panel = new JPanel();
-            panel.setLayout(new GridBagLayout());
+            panel = new JGridBagPanel();
 
             JLabel methodLabel = new JLabel();
             methodLabel.setText("Методы интергрирования");
@@ -34,10 +38,10 @@ public class SettingsView implements Frameable {
             comboBox.addItem("Эйлера");
             comboBox.setSelectedIndex(0);
 
-            timeTextField = new JTextField();
+            timeTextField = new MyJTextField();
 
             JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-            JButton saveButton = new JButton();
+            saveButton = new JButton();
             saveButton.setText("Сохранить");
             saveButton.addActionListener(e -> {
                 save();
@@ -45,45 +49,17 @@ public class SettingsView implements Frameable {
             });
             buttonsPanel.add(saveButton);
 
-            JButton cancelButton = new JButton();
+            cancelButton = new JButton();
             cancelButton.setText("Отмена");
             cancelButton.addActionListener(e -> NavigationController.Close(this));
             buttonsPanel.add(cancelButton);
 
-            GridBagConstraints c = new GridBagConstraints();
+            panel.add(methodLabel, Constraint.create(0, 0).fill(GridBagConstraints.HORIZONTAL).insets(10));
+            panel.add(timeLabel, Constraint.create(0, 1).fill(GridBagConstraints.HORIZONTAL).insets(10));
+            panel.add(comboBox, Constraint.create(1, 0).fill(GridBagConstraints.HORIZONTAL).insets(10).ipadX(20));
+            panel.add(timeTextField, Constraint.create(1, 1).fill(GridBagConstraints.HORIZONTAL).insets(10).ipadX(20));
 
-            c.fill = GridBagConstraints.HORIZONTAL;
-            c.gridx = 0;
-            c.gridy = 0;
-            c.insets = new Insets(10, 10, 10, 10);
-            panel.add(methodLabel, c);
-
-            c.fill = GridBagConstraints.HORIZONTAL;
-            c.gridx = 1;
-            c.gridy = 0;
-            c.insets = new Insets(10, 10, 10, 10);
-            panel.add(comboBox, c);
-
-            c.fill = GridBagConstraints.HORIZONTAL;
-            c.gridx = 0;
-            c.gridy = 1;
-            c.insets = new Insets(10, 10, 10, 10);
-            panel.add(timeLabel, c);
-
-            c.fill = GridBagConstraints.HORIZONTAL;
-            c.gridx = 1;
-            c.gridy = 1;
-            c.insets = new Insets(10, 10, 10, 10);
-            c.ipadx = 100;
-            panel.add(timeTextField, c);
-
-            c.fill = GridBagConstraints.HORIZONTAL;
-            c.gridx = 0;
-            c.gridy = 2;
-            c.gridwidth = 2;
-            c.insets = new Insets(20, 10, 10, 10);
-            c.ipadx = 100;
-            panel.add(buttonsPanel, c);
+            panel.add(buttonsPanel, Constraint.create(0, 2).fill(GridBagConstraints.HORIZONTAL).insets(10).gridWidth(2));
 
             setValues();
         }
@@ -108,7 +84,7 @@ public class SettingsView implements Frameable {
         }
 
         comboBox.setSelectedIndex(index);
-        timeTextField.setText(seconds + " ");
+        timeTextField.setText(seconds + "");
     }
 
     private void save() {
@@ -133,6 +109,7 @@ public class SettingsView implements Frameable {
             frame.getContentPane().add(getComponent());
             frame.pack();
             frame.setSize(400, 200);
+            frame.getRootPane().setDefaultButton(saveButton);
         }
         return frame;
     }

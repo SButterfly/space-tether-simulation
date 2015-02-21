@@ -9,20 +9,13 @@ import java.util.TimeZone;
  * Created by Sergei on 31.01.2015.
  */
 public class Log {
-    enum LogLvl{
-        Debug,
-        Info,
-        Warning,
-        Error
-    }
     private static SimpleDateFormat format;
-
     static {
         format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS");
         format.setTimeZone(TimeZone.getTimeZone("Etc/GMT-4"));
     }
 
-    public static void Write(LogLvl loglvl, String tag, String message){
+    public static void write(LogLvl loglvl, String tag, String message) {
 
         String time = format.format(new Date());
         String lvl = loglvl.toString();
@@ -37,65 +30,83 @@ public class Log {
         stream.println(resultString);
     }
 
-    public static void Write(LogLvl logLvl, String tag, String format, Object... args){
-        Write(logLvl, tag, String.format(format, args));
+    public static void write(LogLvl logLvl, String tag, String format, Object... args) {
+        write(logLvl, tag, String.format(format, args));
     }
 
-    public static void Debug(String tag, String message){
-        Write(LogLvl.Debug, tag, message);
-    }
-    public static void Debug(String tag, String format, Object... args){
-        Write(LogLvl.Debug, tag, format, args);
-    }
-    public static void Debug(Object tagObj, String message){
-        Debug(getObjectTag(tagObj), message);
-    }
-    public static void Debug(Object tagObj, String format, Object... args){
-        Debug(getObjectTag(tagObj), format, args);
+    public static void debug(String tag, String message) {
+        write(LogLvl.Debug, tag, message);
     }
 
-    public static void Info(String tag, String message){
-        Write(LogLvl.Info, tag, message);
-    }
-    public static void Info(String tag, String format, Object... args){
-        Write(LogLvl.Info, tag, format, args);
-    }
-    public static void Info(Object tagObj, String message){
-        Info(getObjectTag(tagObj), message);
-    }
-    public static void Info(Object tagObj, String format, Object... args){
-        Info(getObjectTag(tagObj), format, args);
+    public static void debug(String tag, String format, Object... args) {
+        write(LogLvl.Debug, tag, format, args);
     }
 
-    public static void Warning(String tag, String message){
-        Write(LogLvl.Warning, tag, message);
-    }
-    public static void Warning(String tag, String format, Object... args){
-        Write(LogLvl.Warning, tag, format, args);
-    }
-    public static void Warning(Object tagObj, String message){
-        Warning(getObjectTag(tagObj), message);
-    }
-    public static void Warning(Object tagObj, String format, Object... args){
-        Warning(getObjectTag(tagObj), format, args);
+    public static void debug(Object tagObj, String message) {
+        debug(getObjectTag(tagObj), message);
     }
 
-    public static void Error(String tag, String message){
-        Write(LogLvl.Error, tag, message);
+    public static void debug(Object tagObj, String format, Object... args) {
+        debug(getObjectTag(tagObj), format, args);
     }
-    public static void Error(String tag, String format, Object... args){
-        Write(LogLvl.Error, tag, format, args);
+
+    public static void info(String tag, String message) {
+        write(LogLvl.Info, tag, message);
     }
-    public static void Error(Object tagObj, String message){
-        Error(getObjectTag(tagObj), message);
+
+    public static void info(String tag, String format, Object... args) {
+        write(LogLvl.Info, tag, format, args);
     }
-    public static void Error(Object tagObj, String format, Object... args){
-        Error(getObjectTag(tagObj), format, args);
+
+    public static void info(Object tagObj, String message) {
+        info(getObjectTag(tagObj), message);
+    }
+
+    public static void info(Object tagObj, String format, Object... args) {
+        info(getObjectTag(tagObj), format, args);
+    }
+
+    public static void warning(String tag, String message) {
+        write(LogLvl.Warning, tag, message);
+    }
+
+    public static void warning(String tag, String format, Object... args) {
+        write(LogLvl.Warning, tag, format, args);
+    }
+
+    public static void warning(Object tagObj, String message) {
+        warning(getObjectTag(tagObj), message);
+    }
+
+    public static void warning(Object tagObj, String format, Object... args) {
+        warning(getObjectTag(tagObj), format, args);
+    }
+
+    public static void error(String tag, String message) {
+        write(LogLvl.Error, tag, message);
+    }
+
+    public static void error(String tag, String format, Object... args) {
+        write(LogLvl.Error, tag, format, args);
+    }
+
+    public static void error(Object tagObj, String message) {
+        error(getObjectTag(tagObj), message);
+    }
+
+    public static void error(Object tagObj, String format, Object... args) {
+        error(getObjectTag(tagObj), format, args);
+    }
+
+    public static void error(Object tagObj, Throwable e) {
+        error(tagObj, "An throwable was caught: " + e.getMessage());
+        e.printStackTrace();
     }
 
     public static LogTime recordWorking(String tag){
         return new LogTime(tag);
     }
+
     public static LogTime recordWorking(Object tag){
         return new LogTime(getObjectTag(tag));
     }
@@ -104,11 +115,17 @@ public class Log {
         return obj.getClass().getSimpleName();
     }
 
+    enum LogLvl {
+        Debug,
+        Info,
+        Warning,
+        Error
+    }
+
     public static class LogTime implements AutoCloseable {
 
-        private static int ID = 0;
         private static final Object lock = new Object();
-
+        private static int ID = 0;
         private String tag;
         private Stopwatch stopwatch;
         private int id = -1;
@@ -121,7 +138,7 @@ public class Log {
         public LogTime(String tag) {
             stopwatch = new Stopwatch();
             this.tag = tag;
-            Debug(this.tag, "Start timing! ID: " + id);
+            debug(this.tag, "Start timing! ID: " + id);
         }
 
         public int getId() {
@@ -138,7 +155,7 @@ public class Log {
 
         @Override
         public void close() {
-            Debug(this.tag, "End timing! %s ID: %d", stopwatch, id);
+            debug(this.tag, "End timing! %s ID: %d", stopwatch, id);
             tag = null;
             stopwatch = null;
         }

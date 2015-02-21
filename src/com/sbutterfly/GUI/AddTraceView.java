@@ -1,5 +1,8 @@
 package com.sbutterfly.GUI;
 
+import com.sbutterfly.GUI.Controls.MyJTextField;
+import com.sbutterfly.GUI.Panels.Constraint;
+import com.sbutterfly.GUI.Panels.JGridBagPanel;
 import com.sbutterfly.differential.Index;
 import com.sbutterfly.differential.ODEBaseModel;
 import com.sbutterfly.helpers.Log;
@@ -11,7 +14,7 @@ import java.util.ArrayList;
 /**
  * Created by Sergei on 13.02.2015.
  */
-public class AddTraceView extends JPanel {
+public class AddTraceView extends JGridBagPanel {
 
     private JComboBox<String> yComboBox;
     private JComboBox<String> xComboBox;
@@ -20,14 +23,18 @@ public class AddTraceView extends JPanel {
 
     private ODEBaseModel model;
     private int[] nameIndexes;
+    private ArrayList<SubmitListener<Traceable>> listeners = new ArrayList<>();
 
     public AddTraceView() {
         createGUI();
         setEnabled(false);
     }
 
+    private static String getName(String yName, String xName) {
+        return yName + "(" + xName + ")";
+    }
+
     private void createGUI(){
-        setLayout(new GridBagLayout());
 
         JLabel ylabel = new JLabel("Ось ординат:");
         JLabel xlabel = new JLabel("Ось абсцис:");
@@ -42,17 +49,17 @@ public class AddTraceView extends JPanel {
         submitButton = new JButton("Добавить");
         submitButton.addActionListener(e -> OnAdd());
 
-        add(ylabel, getConstraint(0, 0).get());
-        add(xlabel, getConstraint(0, 1).get());
-        add(namelabel, getConstraint(0, 2).get());
+        add(ylabel, getConstraint(0, 0));
+        add(xlabel, getConstraint(0, 1));
+        add(namelabel, getConstraint(0, 2));
 
-        add(yComboBox, getConstraint(1, 0).weightX(1).get());
-        add(xComboBox, getConstraint(1, 1).weightX(1).get());
-        add(nameTextField, getConstraint(1, 2).weightX(1).get());
+        add(yComboBox, getConstraint(1, 0).weightX(1));
+        add(xComboBox, getConstraint(1, 1).weightX(1));
+        add(nameTextField, getConstraint(1, 2).weightX(1));
 
-        add(submitButton, getConstraint(0, 3).gridWidth(2).fill(GridBagConstraints.NONE).anchor(GridBagConstraints.EAST).get());
+        add(submitButton, getConstraint(0, 3).gridWidth(2).fill(GridBagConstraints.NONE).anchor(GridBagConstraints.EAST));
 
-        Log.Debug(this, "GUI was created");
+        Log.debug(this, "GUI was created");
     }
 
     @Override
@@ -110,11 +117,6 @@ public class AddTraceView extends JPanel {
         }
     }
 
-    private static String getName(String yName, String xName){
-        return yName + "(" + xName + ")";
-    }
-
-    private ArrayList<SubmitListener<Traceable>> listeners = new ArrayList<>();
     public void addSubmitListener(SubmitListener<Traceable> listener){
         listeners.add(listener);
     }
@@ -122,13 +124,13 @@ public class AddTraceView extends JPanel {
         listeners.remove(listener);
     }
 
+    private Constraint getConstraint(int gridX, int gridY) {
+        return Constraint.create(gridX, gridY).fill(GridBagConstraints.HORIZONTAL).insets(3, 5);
+    }
+
     public class Traceable {
         Index yIndex;
         Index xIndex;
         String name;
-    }
-
-    private Constraint getConstraint(int gridX, int gridY){
-        return Constraint.New(gridX, gridY).fill(GridBagConstraints.HORIZONTAL).insets(3, 5);
     }
 }

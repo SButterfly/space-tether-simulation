@@ -1,4 +1,4 @@
-package com.sbutterfly.GUI;
+package com.sbutterfly.GUI.Panels;
 
 import java.awt.*;
 
@@ -8,6 +8,14 @@ import java.awt.*;
 public class Constraint {
 
     GridBagConstraints c = new GridBagConstraints();
+
+    public static Constraint create(int gridX, int gridY) {
+        return new Constraint().gridX(gridX).gridY(gridY);
+    }
+
+    public static Constraint create(int gridX, int gridY, int gridWidth, int gridHeight) {
+        return new Constraint().gridX(gridX).gridY(gridY).gridWidth(gridWidth).gridHeight(gridHeight);
+    }
 
     public Constraint gridX(int value){
         c.gridx = value;
@@ -81,12 +89,5 @@ public class Constraint {
 
     public GridBagConstraints get(){
         return c;
-    }
-
-    public static Constraint New(int gridX, int gridY){
-        return new Constraint().gridX(gridX).gridY(gridY);
-    }
-    public static Constraint New(int gridX, int gridY, int gridWidth, int gridHeight){
-        return new Constraint().gridX(gridX).gridY(gridY).gridWidth(gridWidth).gridHeight(gridHeight);
     }
 }

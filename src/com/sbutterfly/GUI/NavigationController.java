@@ -36,7 +36,7 @@ public class NavigationController {
         frame.setVisible(true);
         navigationStack.push(view);
 
-        Log.Debug(LTAG, "Open " + view.getClass().getName());
+        Log.debug(LTAG, "Open " + view.getClass().getName());
     }
 
     public static void Close(){
@@ -56,7 +56,7 @@ public class NavigationController {
             topFrame.setAlwaysOnTop(false);
         }
 
-        Log.Debug(LTAG, "Close " + view.getClass().getName());
+        Log.debug(LTAG, "Close " + view.getClass().getName());
     }
 
     public static JFrame EmptyFrame(){

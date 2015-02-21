@@ -13,6 +13,7 @@ import java.io.IOException;
 /**
  * Created by Sergei on 31.01.2015.
  */
+@Deprecated
 public class AdditionalLineView extends JPanel {
 
     private JLabel label;
@@ -51,13 +52,12 @@ public class AdditionalLineView extends JPanel {
             add(cancelButton);
 
         } catch (IOException e) {
-            Log.Error(this, e.toString());
+            Log.error(this, e.toString());
         }
-
 
         setStatusIndicator(0);
 
-        Log.Debug(this, "GUI was created");
+        Log.debug(this, "GUI was created");
     }
 
     public String getText(){

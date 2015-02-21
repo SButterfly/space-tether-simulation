@@ -1,5 +1,8 @@
 package com.sbutterfly.GUI;
 
+import com.sbutterfly.GUI.Controls.JImageButton;
+import com.sbutterfly.GUI.Panels.Constraint;
+import com.sbutterfly.GUI.Panels.JGridBagPanel;
 import com.sbutterfly.helpers.Log;
 import info.monitorenter.gui.chart.ITrace2D;
 
@@ -12,21 +15,23 @@ import java.util.ArrayList;
 /**
  * Created by Sergei on 14.02.2015.
  */
-public class TraceListView extends JPanel {
+public class TraceListView extends JGridBagPanel {
 
-    private JPanel listPanel;
+    private JGridBagPanel listPanel;
 
     private ArrayList<Item> list = new ArrayList<>();
+    private int itemsCount = 0;
+    private JButton deleteAllButton;
+    private ArrayList<ActionListener> addListeners = new ArrayList<>();
+    private ArrayList<SubmitListener<ITrace2D>> removeListeners = new ArrayList<>();
+    private ArrayList<ActionListener> removeAllListeners = new ArrayList<>();
 
     public TraceListView() {
         createGUI();
     }
 
-    private void createGUI(){
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-        listPanel = new JPanel();
-        listPanel.setLayout(new GridBagLayout());
+    private void createGUI() {
+        listPanel = new JGridBagPanel();
 
         JLabel namePanel = new JLabel("Название");
         JLabel visibilityPanel = new JLabel("Видимость");
@@ -36,24 +41,27 @@ public class TraceListView extends JPanel {
         listPanel.add(visibilityPanel, getConstraint(1, 0));
         listPanel.add(deletePanel, getConstraint(2, 0));
 
-        JButton jButton = new JButton("Удалить все");
-        jButton.addActionListener(e -> {
-            for (Item item : list){
+        deleteAllButton = new JButton("Удалить все");
+        deleteAllButton.addActionListener(e -> {
+            for (Item item : list) {
                 listPanel.remove(item.button);
                 listPanel.remove(item.checkBox);
                 listPanel.remove(item.label);
             }
             list.clear();
+            itemsCount = 0;
             listPanel.updateUI();
-            for (ActionListener listener : removeAllListeners){
+            updateDeleteAllButtonState();
+            for (ActionListener listener : removeAllListeners) {
                 listener.actionPerformed(e);
             }
         });
 
-        add(listPanel);
-        add(jButton);
+        add(listPanel, Constraint.create(0, 0).weightX(1));
+        add(new JPanel(), Constraint.create(0, 1).weightX(1).weightY(1));
+        add(deleteAllButton, Constraint.create(0, 2).anchor(GridBagConstraints.EAST));
 
-        Log.Debug(this, "GUI was created");
+        Log.debug(this, "GUI was created");
     }
 
     public void Add(ITrace2D trace){
@@ -61,13 +69,14 @@ public class TraceListView extends JPanel {
         JLabel label = new JLabel(trace.getName());
         JCheckBox checkBox = new JCheckBox("", true);
         checkBox.addChangeListener(e -> trace.setVisible(checkBox.isSelected()));
-        JButton button = new JButton("DEL");
+        JButton button = new JImageButton("assets/delete.png");
         button.addActionListener(e -> {
             listPanel.remove(label);
             listPanel.remove(checkBox);
             listPanel.remove(button);
             listPanel.updateUI();
-
+            itemsCount--;
+            updateDeleteAllButtonState();
             for (SubmitListener<ITrace2D> listener : removeListeners){
                 listener.OnSubmit(trace);
             }
@@ -77,8 +86,8 @@ public class TraceListView extends JPanel {
         trace.setColor(getColor(row));
         label.setForeground(trace.getColor());
         listPanel.add(label, getConstraint(0, row+1));
-        listPanel.add(checkBox, getConstraint(1, row+1));
-        listPanel.add(button, getConstraint(2, row+1));
+        listPanel.add(checkBox, getConstraint(1, row + 1).fill(GridBagConstraints.CENTER));
+        listPanel.add(button, getConstraint(2, row + 1).fill(GridBagConstraints.NONE));
 
         Item item = new Item();
         item.button = button;
@@ -89,12 +98,13 @@ public class TraceListView extends JPanel {
         listPanel.updateUI();
 
         list.add(item);
+        itemsCount++;
+        updateDeleteAllButtonState();
 
         for (ActionListener listener : addListeners){
             listener.actionPerformed(new ActionEvent(this, 0, "add"));
         }
     }
-
 
     private Color getColor(int i){
         i %= 5;
@@ -105,23 +115,22 @@ public class TraceListView extends JPanel {
         return Color.DARK_GRAY;
     }
 
-    private ArrayList<ActionListener> addListeners = new ArrayList<>();
     public void addAddListener(ActionListener listener){
         addListeners.add(listener);
     }
+
     public void removeAddListener(ActionListener listener){
         addListeners.remove(listener);
     }
 
-    private ArrayList<SubmitListener<ITrace2D>> removeListeners = new ArrayList<>();
     public void addRemoveListener(SubmitListener<ITrace2D> listener){
         removeListeners.add(listener);
     }
+
     public void removeRemoveListener(SubmitListener<ITrace2D> listener){
         removeListeners.remove(listener);
     }
 
-    private ArrayList<ActionListener> removeAllListeners = new ArrayList<>();
     public void addRemoveAllListener(ActionListener listener){
         removeAllListeners.add(listener);
     }
@@ -129,19 +138,20 @@ public class TraceListView extends JPanel {
         removeAllListeners.remove(listener);
     }
 
+    private Constraint getConstraint(int gridX, int gridY) {
+        return Constraint.create(gridX, gridY)
+                .fill(GridBagConstraints.HORIZONTAL)
+                .insets(5);
+    }
+
+    private void updateDeleteAllButtonState() {
+        deleteAllButton.setEnabled(itemsCount != 0);
+    }
+
     private class Item {
         JLabel label;
         JCheckBox checkBox;
         JButton button;
         ITrace2D trace2D;
-    }
-
-    private GridBagConstraints getConstraint(int gridX, int gridY){
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = gridX;
-        c.gridy = gridY;
-        c.insets = new Insets(5, 5, 5, 5);
-        return c;
     }
 }

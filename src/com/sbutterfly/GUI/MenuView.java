@@ -79,7 +79,7 @@ public class MenuView extends JMenuBar {
 
         add(aboutMenu);
 
-        Log.Debug(this, "GUI was created");
+        Log.debug(this, "GUI was created");
     }
 
     public void addNewActionListener(ActionListener listener){
