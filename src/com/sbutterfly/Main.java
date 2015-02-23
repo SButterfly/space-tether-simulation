@@ -1,16 +1,17 @@
 package com.sbutterfly;
 
-import com.sbutterfly.GUI.*;
-import com.sbutterfly.differential.*;
-import com.sbutterfly.pendulum.PendulumFunction;
+import com.sbutterfly.GUI.MainView;
+import com.sbutterfly.GUI.NavigationController;
 
 import javax.swing.*;
 
 public class Main {
 
     public static void main(String[] args) {
-        setSystemViewTheme();
-        NavigationController.Open(new MainView());
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            setSystemViewTheme();
+            NavigationController.Open(new MainView());
+        });
     }
 
     private static void setSystemViewTheme(){

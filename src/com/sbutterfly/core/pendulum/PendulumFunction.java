@@ -1,6 +1,7 @@
-package com.sbutterfly.pendulum;
+package com.sbutterfly.core.pendulum;
 
-import com.sbutterfly.differential.*;
+import com.sbutterfly.differential.Function;
+import com.sbutterfly.differential.Vector;
 
 /**
  * Created by Sergei on 01.01.2015.

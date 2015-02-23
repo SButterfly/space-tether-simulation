@@ -5,7 +5,7 @@ import com.sbutterfly.GUI.Panels.JBoxLayout;
 import com.sbutterfly.GUI.Panels.JGridBagPanel;
 import com.sbutterfly.core.ODEBaseModel;
 import com.sbutterfly.core.ODEModelSerializer;
-import com.sbutterfly.pendulum.PendulumModel;
+import com.sbutterfly.core.pendulum.PendulumModel;
 import com.sbutterfly.utils.FileAccessor;
 import com.sbutterfly.utils.FileUtils;
 import com.sbutterfly.utils.Log;

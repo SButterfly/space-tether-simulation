@@ -1,6 +1,6 @@
 package com.sbutterfly.core;
 
-import com.sbutterfly.pendulum.PendulumModel;
+import com.sbutterfly.core.pendulum.PendulumModel;
 
 /**
  * Created by Sergei on 21.02.2015.

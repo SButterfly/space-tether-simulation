@@ -1,4 +1,4 @@
-package com.sbutterfly.pendulum;
+package com.sbutterfly.core.pendulum;
 
 import com.sbutterfly.core.ODEBaseModel;
 import com.sbutterfly.differential.Function;
