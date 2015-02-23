@@ -14,6 +14,7 @@ import info.monitorenter.gui.chart.ITrace2D;
 import info.monitorenter.gui.chart.traces.Trace2DSimple;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -85,6 +86,7 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
         initialStateView.addSubmitListener(e -> onSubmit(e));
         viewsPanel.add(initialStateView, getConstraint(0, 0, 1, 1));
         viewsPanel.updateUI();
+        rootPanel.updateUI();
     }
 
     private Constraint getConstraint(int gridX, int gridY, int gridWidth, int gridHeight) {
@@ -141,6 +143,15 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
         if (result == JFileChooser.APPROVE_OPTION) {
 
             File file = fileChooser.getSelectedFile();
+            String ext = FileUtils.getExtension(file);
+            if (ext.equals("")) {
+                ext = FileUtils.odex;
+                if (fileChooser.getFileFilter() instanceof FileNameExtensionFilter) {
+                    FileNameExtensionFilter fileNameExtensionFilter = (FileNameExtensionFilter) fileChooser.getFileFilter();
+                    ext = fileNameExtensionFilter.getExtensions()[0];
+                }
+                file = FileUtils.setExtension(file, ext);
+            }
             Log.debug(this, "Selected: " + file.getName());
 
             try {
@@ -164,6 +175,7 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
         if (result == JFileChooser.APPROVE_OPTION) {
 
             File file = fileChooser.getSelectedFile();
+            String ext = FileUtils.getExtension(file);
             Log.debug(this, "Selected: " + file.getName());
 
             try {

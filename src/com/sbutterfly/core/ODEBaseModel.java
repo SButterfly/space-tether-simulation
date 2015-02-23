@@ -6,11 +6,12 @@ import info.monitorenter.gui.chart.ITrace2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 /**
  * Created by Sergei on 12.02.2015.
  */
-public abstract class ODEBaseModel {
+public abstract class ODEBaseModel implements ODEModelSerializer.ODESerializable {
 
     private final ArrayList<PropertyChangeListener> listeners = new ArrayList<>();
     private TimeVector[] vectors;
@@ -97,5 +98,57 @@ public abstract class ODEBaseModel {
 
     public void dispose(){
         vectors = null;
+    }
+
+    @Override
+    public String serialize() {
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        TimeVector[] values = values();
+
+        stringBuilder.append(values.length);
+        stringBuilder.append(' ');
+
+        for (TimeVector vector : values) {
+            stringBuilder.append(vector.getTime());
+            stringBuilder.append(' ');
+
+            stringBuilder.append(vector.size());
+            stringBuilder.append(' ');
+
+            for (Double x : vector) {
+                stringBuilder.append(x);
+                stringBuilder.append(' ');
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public void deserialize(String value) {
+        StringTokenizer tokenizer = new StringTokenizer(value);
+
+        int size = Integer.parseInt(tokenizer.nextToken());
+        TimeVector[] values = new TimeVector[size];
+
+        for (int i = 0; i < size; i++) {
+            double time = Double.parseDouble(tokenizer.nextToken());
+            int length = Integer.parseInt(tokenizer.nextToken());
+
+            TimeVector vector = new TimeVector(time, length);
+            for (int j = 0; j < length; j++) {
+                vector.set(j, Double.parseDouble(tokenizer.nextToken()));
+            }
+        }
+
+        this.vectors = values;
+    }
+
+    /*
+        Class used only for serialization
+     */
+    private class SerModel {
+        TimeVector[] values;
     }
 }

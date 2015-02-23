@@ -7,13 +7,17 @@ import com.sbutterfly.differential.TimeVector;
 import com.sbutterfly.differential.Vector;
 import com.sbutterfly.services.AppSettings;
 
+import java.util.StringTokenizer;
+
 /**
  * Created by Sergei on 12.02.2015.
  */
 public class PendulumModel extends ODEBaseModel {
 
+    private static final String separateValue = "#@#";
     private final TimeVector startVector = new TimeVector(size());
     private final Vector additionalVector = new Vector(additionalSize());
+
     public PendulumModel() {
         setAdditionalParameter(0, 3);
         setStartParameter(0, 5);
@@ -87,5 +91,47 @@ public class PendulumModel extends ODEBaseModel {
         if (additionalVector.get(index) == v) return;
         additionalVector.set(index, v);
         onPropertyChanged("AdditionalParameter", null, v);
+    }
+
+    @Override
+    public String serialize() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(size());
+        stringBuilder.append(' ');
+        for (int i = 0, n = size(); i < n; i++) {
+            stringBuilder.append(getStartParameter(i));
+            stringBuilder.append(' ');
+        }
+
+        stringBuilder.append(additionalSize());
+        stringBuilder.append(' ');
+        for (int i = 0, n = additionalSize(); i < n; i++) {
+            stringBuilder.append(getAdditionalParameter(i));
+            stringBuilder.append(' ');
+        }
+
+        return stringBuilder.toString() + separateValue + super.serialize();
+    }
+
+    @Override
+    public void deserialize(String value) {
+        String[] str = value.split(separateValue);
+
+        StringTokenizer tokenizer = new StringTokenizer(str[0]);
+
+        int size = Integer.parseInt(tokenizer.nextToken());
+        for (int i = 0; i < size; i++) {
+            double val = Double.parseDouble(tokenizer.nextToken());
+            setStartParameter(i, val);
+        }
+
+        int additionalSize = Integer.parseInt(tokenizer.nextToken());
+        for (int j = 0; j < additionalSize; j++) {
+            double val = Double.parseDouble(tokenizer.nextToken());
+            setAdditionalParameter(j, val);
+        }
+
+        super.deserialize(str[1]);
     }
 }

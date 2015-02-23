@@ -21,7 +21,7 @@ public class FileUtils {
      * Get the extension of a file.
      */
     public static String getExtension(File file) {
-        String ext = null;
+        String ext = "";
         String str = file.getName();
         int i = str.lastIndexOf('.');
 
@@ -31,13 +31,17 @@ public class FileUtils {
         return ext;
     }
 
-    public static ODEModelSerializer.SerializeType getSerializeType(File file) {
-        String extention = getExtension(file);
+    public static File setExtension(File file, String ext) {
+        return new File(file.getPath() + "." + ext);
+    }
 
-        if (extention.equals(ode)) {
+    public static ODEModelSerializer.SerializeType getSerializeType(File file) {
+        String extension = getExtension(file);
+
+        if (extension.equals(ode)) {
             return ODEModelSerializer.SerializeType.Params;
         }
-        if (extention.equals(odex)) {
+        if (extension.equals(odex)) {
             return ODEModelSerializer.SerializeType.ParamsAndValues;
         }
         throw new IllegalArgumentException();
