@@ -1,5 +1,7 @@
 package com.sbutterfly.differential;
 
+import com.sbutterfly.utils.Log;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -43,12 +45,14 @@ public class Differential implements Iterable<TimeVector> {
     }
 
     public TimeVector[] makeDifferential(){
-        TimeVector[] result = new TimeVector[numberOfIterations];
-        int i = 0;
-        for (TimeVector x : this){
-            result[i++] = x;
+        try (Log.LogTime logTime = Log.recordWorking(this)) {
+            TimeVector[] result = new TimeVector[numberOfIterations];
+            int i = 0;
+            for (TimeVector x : this) {
+                result[i++] = x;
+            }
+            return result;
         }
-        return result;
     }
 
     @Override

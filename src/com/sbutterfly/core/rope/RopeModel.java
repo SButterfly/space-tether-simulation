@@ -4,7 +4,6 @@ import com.sbutterfly.core.ODEBaseModel;
 import com.sbutterfly.differential.Function;
 import com.sbutterfly.differential.ODEMethod;
 import com.sbutterfly.differential.TimeVector;
-import com.sbutterfly.differential.Vector;
 import com.sbutterfly.services.AppSettings;
 
 import java.util.StringTokenizer;
@@ -15,8 +14,8 @@ import java.util.StringTokenizer;
 public class RopeModel extends ODEBaseModel {
 
     private static final String separateValue = "#@#";
-    private final TimeVector startVector = new TimeVector(size());
-    private final Vector additionalVector = new Vector(additionalSize());
+    private final double[] startVector = new double[size()];
+    private final double[] additionalVector = new double[additionalSize()];
 
     public RopeModel() {
         setStartParameter(0, 1);
@@ -32,12 +31,12 @@ public class RopeModel extends ODEBaseModel {
 
     @Override
     public double getODETime() {
-        return 20000;
+        return AppSettings.getODETime();
     }
 
     @Override
     public int getNumberOfIterations() {
-        return 40000;
+        return (int) (getODETime() / 0.25);
     }
 
     @Override
@@ -79,30 +78,29 @@ public class RopeModel extends ODEBaseModel {
 
     @Override
     public TimeVector getStartVector() {
-        return startVector.clone();
+        return new TimeVector(0, startVector);
     }
 
-    @Override
     public double getStartParameter(int index) {
-        return startVector.get(index);
+        return startVector[index];
     }
 
     @Override
     public void setStartParameter(int index, double v) {
-        if (startVector.get(index) == v) return;
-        startVector.set(index, v);
+        if (startVector[index] == v) return;
+        startVector[index] = v;
         onPropertyChanged("StartParameter", null, v);
     }
 
     @Override
     public double getAdditionalParameter(int index) {
-        return additionalVector.get(index);
+        return additionalVector[index];
     }
 
     @Override
     public void setAdditionalParameter(int index, double v) {
-        if (additionalVector.get(index) == v) return;
-        additionalVector.set(index, v);
+        if (additionalVector[index] == v) return;
+        additionalVector[index] = v;
         onPropertyChanged("AdditionalParameter", null, v);
     }
 

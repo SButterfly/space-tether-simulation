@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="40536ae3-b573-4c1e-9a87-8898cc66d2ed" name="Default" comment="create file input/output">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeFunction.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/utils/FileUtils.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/utils/FileUtils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/GUI/MainView.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/GUI/MainView.java" />
+    <list default="true" id="40536ae3-b573-4c1e-9a87-8898cc66d2ed" name="Default" comment="add rope model">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/differential/Differential.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/differential/Differential.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/core/ODEBaseModel.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/core/ODEBaseModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/core/pendulum/PendulumModel.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/core/pendulum/PendulumModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeFunction.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeFunction.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeModel.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/differential/RungeKuttaODEMethod.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/differential/RungeKuttaODEMethod.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/differential/TimeVector.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/differential/TimeVector.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/differential/Vector.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/differential/Vector.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="RopeSimulation.iws" />
@@ -35,75 +39,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="RopeModel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeModel.java">
+      <file leaf-file-name="PendulumFunction.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/pendulum/PendulumFunction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="246" max-vertical-offset="2652">
-              <caret line="34" column="17" selection-start-line="34" selection-start-column="17" selection-end-line="34" selection-end-column="17" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1012#1013#0" expanded="true" />
-                <element signature="e#1040#1041#0" expanded="true" />
-                <element signature="e#1096#1097#0" expanded="true" />
-                <element signature="e#1124#1125#0" expanded="true" />
-                <element signature="e#1174#1175#0" expanded="true" />
-                <element signature="e#1223#1224#0" expanded="true" />
-                <element signature="e#1689#1690#0" expanded="true" />
-                <element signature="e#1713#1714#0" expanded="true" />
-                <element signature="e#1762#1763#0" expanded="true" />
-                <element signature="e#1786#1787#0" expanded="true" />
-                <element signature="e#1831#1832#0" expanded="true" />
-                <element signature="e#1900#1901#0" expanded="true" />
-                <element signature="e#1955#1956#0" expanded="true" />
-                <element signature="e#2024#2025#0" expanded="true" />
-                <element signature="e#2080#2081#0" expanded="true" />
-                <element signature="e#2122#2123#0" expanded="true" />
-                <element signature="e#2186#2187#0" expanded="true" />
-                <element signature="e#2231#2232#0" expanded="true" />
-                <element signature="e#2516#2517#0" expanded="true" />
-                <element signature="e#2566#2567#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="646">
+              <caret line="9" column="40" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RopeFunction.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeFunction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1264" max-vertical-offset="1802">
-              <caret line="103" column="22" selection-start-line="103" selection-start-column="22" selection-end-line="103" selection-end-column="22" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1166#1167#0" expanded="true" />
-                <element signature="e#1221#1222#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Vector.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/differential/Vector.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6726058" vertical-offset="55" max-vertical-offset="1938">
-              <caret line="27" column="5" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
-              <folding>
-                <element signature="e#278#279#0" expanded="true" />
-                <element signature="e#316#317#0" expanded="true" />
-                <element signature="e#352#353#0" expanded="true" />
-                <element signature="e#390#391#0" expanded="true" />
-                <element signature="e#568#569#0" expanded="true" />
-                <element signature="e#605#606#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PendulumModel.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="PendulumModel.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/pendulum/PendulumModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="642" max-vertical-offset="1972">
-              <caret line="71" column="13" selection-start-line="71" selection-start-column="13" selection-end-line="71" selection-end-column="13" />
-              <folding />
+            <state vertical-scroll-proportion="1.5454545" vertical-offset="0" max-vertical-offset="2006">
+              <caret line="81" column="5" selection-start-line="81" selection-start-column="5" selection-end-line="81" selection-end-column="5" />
+              <folding>
+                <element signature="e#2028#2029#0" expanded="true" />
+                <element signature="e#2074#2075#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -122,14 +76,12 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/TestPendulumFunction.form" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/TestPendulumFunction.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/MainMenuView.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/ODEMethod.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/Services/AppSettings.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/Settings.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/RungeKuttaMethod.java" />
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/RungeKuttaODEMethod.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/EulerMethod.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/EulerODEMethod.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/helpers/Stopwatch.java" />
@@ -139,11 +91,9 @@
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/Viewable.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/services/AppSettings.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/InitialStatesView.java" />
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/TimeVector.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/pendulum/PendulumFunction.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/services/ModelAccessor.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/Index.java" />
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/Differential.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/pendulum/PendulumModel.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/NavigationController.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/Constraints.java" />
@@ -164,15 +114,19 @@
         <option value="$PROJECT_DIR$/src/com/sbutterfly/utils/FileUtiles.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/Main.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/utils/Log.java" />
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/core/pendulum/PendulumModel.java" />
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/core/ODEBaseModel.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/utils/FileAccessor.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/core/ODEModelSerializer.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/utils/FileUtils.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/MainView.java" />
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeModel.java" />
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeFunction.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/TimeVector.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/core/pendulum/PendulumModel.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/core/ODEBaseModel.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/Function.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/Vector.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/Differential.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeFunction.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/RungeKuttaODEMethod.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeModel.java" />
       </list>
     </option>
   </component>
@@ -316,6 +270,28 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="GUI" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AerospaceRopeSimulation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AerospaceRopeSimulation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sbutterfly" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="differential" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -799,7 +775,7 @@
       <workItem from="1424671653797" duration="8205000" />
       <workItem from="1424681724617" duration="26000" />
       <workItem from="1424976103654" duration="1976000" />
-      <workItem from="1425013874408" duration="4956000" />
+      <workItem from="1425013874408" duration="9393000" />
     </task>
     <task id="LOCAL-00001" summary="always create new Constrains">
       <created>1423942617076</created>
@@ -837,11 +813,17 @@
       <option name="project" value="LOCAL" />
       <updated>1424679840781</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="add rope model">
+      <created>1425018890774</created>
+      <option name="number" value="00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1425018890774</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="127070000" />
+    <option name="totallyTimeSpent" value="131507000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="776" extended-state="6" />
@@ -850,7 +832,7 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32868218" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32868218" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32763976" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -858,7 +840,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928804" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25931677" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25931677" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22734627" sideWeight="0.66459626" order="0" side_tool="false" content_ui="combo" />
@@ -933,14 +915,15 @@
     <MESSAGE value="implement save and open files handlers" />
     <MESSAGE value="add gson lib" />
     <MESSAGE value="create file input/output" />
-    <option name="LAST_COMMIT_MESSAGE" value="create file input/output" />
+    <MESSAGE value="add rope model" />
+    <option name="LAST_COMMIT_MESSAGE" value="add rope model" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="73" />
+      <option name="time" value="74" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -949,20 +932,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_25/src.zip!/java/awt/Container.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.55701756" vertical-offset="6699" max-vertical-offset="83130">
-          <caret line="479" column="9" selection-start-line="479" selection-start-column="9" selection-end-line="479" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_25/src.zip!/javax/swing/JTextField.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.5159914" vertical-offset="3363" max-vertical-offset="15181">
-          <caret line="196" column="11" selection-start-line="196" selection-start-column="11" selection-end-line="196" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/services/ModelAccessor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.18123667" vertical-offset="0" max-vertical-offset="469">
@@ -1220,14 +1189,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/pendulum/PendulumFunction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6241497" vertical-offset="58" max-vertical-offset="646">
-          <caret line="30" column="8" selection-start-line="30" selection-start-column="8" selection-end-line="32" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/utils/FileAccessor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476">
@@ -1244,41 +1205,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/differential/TimeVector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8882834" vertical-offset="99" max-vertical-offset="867">
-          <caret line="29" column="11" selection-start-line="29" selection-start-column="11" selection-end-line="29" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/differential/RungeKuttaODEMethod.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.116972476" vertical-offset="357" max-vertical-offset="1003">
-          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding>
-            <element signature="e#662#663#0" expanded="true" />
-            <element signature="e#702#703#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/ODEBaseModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5953608" vertical-offset="585" max-vertical-offset="2431">
-          <caret line="58" column="5" selection-start-line="58" selection-start-column="5" selection-end-line="58" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/pendulum/PendulumModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="642" max-vertical-offset="1972">
-          <caret line="71" column="13" selection-start-line="71" selection-start-column="13" selection-end-line="71" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/MainView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.7630923" vertical-offset="204" max-vertical-offset="3111">
@@ -1287,70 +1213,112 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/differential/TimeVector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.39420936" vertical-offset="95" max-vertical-offset="544">
+          <caret line="16" column="11" selection-start-line="16" selection-start-column="11" selection-end-line="16" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/ODEBaseModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.71973467" vertical-offset="825" max-vertical-offset="2448">
+          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/differential/Vector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4431818" vertical-offset="1274" max-vertical-offset="2074">
+          <caret line="121" column="62" selection-start-line="121" selection-start-column="62" selection-end-line="121" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/differential/Function.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.34075725" vertical-offset="0" max-vertical-offset="449">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/utils/Log.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.46325168" vertical-offset="1449" max-vertical-offset="1904">
+          <caret line="92" column="24" selection-start-line="92" selection-start-column="24" selection-end-line="92" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/differential/Differential.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="840" max-vertical-offset="1241">
-          <caret line="68" column="60" selection-start-line="68" selection-start-column="60" selection-end-line="68" selection-end-column="60" />
+        <state vertical-scroll-proportion="0.56792873" vertical-offset="357" max-vertical-offset="1275">
+          <caret line="49" column="22" selection-start-line="49" selection-start-column="22" selection-end-line="49" selection-end-column="22" />
           <folding>
-            <element signature="e#1894#1895#0" expanded="true" />
-            <element signature="e#1947#1948#0" expanded="true" />
+            <element signature="e#1683#1684#0" expanded="true" />
+            <element signature="e#1732#1733#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="246" max-vertical-offset="2652">
-          <caret line="34" column="17" selection-start-line="34" selection-start-column="17" selection-end-line="34" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.9242762" vertical-offset="401" max-vertical-offset="2278">
+          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1012#1013#0" expanded="true" />
-            <element signature="e#1040#1041#0" expanded="true" />
-            <element signature="e#1096#1097#0" expanded="true" />
-            <element signature="e#1124#1125#0" expanded="true" />
-            <element signature="e#1174#1175#0" expanded="true" />
-            <element signature="e#1223#1224#0" expanded="true" />
-            <element signature="e#1689#1690#0" expanded="true" />
-            <element signature="e#1713#1714#0" expanded="true" />
-            <element signature="e#1762#1763#0" expanded="true" />
-            <element signature="e#1786#1787#0" expanded="true" />
-            <element signature="e#1831#1832#0" expanded="true" />
-            <element signature="e#1900#1901#0" expanded="true" />
-            <element signature="e#1955#1956#0" expanded="true" />
-            <element signature="e#2024#2025#0" expanded="true" />
-            <element signature="e#2080#2081#0" expanded="true" />
-            <element signature="e#2122#2123#0" expanded="true" />
-            <element signature="e#2186#2187#0" expanded="true" />
-            <element signature="e#2231#2232#0" expanded="true" />
-            <element signature="e#2516#2517#0" expanded="true" />
-            <element signature="e#2566#2567#0" expanded="true" />
+            <element signature="e#1065#1066#0" expanded="true" />
+            <element signature="e#1114#1115#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeFunction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1264" max-vertical-offset="1802">
-          <caret line="103" column="22" selection-start-line="103" selection-start-column="22" selection-end-line="103" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1479" max-vertical-offset="1989">
+          <caret line="57" column="57" selection-start-line="57" selection-start-column="57" selection-end-line="57" selection-end-column="57" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1166#1167#0" expanded="true" />
-            <element signature="e#1221#1222#0" expanded="true" />
+            <element signature="e#1137#1138#0" expanded="true" />
+            <element signature="e#1196#1197#0" expanded="true" />
+            <element signature="e#1236#1237#0" expanded="true" />
+            <element signature="e#1290#1291#0" expanded="true" />
+            <element signature="e#1347#1348#0" expanded="true" />
+            <element signature="e#1417#1418#0" expanded="true" />
+            <element signature="e#1627#1628#0" expanded="true" />
+            <element signature="e#1701#1702#0" expanded="true" />
+            <element signature="e#3464#3465#0" expanded="true" />
+            <element signature="e#3500#3501#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/differential/Vector.java">
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/differential/RungeKuttaODEMethod.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6726058" vertical-offset="55" max-vertical-offset="1938">
-          <caret line="27" column="5" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.60714287" vertical-offset="0" max-vertical-offset="884">
+          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/pendulum/PendulumFunction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="30" max-vertical-offset="646">
+          <caret line="9" column="40" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/pendulum/PendulumModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.5454545" vertical-offset="0" max-vertical-offset="2006">
+          <caret line="81" column="5" selection-start-line="81" selection-start-column="5" selection-end-line="81" selection-end-column="5" />
           <folding>
-            <element signature="e#278#279#0" expanded="true" />
-            <element signature="e#316#317#0" expanded="true" />
-            <element signature="e#352#353#0" expanded="true" />
-            <element signature="e#390#391#0" expanded="true" />
-            <element signature="e#568#569#0" expanded="true" />
-            <element signature="e#605#606#0" expanded="true" />
+            <element signature="e#2028#2029#0" expanded="true" />
+            <element signature="e#2074#2075#0" expanded="true" />
           </folding>
         </state>
       </provider>

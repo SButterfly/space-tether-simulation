@@ -136,10 +136,11 @@ public abstract class ODEBaseModel implements ODEModelSerializer.ODESerializable
             double time = Double.parseDouble(tokenizer.nextToken());
             int length = Integer.parseInt(tokenizer.nextToken());
 
-            TimeVector vector = new TimeVector(time, length);
+            double[] vector = new double[length];
             for (int j = 0; j < length; j++) {
-                vector.set(j, Double.parseDouble(tokenizer.nextToken()));
+                vector[j] = Double.parseDouble(tokenizer.nextToken());
             }
+            values[i] = new TimeVector(time, vector);
         }
 
         this.vectors = values;

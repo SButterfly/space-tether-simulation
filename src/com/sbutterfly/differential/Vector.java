@@ -9,40 +9,34 @@ import java.util.NoSuchElementException;
  */
 public class Vector implements Iterable<Double>{
 
-    private double[] values;
+    private final double[] values;
 
-    public Vector(int n){
+    private Vector(int n){
         values = new double[n];
     }
-
-    public Vector(double...array){
-        values = array.clone();
+    public Vector(double v1){
+        values = new double[] { v1 };
     }
-
-    public int size(){
-        return values.length;
+    public Vector(double v1, double v2){
+        values = new double[] { v1, v2 };
     }
-
-    public double get(int index){
-        return values[index];
+    public Vector(double v1, double v2, double v3){
+        values = new double[] { v1, v2, v3};
     }
-
-    public void set(int index, double value){
-        values[index] = value;
+    public Vector(double v1, double v2, double v3, double v4){
+        values = new double[] { v1, v2, v3, v4, };
     }
-
-    @Override
-    public Vector clone() {
-        Vector vector = new Vector(values.length);
-        for (int i = 0, n = values.length; i < n; i++){
-            vector.values[i] = values[i];
-        }
-        return vector;
+    public Vector(double v1, double v2, double v3, double v4, double v5){
+        values = new double[] { v1, v2, v3, v4, v5 };
     }
-
-    @Override
-    public String toString() {
-        return '{' + Arrays.toString(values) + '}';
+    public Vector(double v1, double v2, double v3, double v4, double v5, double v6){
+        values = new double[] { v1, v2, v3, v4, v5, v6 };
+    }
+    public Vector(double...values){
+        this.values = values.clone();
+    }
+    public Vector(Vector vector){
+        this.values = vector.values;
     }
 
     public static Vector sum(Vector x, Vector y){
@@ -73,7 +67,7 @@ public class Vector implements Iterable<Double>{
 
     public static Vector sum(Vector... v){
         if (v.length == 0) throw new IllegalArgumentException("Пустой массив");
-        if (v.length == 1) return v[0];
+        if (v.length == 1) return v[0].clone();
 
         Vector result = new Vector(v[0].size());
 
@@ -85,11 +79,7 @@ public class Vector implements Iterable<Double>{
         return result;
     }
 
-    public static Vector mul(double x, Vector y){
-        return mul(y, x);
-    }
-
-    public static Vector mul(Vector x, double y){
+    public static Vector mul(double y, Vector x){
         Vector result = new Vector(x.size());
 
         for (int i = 0, n = x.size(); i < n; i++){
@@ -97,6 +87,42 @@ public class Vector implements Iterable<Double>{
         }
 
         return result;
+    }
+
+    public static Vector mul(Vector x, double y){
+        return mul(y, x);
+    }
+
+    public static Vector mulThenSum(Vector x, double mul, Vector sum) {
+        Vector result = new Vector(x.size());
+
+        for (int i = 0, n = x.size(); i < n; i++){
+            result.values[i] = x.values[i]*mul + sum.values[i];
+        }
+
+        return result;
+    }
+
+    public int size(){
+        return values.length;
+    }
+
+    public double get(int index){
+        return values[index];
+    }
+
+    @Override
+    public Vector clone() {
+        return new Vector(this);
+    }
+
+    @Override
+    public String toString() {
+        return '{' + Arrays.toString(values) + '}';
+    }
+
+    public double[] toArray(){
+        return values.clone();
     }
 
     @Override

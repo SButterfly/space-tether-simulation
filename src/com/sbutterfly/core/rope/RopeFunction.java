@@ -8,32 +8,33 @@ import static java.lang.Math.sin;
 
 /**
  * Created by Sergei on 26.02.2015.
+ * Функция моделирования развертки КА
  */
 public class RopeFunction extends Function {
 
-    private double m1;
-    private double m2;
+    private final double m1;
+    private final double m2;
 
-    private double p;
+    private final double p;
 
-    private double a;
-    private double b;
+    private final double a;
+    private final double b;
 
-    private double Lk;
+    private final double Lk;
 
-    private double m;
+    private final double m;
 
-    private double K = 398600.02;
-    private double R = 6371;
-    private double Om = Math.sqrt(K / (R * R * R));
-    private double Om2 = Om * Om;
+    private final double K = 398600.02;
+    private final double R = 6371;
+    private final double Om = Math.sqrt(K / (R * R * R));
+    private final double Om2 = Om * Om;
+
     private double sinO;
     private double cosO;
     private double sinB;
     private double cosB;
     private double sin2O;
     private double sin2B;
-
 
     public RopeFunction(double m1, double m2, double p, double a, double b, double lk) {
         this.m1 = m1;
@@ -45,36 +46,36 @@ public class RopeFunction extends Function {
         this.m = m1 + m2;
     }
 
-    private double V(double L) {
+    private double V(final double L) {
         return (m1 - L * p) * (m2 - L * p / 2d) / m;
     }
 
-    private double M(double L) {
+    private double M(final double L) {
         return (m1 - L * p) * (m2 + L * p) / m;
     }
 
-    private double R(double L, double Lt) {
-        return p * pow(Lt) * (m1 - m2 - 2 * L * p) / (2 * m);
+    private double R(final double L, final double Lt) {
+        return p * pow(Lt) * (m1 - m2 - 2d * L * p) / (2d * m);
     }
 
-    private double J(double L) {
-        return pow(L) * (12 * m1 * m2 - 8 * L * p * m2 + 4 * L * p * m1 - 3 * pow(L * p)) / (12 * m);
+    private double J(final double L) {
+        return pow(L) * (12d * m1 * m2 - 8d * L * p * m2 + 4d * L * p * m1 - 3d * pow(L * p)) / (12d * m);
     }
 
-    private double T(double L, double Lt) {
-        return V(L) * Om2 * (a * (L - Lk) + b * Lt / Om + 3 * Lk);
+    private double T(final double L, final double Lt) {
+        return V(L) * Om2 * (a * (L - Lk) + b * Lt / Om + 3d * Lk);
     }
 
-    private double Ltt(double Lt, double L, double Ot, double O, double Bt, double B) {
-        return V(L) / M(L) * L * (pow(Ot) + 2 * Ot * Om * cosB + pow(Bt * cosO) - pow(Om * cosO * sinB) + Om * Bt * sinB * sin2O + 3 * pow(Om * cosO * cosB)) - (T(L, Lt) + R(L, Lt)) / M(L);
+    private double Ltt(final double Lt, final double L, final double Ot, final double O, final double Bt, final double B) {
+        return V(L) / M(L) * L * (pow(Ot) + 2 * Ot * Om * cosB + pow(Bt * cosO) - pow(Om * cosO * sinB) + Om * Bt * sinB * sin2O + 3d * pow(Om * cosO * cosB)) - (T(L, Lt) + R(L, Lt)) / M(L);
     }
 
-    private double Ott(double Lt, double L, double Ot, double O, double Bt, double B) {
-        return -2 * V(L) / J(L) * L * Lt * (Ot + Om * cosB) + Om2 * sinO * cosO * pow(sinB) - pow(Bt) * sinO * cosO + 2 * Om * Bt * pow(cosO) * sinB - 3d / 2d * Om2 * sin2O * pow(cosB);
+    private double Ott(final double Lt, final double L, final double Ot, final double O, final double Bt, final double B) {
+        return -2d * V(L) / J(L) * L * Lt * (Ot + Om * cosB) + Om2 * sinO * cosO * pow(sinB) - pow(Bt) * sinO * cosO + 2d * Om * Bt * pow(cosO) * sinB - 1.5 * Om2 * sin2O * pow(cosB);
     }
 
-    private double Btt(double Lt, double L, double Ot, double O, double Bt, double B) {
-        return 1 / pow(cosO) * (-2 * V(L) / J(L) * L * Lt * (Bt * pow(cosO) + Om * sin2O * sinB) + Ot * Bt * sin2O - 2 * Om * Ot * pow(cosO) * sinB - 2 * Om2 * pow(cosO * L) * sin2B);
+    private double Btt(final double Lt, final double L, final double Ot, final double O, final double Bt, final double B) {
+        return 1d / pow(cosO) * (-2d * V(L) / J(L) * L * Lt * (Bt * pow(cosO) + Om * sin2O * sinB) + Ot * Bt * sin2O - 2d * Om * Ot * pow(cosO) * sinB - 2d * Om2 * pow(cosO * L) * sin2B);
     }
 
     @Override
@@ -95,8 +96,8 @@ public class RopeFunction extends Function {
         sinB = sin(B);
         cosB = cos(B);
 
-        sin2O = sin(2 * O);
-        sin2B = sin(2 * B);
+        sin2O = sin(2d * O);
+        sin2B = sin(2d * B);
 
         final double v2 = Ltt(Lt, L, Ot, O, Bt, B);
         final double v4 = Ott(Lt, L, Ot, O, Bt, B);
@@ -104,7 +105,7 @@ public class RopeFunction extends Function {
         return new Vector(Lt, v2, Ot, v4, Bt, v6);
     }
 
-    private double pow(double value) {
+    private double pow(final double value) {
         return value * value;
     }
 }
