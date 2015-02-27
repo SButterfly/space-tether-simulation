@@ -14,6 +14,7 @@ public class FileUtils {
     public final static String odex = "odex";
 
     public final static FileNameExtensionFilter bothFilter = new FileNameExtensionFilter("Мат. модели", ode, odex);
+
     public final static FileNameExtensionFilter odeFilter = new FileNameExtensionFilter("Мат. модели", ode);
     public final static FileNameExtensionFilter odexFilter = new FileNameExtensionFilter("Мат. модели с расчетом", odex);
 

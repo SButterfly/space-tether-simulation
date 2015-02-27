@@ -5,7 +5,7 @@ import com.sbutterfly.GUI.Panels.JBoxLayout;
 import com.sbutterfly.GUI.Panels.JGridBagPanel;
 import com.sbutterfly.core.ODEBaseModel;
 import com.sbutterfly.core.ODEModelSerializer;
-import com.sbutterfly.core.pendulum.PendulumModel;
+import com.sbutterfly.core.rope.RopeModel;
 import com.sbutterfly.utils.FileAccessor;
 import com.sbutterfly.utils.FileUtils;
 import com.sbutterfly.utils.Log;
@@ -127,7 +127,7 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
 
     private void onNew_click(ActionEvent e) {
         Log.debug(this, "on new clicked");
-        ODEBaseModel model = new PendulumModel();
+        ODEBaseModel model = new RopeModel();
 
         setModel(model);
     }
