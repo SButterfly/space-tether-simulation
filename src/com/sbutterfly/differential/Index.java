@@ -1,51 +1,36 @@
 package com.sbutterfly.differential;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import com.sbutterfly.core.Customable;
 
-public enum Index {
-    First,
-    Second,
-    Third,
-    Fourth,
-    Fifth,
-    Sixth,
-    Seventh,
-    Eighth,
-    Nineth,
-    Tenth,
-    Time;
+public class Index {
 
-    public static int toInt(Index index){
-        if (index == Index.Time) return -1;
+    private final int paramsIndex;
+    private Customable customable;
 
-        if (index == Index.First) return 0;
-        if (index == Index.Second) return 1;
-        if (index == Index.Third) return 2;
-        if (index == Index.Fourth) return 3;
-        if (index == Index.Fifth) return 4;
-        if (index == Index.Sixth) return 5;
-        if (index == Index.Seventh) return 6;
-        if (index == Index.Eighth) return 7;
-        if (index == Index.Nineth) return 8;
-        if (index == Index.Tenth) return 9;
+    public Index(int paramsIndex) {
+        if (paramsIndex < 0) throw new NumberFormatException("\"paramsIndex\" must be not negative.");
 
-        throw new NotImplementedException();
+        this.paramsIndex = paramsIndex;
+        this.customable = null;
     }
 
-    public static Index toIndex(int index){
-        if (index == -1) return Index.Time;
+    public Index(int customIndex, Customable customable) {
+        if (customIndex < 0) throw new NumberFormatException("\"paramsIndex\" must be not negative.");
+        if (customable == null) throw new NullPointerException("customable");
 
-        if (index == 0) return Index.First;
-        if (index == 1) return Index.Second;
-        if (index == 2) return Index.Third;
-        if (index == 3) return Index.Fourth;
-        if (index == 4) return Index.Fifth;
-        if (index == 5) return Index.Sixth;
-        if (index == 6) return Index.Seventh;
-        if (index == 7) return Index.Eighth;
-        if (index == 8) return Index.Nineth;
-        if (index == 9) return Index.Tenth;
+        this.paramsIndex = customIndex;
+        this.customable = customable;
+    }
 
-        throw new NotImplementedException();
+    public boolean isCustom() {
+        return customable != null;
+    }
+
+    public int getIndex() {
+        return paramsIndex;
+    }
+
+    public Customable getCustomable() {
+        return customable;
     }
 }

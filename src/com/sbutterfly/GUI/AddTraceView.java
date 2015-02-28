@@ -22,7 +22,7 @@ public class AddTraceView extends JGridBagPanel {
     private JButton submitButton;
 
     private ODEBaseModel model;
-    private int[] nameIndexes;
+    private Index[] indexes;
     private ArrayList<SubmitListener<Traceable>> listeners = new ArrayList<>();
 
     public AddTraceView() {
@@ -77,19 +77,26 @@ public class AddTraceView extends JGridBagPanel {
         xComboBox.removeAllItems();
         setEnabled(true);
 
-        nameIndexes = new int[model.size()+1];
-        String[] names = model.names();
+        String[] names = model.paramsNames();
+        String[] customNames = model.customParamsNames();
 
-        nameIndexes[0] = -1;
-        yComboBox.addItem("time");
-        xComboBox.addItem("time");
+        indexes = new Index[names.length + customNames.length];
 
-        for (int i = 0, j = 1; i < names.length; i++){
+        int i = 0;
+        for (; i < names.length; i++) {
             if (names[i] != null){
-                nameIndexes[j++] = i;
                 yComboBox.addItem(names[i]);
                 xComboBox.addItem(names[i]);
             }
+            indexes[i] = new Index(i);
+        }
+
+        for (int j = 0; i < names.length + customNames.length; i++, j++) {
+            if (customNames[j] != null) {
+                yComboBox.addItem(customNames[j]);
+                xComboBox.addItem(customNames[j]);
+            }
+            indexes[i] = new Index(j, model.getCustomable(j));
         }
     }
 
@@ -103,16 +110,16 @@ public class AddTraceView extends JGridBagPanel {
 
     private void OnAdd(){
 
-        int xIndex = nameIndexes[xComboBox.getSelectedIndex()];
-        int yIndex = nameIndexes[yComboBox.getSelectedIndex()];
+        int xIndex = xComboBox.getSelectedIndex();
+        int yIndex = yComboBox.getSelectedIndex();
 
         String name = nameTextField.getText();
 
         for (SubmitListener<Traceable> listener : listeners){
             Traceable traceable = new Traceable();
             traceable.name = name;
-            traceable.xIndex = Index.toIndex(xIndex);
-            traceable.yIndex = Index.toIndex(yIndex);
+            traceable.xIndex = indexes[xIndex];
+            traceable.yIndex = indexes[yIndex];
             listener.onSubmit(traceable);
         }
     }

@@ -1,5 +1,6 @@
 package com.sbutterfly.GUI;
 
+import com.sbutterfly.GUI.Controls.EmptyPanel;
 import com.sbutterfly.GUI.Controls.JImageButton;
 import com.sbutterfly.GUI.Panels.Constraint;
 import com.sbutterfly.GUI.Panels.JGridBagPanel;
@@ -45,7 +46,7 @@ public class TraceListView extends JGridBagPanel {
         deleteAllButton.addActionListener(e -> clear());
 
         add(listPanel, Constraint.create(0, 0).weightX(1));
-        add(new JPanel(), Constraint.create(0, 1).weightX(1).weightY(1));
+        add(new EmptyPanel(), Constraint.create(0, 1).weightX(1).weightY(1));
         add(deleteAllButton, Constraint.create(0, 2).anchor(GridBagConstraints.EAST));
 
         Log.debug(this, "GUI was created");

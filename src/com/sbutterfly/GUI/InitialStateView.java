@@ -1,5 +1,6 @@
 package com.sbutterfly.GUI;
 
+import com.sbutterfly.GUI.Controls.EmptyPanel;
 import com.sbutterfly.GUI.Controls.MyJTextField;
 import com.sbutterfly.GUI.Panels.Constraint;
 import com.sbutterfly.GUI.Panels.JGridBagPanel;
@@ -28,7 +29,7 @@ public class InitialStateView extends JGridBagPanel {
     private void createGUI() {
 
         JLabel headerLabel = new JLabel();
-        headerLabel.setText("Начальные параметры");
+        headerLabel.setText("Начальные параметры:");
 
         JButton submitButton = new JButton();
         submitButton.setText("Расчитать");
@@ -41,6 +42,9 @@ public class InitialStateView extends JGridBagPanel {
         add(headerLabel, getConstraint(0, lastRow++, 1, 1).gridWidth(4));
 
         setAdditionalParams(this, submitButton);
+
+        add(new EmptyPanel(), getConstraint(0, lastRow++, 1, 1).gridWidth(4));
+
         setStartParams(this, submitButton);
 
         add(submitButton, getConstraint(0, lastRow, 4, 1).fill(GridBagConstraints.NONE).anchor(GridBagConstraints.EAST));
@@ -50,26 +54,27 @@ public class InitialStateView extends JGridBagPanel {
 
     private void setAdditionalParams(JGridBagPanel panel, JButton saveButton) {
 
-        double[] values = new double[model.additionalSize()];
-        Settable[] settable = new Settable[model.additionalSize()];
-        String[] names = model.additionalNames();
+        int size = model.initialParamsNames().length;
+        double[] values = new double[size];
+        Settable[] settable = new Settable[size];
+        String[] names = model.initialParamsNames();
 
-        for (int i = 0; i < model.additionalSize(); i++){
+        for (int i = 0; i < size; i++) {
             final int finalI = i;
-            values[finalI] = model.getAdditionalParameter(finalI);
-            settable[finalI] = value -> model.setAdditionalParameter(finalI, value);
+            values[finalI] = model.getInitialParameter(finalI);
+            settable[finalI] = value -> model.setInitialParameter(finalI, value);
         }
 
         setParams(panel, saveButton, names, values, settable);
     }
 
     private void setStartParams(JGridBagPanel panel, JButton saveButton) {
+        int size = model.paramsNames().length;
+        double[] values = new double[size];
+        Settable[] settable = new Settable[size];
+        String[] names = model.paramsNames();
 
-        double[] values = new double[model.size()];
-        Settable[] settable = new Settable[model.size()];
-        String[] names = model.names();
-
-        for (int i = 0; i < model.size(); i++){
+        for (int i = 0; i < size; i++) {
             final int finalI = i;
             values[finalI] = model.getStartParameter(finalI);
             settable[finalI] = value -> model.setStartParameter(finalI, value);

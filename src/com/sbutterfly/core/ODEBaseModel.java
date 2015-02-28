@@ -1,6 +1,7 @@
 package com.sbutterfly.core;
 
 import com.sbutterfly.differential.*;
+import com.sbutterfly.services.AppSettings;
 import info.monitorenter.gui.chart.ITrace2D;
 
 import java.beans.PropertyChangeEvent;
@@ -13,37 +14,69 @@ import java.util.StringTokenizer;
  */
 public abstract class ODEBaseModel implements ODEModelSerializer.ODESerializable {
 
+    private final double[] startParamsVector = new double[initialParamsNames().length];
+    private final double[] initialParamsVector = new double[paramsNames().length];
     private final ArrayList<PropertyChangeListener> listeners = new ArrayList<>();
     private TimeVector[] vectors;
 
-    public abstract double getODETime();
-
-    public abstract int getNumberOfIterations();
-
-    public abstract ODEMethod getMethod();
-
     public abstract Function getFunction();
 
-    public abstract int size();
+    public double getODETime() {
+        return AppSettings.getODETime();
+    }
 
-    public abstract int additionalSize();
+    public int getNumberOfIterations() {
+        return (int) (getODETime() / 0.25);
+    }
 
-    public abstract String[] names();
+    public ODEMethod getMethod() {
+        return AppSettings.getODEMethod();
+    }
 
-    public abstract String[] additionalNames();
+    public String[] initialParamsNames() {
+        return new String[0];
+    }
 
-    public abstract TimeVector getStartVector();
+    public String[] paramsNames() {
+        return new String[0];
+    }
 
-    public abstract double getStartParameter(int index);
+    public String[] customParamsNames() {
+        return new String[]{"time"};
+    }
 
-    public abstract void setStartParameter(int index, double v);
+    public TimeVector getStartParamsVector() {
+        return new TimeVector(0, startParamsVector);
+    }
 
-    public abstract double getAdditionalParameter(int index);
+    public double getStartParameter(int index) {
+        return startParamsVector[index];
+    }
 
-    public abstract void setAdditionalParameter(int index, double v);
+    public void setStartParameter(int index, double v) {
+        if (startParamsVector[index] == v) return;
+        startParamsVector[index] = v;
+        onPropertyChanged("StartParameter", null, v);
+    }
 
-    public boolean hasValues() {
-        return vectors != null;
+    public double getInitialParameter(int index) {
+        return initialParamsVector[index];
+    }
+
+    public void setInitialParameter(int index, double v) {
+        if (initialParamsVector[index] == v) return;
+        initialParamsVector[index] = v;
+        onPropertyChanged("AdditionalParameter", null, v);
+    }
+
+    public Customable getCustomable(int index) {
+        if (index != 0) throw new NumberFormatException("Index is out of diapason");
+        return new Customable() {
+            @Override
+            public double customize(TimeVector vector) {
+                return vector.getTime();
+            }
+        };
     }
 
     public synchronized TimeVector[] values(){
@@ -52,35 +85,26 @@ public abstract class ODEBaseModel implements ODEModelSerializer.ODESerializable
 
     public synchronized TimeVector[] values(boolean useCache){
         if (vectors == null || !useCache) {
-            Differential differential = new Differential(getFunction(), getStartVector(), getODETime(), getNumberOfIterations(), getMethod());
+            Differential differential = new Differential(getFunction(), getStartParamsVector(), getODETime(), getNumberOfIterations(), getMethod());
             vectors = differential.makeDifferential();
         }
         return vectors;
     }
 
-    public void setToTrace(int yIndex, int xIndex, ITrace2D trace2D){
+    public void setToTrace(Index yIndex, Index xIndex, ITrace2D trace2D) {
         TimeVector[] vectors = values();
         for (int i = 0, n = vectors.length; i < n; i++){
 
-            double x = vectors[i].get(xIndex);
-            double y = vectors[i].get(yIndex);
+            final double x = getValue(vectors[i], xIndex);
+            final double y = getValue(vectors[i], yIndex);
 
             trace2D.addPoint(x, y);
         }
     }
 
-    public void setToTrace(Index yIndex, Index xIndex, ITrace2D trace2D){
-        TimeVector[] vectors = values();
-        for (int i = 0, n = vectors.length; i < n; i++){
-
-            int xx = Index.toInt(xIndex);
-            int yy = Index.toInt(yIndex);
-
-            double x = xx >= 0 ? vectors[i].get(xx) : vectors[i].getTime();
-            double y = yy >= 0 ? vectors[i].get(yy) : vectors[i].getTime();
-
-            trace2D.addPoint(x, y);
-        }
+    private double getValue(TimeVector vector, Index index) {
+        Customable customable = index.getCustomable();
+        return customable == null ? vector.get(index.getIndex()) : customable.customize(vector);
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener){
@@ -104,6 +128,20 @@ public abstract class ODEBaseModel implements ODEModelSerializer.ODESerializable
     public String serialize() {
 
         StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(startParamsVector.length);
+        stringBuilder.append(' ');
+        for (int i = 0, n = startParamsVector.length; i < n; i++) {
+            stringBuilder.append(getStartParameter(i));
+            stringBuilder.append(' ');
+        }
+
+        stringBuilder.append(initialParamsVector.length);
+        stringBuilder.append(' ');
+        for (int i = 0, n = initialParamsVector.length; i < n; i++) {
+            stringBuilder.append(getInitialParameter(i));
+            stringBuilder.append(' ');
+        }
 
         TimeVector[] values = values();
 
@@ -129,6 +167,18 @@ public abstract class ODEBaseModel implements ODEModelSerializer.ODESerializable
     public void deserialize(String value) {
         StringTokenizer tokenizer = new StringTokenizer(value);
 
+        int startParamsSize = Integer.parseInt(tokenizer.nextToken());
+        for (int i = 0; i < startParamsSize; i++) {
+            double val = Double.parseDouble(tokenizer.nextToken());
+            setStartParameter(i, val);
+        }
+
+        int intialParamsSize = Integer.parseInt(tokenizer.nextToken());
+        for (int j = 0; j < intialParamsSize; j++) {
+            double val = Double.parseDouble(tokenizer.nextToken());
+            setInitialParameter(j, val);
+        }
+
         int size = Integer.parseInt(tokenizer.nextToken());
         TimeVector[] values = new TimeVector[size];
 
@@ -144,12 +194,5 @@ public abstract class ODEBaseModel implements ODEModelSerializer.ODESerializable
         }
 
         this.vectors = values;
-    }
-
-    /*
-        Class used only for serialization
-     */
-    private class SerModel {
-        TimeVector[] values;
     }
 }
