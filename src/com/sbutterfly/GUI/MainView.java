@@ -110,6 +110,7 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
     public void onSubmit(ODEBaseModel model) {
         addTraceView.Init(model);
         this.model = model;
+        model.values();
     }
 
     public void onAdd(AddTraceView.Traceable traceable) {
