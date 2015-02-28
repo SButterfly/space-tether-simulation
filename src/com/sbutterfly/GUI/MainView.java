@@ -69,14 +69,14 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
         rootPanel.add(viewsPanel);
     }
 
-    private void clear() {
+    public void setModel(ODEBaseModel model) {
         addTraceView.setEnabled(false);
         traceListView.clear();
         chart.removeAllTraces();
-    }
+        if (initialStateView != null) {
+            viewsPanel.remove(initialStateView);
+        }
 
-    public void setModel(ODEBaseModel model) {
-        clear();
         this.model = model;
         if (initialStateView != null) {
             rootPanel.remove(initialStateView);

@@ -1,6 +1,7 @@
 package com.sbutterfly.core;
 
 import com.sbutterfly.core.pendulum.PendulumModel;
+import com.sbutterfly.core.rope.RopeModel;
 
 /**
  * Created by Sergei on 21.02.2015.
@@ -29,6 +30,10 @@ public class ODEModelSerializer {
 
         if (PendulumModel.class.getSimpleName().equals(name)) {
             return new PendulumModel();
+        }
+
+        if (RopeModel.class.getSimpleName().equals(name)) {
+            return new RopeModel();
         }
 
         throw new IllegalArgumentException("name");

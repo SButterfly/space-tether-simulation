@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="40536ae3-b573-4c1e-9a87-8898cc66d2ed" name="Default" comment="add preloading values">
+    <list default="true" id="40536ae3-b573-4c1e-9a87-8898cc66d2ed" name="Default" comment="fixed caches values preloading">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/GUI/MainView.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/GUI/MainView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/core/ODEModelSerializer.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/core/ODEModelSerializer.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="RopeSimulation.iws" />
@@ -35,7 +36,7 @@
       <file leaf-file-name="InitialStateView.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/InitialStateView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="174" max-vertical-offset="2346">
+            <state vertical-scroll-proportion="0.0" vertical-offset="357" max-vertical-offset="2346">
               <caret line="31" column="49" selection-start-line="31" selection-start-column="49" selection-end-line="31" selection-end-column="49" />
               <folding />
             </state>
@@ -45,22 +46,9 @@
       <file leaf-file-name="MainView.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/MainView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5032467" vertical-offset="1237" max-vertical-offset="3128">
-              <caret line="108" column="0" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.60064936" vertical-offset="667" max-vertical-offset="3128">
+              <caret line="78" column="0" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Customable.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/Customable.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
-              <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-              <folding>
-                <element signature="e#200#201#0" expanded="true" />
-                <element signature="e#224#225#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -112,7 +100,6 @@
         <option value="$PROJECT_DIR$/src/com/sbutterfly/Main.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/utils/Log.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/utils/FileAccessor.java" />
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/core/ODEModelSerializer.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/utils/FileUtils.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/TimeVector.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/Function.java" />
@@ -130,6 +117,7 @@
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/InitialStateView.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/AddTraceView.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/MainView.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/core/ODEModelSerializer.java" />
       </list>
     </option>
   </component>
@@ -805,7 +793,7 @@
       <workItem from="1424681724617" duration="26000" />
       <workItem from="1424976103654" duration="1976000" />
       <workItem from="1425013874408" duration="9393000" />
-      <workItem from="1425132398847" duration="6244000" />
+      <workItem from="1425132398847" duration="7476000" />
     </task>
     <task id="LOCAL-00001" summary="always create new Constrains">
       <created>1423942617076</created>
@@ -861,11 +849,17 @@
       <option name="project" value="LOCAL" />
       <updated>1425138679865</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="fixed caches values preloading">
+      <created>1425138720764</created>
+      <option name="number" value="00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1425138720764</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="137751000" />
+    <option name="totallyTimeSpent" value="138983000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="776" extended-state="6" />
@@ -960,7 +954,8 @@
     <MESSAGE value="add rope model" />
     <MESSAGE value="improve displaing logic" />
     <MESSAGE value="add preloading values" />
-    <option name="LAST_COMMIT_MESSAGE" value="add preloading values" />
+    <MESSAGE value="fixed caches values preloading" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed caches values preloading" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -1249,42 +1244,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/ODEModelSerializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6693679" vertical-offset="301" max-vertical-offset="918">
-          <caret line="42" column="28" selection-start-line="42" selection-start-column="28" selection-end-line="42" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/ODEBaseModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.45033112" vertical-offset="0" max-vertical-offset="3298">
-          <caret line="16" column="43" selection-start-line="16" selection-start-column="43" selection-end-line="16" selection-end-column="43" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#884#885#0" expanded="true" />
-            <element signature="e#934#935#0" expanded="true" />
-            <element signature="e#970#971#0" expanded="true" />
-            <element signature="e#1019#1020#0" expanded="true" />
-            <element signature="e#1063#1064#0" expanded="false" />
-            <element signature="e#1099#1100#0" expanded="false" />
-            <element signature="e#795#796#0" expanded="true" />
-            <element signature="e#842#843#0" expanded="true" />
-            <element signature="e#884#885#0" expanded="true" />
-            <element signature="e#934#935#0" expanded="true" />
-            <element signature="e#970#971#0" expanded="true" />
-            <element signature="e#1019#1020#0" expanded="true" />
-            <element signature="e#2236#2237#0" expanded="false" />
-            <element signature="e#2291#2292#0" expanded="false" />
-            <element signature="e#2038#2039#0" expanded="true" />
-            <element signature="e#2308#2309#0" expanded="true" />
-            <element signature="e#3879#3880#0" expanded="true" />
-            <element signature="e#3909#3910#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/pendulum/PendulumModel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.9092383" vertical-offset="0" max-vertical-offset="697">
@@ -1356,17 +1315,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/Customable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
-          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding>
-            <element signature="e#200#201#0" expanded="true" />
-            <element signature="e#224#225#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/AddTraceView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5519481" vertical-offset="1632" max-vertical-offset="2312">
@@ -1378,6 +1326,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/ODEBaseModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="751" max-vertical-offset="2856">
+          <caret line="85" column="37" selection-start-line="85" selection-start-column="37" selection-end-line="85" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/InitialStateView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="174" max-vertical-offset="2346">
@@ -1386,10 +1342,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/ODEModelSerializer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9935065" vertical-offset="0" max-vertical-offset="1003">
+          <caret line="36" column="9" selection-start-line="36" selection-start-column="9" selection-end-line="36" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/Customable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33116883" vertical-offset="0" max-vertical-offset="616">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding>
+            <element signature="e#200#201#0" expanded="true" />
+            <element signature="e#224#225#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/MainView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5032467" vertical-offset="1237" max-vertical-offset="3128">
-          <caret line="108" column="0" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.60064936" vertical-offset="667" max-vertical-offset="3128">
+          <caret line="78" column="0" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
           <folding />
         </state>
       </provider>
