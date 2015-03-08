@@ -1,21 +1,20 @@
 package com.sbutterfly.GUI;
 
+import com.sbutterfly.GUI.controls.JImageButton;
+import com.sbutterfly.GUI.panels.Constraint;
+import com.sbutterfly.GUI.panels.JGridBagPanel;
 import com.sbutterfly.utils.Log;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by Sergei on 31.01.2015.
  */
-@Deprecated
-public class AdditionalLineView extends JPanel {
+public class AdditionalLineView extends JGridBagPanel {
 
+    Processable processable;
     private JLabel label;
     private JProgressBar progressBar;
     private JButton cancelButton;
@@ -27,37 +26,48 @@ public class AdditionalLineView extends JPanel {
     private void createGUI() {
 
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 20));
-        setLayout(new GridLayout(1, 2));
-        setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 
         label = new JLabel();
 
         progressBar = new JProgressBar();
         progressBar.setMaximum(100);
         progressBar.setMinimum(0);
-        progressBar.setStringPainted(true);
-        progressBar.setMaximumSize(new Dimension(100, 20));
+        progressBar.setPreferredSize(new Dimension(200, 20));
+        progressBar.setMaximumSize(new Dimension(200, 20));
 
-        add(label);
-        add(progressBar);
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panel.add(progressBar);
 
-        try {
-            BufferedImage buttonIcon = ImageIO.read(new File("assets/cancel.png"));
-            cancelButton = new JButton(new ImageIcon(buttonIcon));
-            cancelButton.setBorder(BorderFactory.createEmptyBorder());
-            cancelButton.setContentAreaFilled(false);
-            cancelButton.setMaximumSize(new Dimension(20,20));
-            cancelButton.setSize(20,20);
+        cancelButton = new JImageButton("assets/cancel.png");
+        cancelButton.addActionListener(e -> {
+            if (processable != null) {
+                processable.cancel();
+            }
+        });
+        panel.add(cancelButton);
 
-            add(cancelButton);
-
-        } catch (IOException e) {
-            Log.error(this, e.toString());
-        }
+        add(label, Constraint.create(0, 0).weightX(1).fill(GridBagConstraints.HORIZONTAL).anchor(GridBagConstraints.WEST).insets(3, 5));
+        add(panel, Constraint.create(1, 0).insets(3, 5));
 
         setStatusIndicator(0);
 
         Log.debug(this, "GUI was created");
+    }
+
+    public void setProcessable(Processable processable) {
+        this.processable = processable;
+        new Thread(() -> {
+            while (!processable.hasEnded()) {
+                setStatusIndicator(processable.getStatusIndicator());
+                try {
+                    Thread.sleep((long) 0.01);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            setStatusIndicator(0);
+            this.processable = null;
+        }).start();
     }
 
     public String getText(){
@@ -65,7 +75,7 @@ public class AdditionalLineView extends JPanel {
     }
 
     public void setText(String value) {
-        label.setText(value);
+        SwingUtilities.invokeLater(() -> label.setText(value));
     }
 
     public double getStatusIndicator(){
@@ -73,10 +83,12 @@ public class AdditionalLineView extends JPanel {
     }
 
     public void setStatusIndicator(double value){
-        int val = (int) Math.round(value*100);
-        progressBar.setValue(val);
-        progressBar.setVisible(val != 0);
-        cancelButton.setVisible(val != 0);
+        SwingUtilities.invokeLater(() -> {
+            int val = (int) Math.round(value * 100);
+            progressBar.setValue(val);
+            progressBar.setStringPainted(val != 0);
+            cancelButton.setEnabled(val != 0);
+        });
     }
 
     public void addCancelActionListener(ActionListener listener){
@@ -84,5 +96,15 @@ public class AdditionalLineView extends JPanel {
     }
     public void removeCancelActionListener(ActionListener listener){
         cancelButton.removeActionListener(listener);
+    }
+
+    public static interface Processable {
+        double getStatusIndicator();
+
+        boolean hasEnded();
+
+        boolean hasCanceled();
+
+        void cancel();
     }
 }

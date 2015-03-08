@@ -1,5 +1,6 @@
 package com.sbutterfly.core;
 
+import com.sbutterfly.GUI.AdditionalLineView;
 import com.sbutterfly.differential.*;
 import com.sbutterfly.services.AppSettings;
 import info.monitorenter.gui.chart.ITrace2D;
@@ -18,6 +19,7 @@ public abstract class ODEBaseModel implements ODEModelSerializer.ODESerializable
     private final double[] initialParamsVector = new double[paramsNames().length];
     private final ArrayList<PropertyChangeListener> listeners = new ArrayList<>();
     private TimeVector[] vectors;
+    private volatile Differential.DifferentialIterator iterator;
 
     public abstract Function getFunction();
 
@@ -94,9 +96,17 @@ public abstract class ODEBaseModel implements ODEModelSerializer.ODESerializable
     public synchronized TimeVector[] values(boolean useCache){
         if (vectors == null || !useCache) {
             Differential differential = new Differential(getFunction(), getStartParamsVector(), getODETime(), getNumberOfIterations(), getMethod());
-            vectors = differential.makeDifferential();
+            iterator = differential.iterator();
+            vectors = differential.makeDifferential(iterator);
+            if (iterator.hasCanceled()) {
+                vectors = null;
+            }
         }
         return vectors;
+    }
+
+    public AdditionalLineView.Processable getProcessable() {
+        return iterator;
     }
 
     public void setToTrace(Index yIndex, Index xIndex, ITrace2D trace2D) {

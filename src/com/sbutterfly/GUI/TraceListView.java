@@ -1,9 +1,9 @@
 package com.sbutterfly.GUI;
 
-import com.sbutterfly.GUI.Controls.EmptyPanel;
-import com.sbutterfly.GUI.Controls.JImageButton;
-import com.sbutterfly.GUI.Panels.Constraint;
-import com.sbutterfly.GUI.Panels.JGridBagPanel;
+import com.sbutterfly.GUI.controls.EmptyPanel;
+import com.sbutterfly.GUI.controls.JImageButton;
+import com.sbutterfly.GUI.panels.Constraint;
+import com.sbutterfly.GUI.panels.JGridBagPanel;
 import com.sbutterfly.utils.Log;
 import info.monitorenter.gui.chart.ITrace2D;
 

@@ -1,8 +1,8 @@
 package com.sbutterfly.GUI;
 
-import com.sbutterfly.GUI.Controls.MyJTextField;
-import com.sbutterfly.GUI.Panels.Constraint;
-import com.sbutterfly.GUI.Panels.JGridBagPanel;
+import com.sbutterfly.GUI.controls.MyJTextField;
+import com.sbutterfly.GUI.panels.Constraint;
+import com.sbutterfly.GUI.panels.JGridBagPanel;
 import com.sbutterfly.core.ODEBaseModel;
 import com.sbutterfly.differential.Index;
 import com.sbutterfly.utils.Log;
@@ -72,6 +72,7 @@ public class AddTraceView extends JGridBagPanel {
     }
 
     public void Init(ODEBaseModel model){
+        this.setEnabled(true);
         this.model = model;
         int lastXSelected = xComboBox.getSelectedIndex();
         int lastYSelected = yComboBox.getSelectedIndex();

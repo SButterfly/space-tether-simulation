@@ -1,8 +1,9 @@
 package com.sbutterfly.GUI;
 
-import com.sbutterfly.GUI.Panels.Constraint;
-import com.sbutterfly.GUI.Panels.JBoxLayout;
-import com.sbutterfly.GUI.Panels.JGridBagPanel;
+import com.sbutterfly.GUI.custom.RopeInitialStateView;
+import com.sbutterfly.GUI.panels.Constraint;
+import com.sbutterfly.GUI.panels.JBoxLayout;
+import com.sbutterfly.GUI.panels.JGridBagPanel;
 import com.sbutterfly.core.ODEBaseModel;
 import com.sbutterfly.core.ODEModelSerializer;
 import com.sbutterfly.core.rope.RopeModel;
@@ -34,6 +35,7 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
     private AddTraceView addTraceView;
     private TraceListView traceListView;
     private Chart2D chart;
+    private AdditionalLineView additionalLineView;
 
     private ODEBaseModel model;
 
@@ -64,6 +66,9 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
 
         viewsPanel.add(chart, getConstraint(1, 0, 1, 3).weightX(1).weightY(1));
 
+        additionalLineView = new AdditionalLineView();
+        viewsPanel.add(additionalLineView, getConstraint(0, 3, 3, 1));
+
         menuView = new MenuView();
         menuView.addSettingsActionListener(e -> NavigationController.open(new SettingsView()));
         menuView.addNewActionListener(e -> onNew_click(e));
@@ -85,7 +90,7 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
             rootPanel.remove(initialStateView);
         }
 
-        initialStateView = new InitialStateView(model);
+        initialStateView = new RopeInitialStateView(model);
         initialStateView.addSubmitListener(e -> onSubmit(e));
         viewsPanel.add(initialStateView, getConstraint(0, 0, 1, 1));
         viewsPanel.updateUI();
@@ -111,9 +116,26 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
     }
 
     public void onSubmit(ODEBaseModel model) {
-        addTraceView.Init(model);
         this.model = model;
-        model.values(false);
+        addTraceView.setEnabled(false);
+
+        new Thread(() -> {
+            model.values(false);
+            AdditionalLineView.Processable p = model.getProcessable();
+            if (p != null && !p.hasCanceled()) {
+                SwingUtilities.invokeLater(() -> addTraceView.Init(model));
+                additionalLineView.setText("Расчет закончен");
+            } else {
+                additionalLineView.setText("Расчет отменен");
+            }
+        }).start();
+
+        AdditionalLineView.Processable processable = null;
+        while (processable == null || processable.hasEnded()) {
+            processable = model.getProcessable();
+        }
+        additionalLineView.setText("Выполняется расчет");
+        additionalLineView.setProcessable(processable);
     }
 
     public void onAdd(AddTraceView.Traceable traceable) {

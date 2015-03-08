@@ -1,9 +1,9 @@
 package com.sbutterfly.GUI;
 
-import com.sbutterfly.GUI.Controls.DialogView;
-import com.sbutterfly.GUI.Controls.MyJTextField;
-import com.sbutterfly.GUI.Panels.Constraint;
-import com.sbutterfly.GUI.Panels.JGridBagPanel;
+import com.sbutterfly.GUI.controls.DialogView;
+import com.sbutterfly.GUI.controls.MyJTextField;
+import com.sbutterfly.GUI.panels.Constraint;
+import com.sbutterfly.GUI.panels.JGridBagPanel;
 import com.sbutterfly.differential.EulerODEMethod;
 import com.sbutterfly.differential.ODEMethod;
 import com.sbutterfly.differential.RungeKuttaODEMethod;

@@ -72,14 +72,14 @@ public class RopeModel extends ODEBaseModel {
         final Customable xCustomable = new Customable() {
             @Override
             public double customize(TimeVector vector) {
-                return Math.sin(vector.get(2)) * vector.get(0);
+                return -Math.sin(vector.get(2)) * vector.get(0);
             }
         };
 
         final Customable yCustomable = new Customable() {
             @Override
             public double customize(TimeVector vector) {
-                return Math.cos(vector.get(2)) * vector.get(0);
+                return -Math.cos(vector.get(2)) * vector.get(0);
             }
         };
 

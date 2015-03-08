@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="40536ae3-b573-4c1e-9a87-8898cc66d2ed" name="Default" comment="add ext to names">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/sbutterfly/GUI/Controls/DialogView.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/sbutterfly/utils/DoubleUtils.java" />
+    <list default="true" id="40536ae3-b573-4c1e-9a87-8898cc66d2ed" name="Default" comment="implement custom initialiView">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/sbutterfly/GUI/custom/RopeInitialStateView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/GUI/AddTraceView.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/GUI/AddTraceView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/services/AppSettings.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/services/AppSettings.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/GUI/AdditionalLineView.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/GUI/AdditionalLineView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/differential/Differential.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/differential/Differential.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/GUI/InitialStateView.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/GUI/InitialStateView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/Main.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/Main.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/GUI/MainView.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/GUI/MainView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/GUI/NavigationController.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/GUI/NavigationController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/core/ODEBaseModel.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/core/ODEBaseModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/core/pendulum/PendulumFunction.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/core/pendulum/PendulumFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/core/pendulum/PendulumModel.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/core/pendulum/PendulumModel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeModel.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeModel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/GUI/SettingsView.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/GUI/SettingsView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/GUI/TraceListView.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/GUI/TraceListView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="RopeSimulation.iws" />
@@ -45,11 +42,68 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainView.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MainView.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/MainView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.6760564" vertical-offset="0" max-vertical-offset="3264">
-              <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1544" max-vertical-offset="3621">
+              <caret line="125" column="64" selection-start-line="125" selection-start-column="64" selection-end-line="125" selection-end-column="64" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ODEBaseModel.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/ODEBaseModel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.42318058" vertical-offset="1084" max-vertical-offset="3434">
+              <caret line="99" column="40" selection-start-line="99" selection-start-column="40" selection-end-line="99" selection-end-column="40" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#3238#3239#0" expanded="true" />
+                <element signature="e#3269#3270#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AddTraceView.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/AddTraceView.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1078" max-vertical-offset="2465">
+              <caret line="86" column="57" selection-start-line="86" selection-start-column="57" selection-end-line="86" selection-end-column="57" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AdditionalLineView.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/AdditionalLineView.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="579" max-vertical-offset="1649">
+              <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
+              <folding>
+                <element signature="e#2318#2319#0" expanded="true" />
+                <element signature="e#2388#2389#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Constraint.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/panels/Constraint.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1068" max-vertical-offset="1615">
+              <caret line="86" column="20" selection-start-line="86" selection-start-column="20" selection-end-line="86" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TraceListView.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/TraceListView.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="867" max-vertical-offset="2363">
+              <caret line="73" column="38" selection-start-line="73" selection-start-column="38" selection-end-line="73" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -69,9 +123,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/EulerMethod.java" />
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/EulerODEMethod.java" />
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/helpers/Stopwatch.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/services/NavigationController.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/GUIViewable.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/Framable.java" />
@@ -84,7 +135,6 @@
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/MyJTextField.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/Constraint.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/Panels/JGridBagPanel.java" />
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/AdditionalLineView.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/SubmitListener.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/Panels/JBoxLayout.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/helpers/Log.java" />
@@ -97,7 +147,6 @@
         <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/TimeVector.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/Function.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/Vector.java" />
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/Differential.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/RungeKuttaODEMethod.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/core/Customable.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/Index.java" />
@@ -106,20 +155,25 @@
         <option value="$PROJECT_DIR$/src/com/sbutterfly/core/ODEModelSerializer.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/services/AppSettings.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/utils/Log.java" />
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/InitialStateView.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/utils/DoubleUtils.java" />
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/AddTraceView.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/Main.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeFunction.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/core/pendulum/PendulumModel.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/core/pendulum/PendulumFunction.java" />
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/core/ODEBaseModel.java" />
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeModel.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/SettingsView.java" />
-        <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/MainView.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/NavigationController.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/Controls/MessageContent.java" />
         <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/Controls/DialogView.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeModel.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/InitialStateView.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/controls/MyJTextField.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/custom/RopeInitialStateView.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/panels/JGridBagPanel.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/differential/Differential.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/AdditionalLineView.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/MainView.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/GUI/AddTraceView.java" />
+        <option value="$PROJECT_DIR$/src/com/sbutterfly/core/ODEBaseModel.java" />
       </list>
     </option>
   </component>
@@ -311,51 +365,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Controls" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AerospaceRopeSimulation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AerospaceRopeSimulation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sbutterfly" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="differential" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AerospaceRopeSimulation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AerospaceRopeSimulation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sbutterfly" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
+              <option name="myItemId" value="custom" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -770,7 +780,7 @@
       <workItem from="1425533554687" duration="2934000" />
       <workItem from="1425539671942" duration="464000" />
       <workItem from="1425756885024" duration="3288000" />
-      <workItem from="1425791057333" duration="2768000" />
+      <workItem from="1425791057333" duration="10770000" />
     </task>
     <task id="LOCAL-00001" summary="always create new Constrains">
       <created>1423942617076</created>
@@ -838,11 +848,17 @@
       <option name="project" value="LOCAL" />
       <updated>1425140911786</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="add ext to names axis">
+      <created>1425793874580</created>
+      <option name="number" value="00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1425793874580</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="149644000" />
+    <option name="totallyTimeSpent" value="157646000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -879,7 +895,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928804" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25637183" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25487256" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32919255" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2515625" sideWeight="0.66459626" order="0" side_tool="false" content_ui="combo" />
@@ -890,7 +906,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24190938" sideWeight="0.33385092" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38230884" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38230884" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -960,14 +976,16 @@
     <MESSAGE value="fixed caches values preloading" />
     <MESSAGE value="improve loading and saving models" />
     <MESSAGE value="add ext to names" />
-    <option name="LAST_COMMIT_MESSAGE" value="add ext to names" />
+    <MESSAGE value="add ext to names axis" />
+    <MESSAGE value="implement custom initialiView" />
+    <option name="LAST_COMMIT_MESSAGE" value="implement custom initialiView" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="76" />
+      <option name="time" value="79" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -976,55 +994,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/MenuView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4055944" vertical-offset="710" max-vertical-offset="1683">
-          <caret line="58" column="27" selection-start-line="58" selection-start-column="27" selection-end-line="58" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_25/src.zip!/javax/swing/JFileChooser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.10022779" vertical-offset="7113" max-vertical-offset="32504">
-          <caret line="479" column="16" selection-start-line="479" selection-start-column="16" selection-end-line="479" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RopeSimulation.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.30960265" vertical-offset="0" max-vertical-offset="604">
-          <caret line="11" column="14" selection-start-line="11" selection-start-column="14" selection-end-line="11" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_25/src.zip!/javax/swing/filechooser/FileNameExtensionFilter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="354" max-vertical-offset="2346">
-          <caret line="52" column="19" selection-start-line="52" selection-start-column="19" selection-end-line="52" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_25/src.zip!/java/io/FileReader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33242506" vertical-offset="677" max-vertical-offset="1122">
-          <caret line="70" column="11" selection-start-line="70" selection-start-column="11" selection-end-line="70" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/utils/FileAccessor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476">
-          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/utils/FileUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34602648" vertical-offset="12" max-vertical-offset="850">
-          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/differential/TimeVector.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.39420936" vertical-offset="95" max-vertical-offset="544">
@@ -1046,13 +1015,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/differential/Differential.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.56792873" vertical-offset="357" max-vertical-offset="1275">
-          <caret line="49" column="22" selection-start-line="49" selection-start-column="22" selection-end-line="49" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/differential/RungeKuttaODEMethod.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.60714287" vertical-offset="0" max-vertical-offset="884">
@@ -1067,17 +1029,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/Controls/EmptyPanel.java">
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/controls/EmptyPanel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33116883" vertical-offset="0" max-vertical-offset="616">
           <caret line="12" column="21" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/TraceListView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22077923" vertical-offset="459" max-vertical-offset="2363">
-          <caret line="48" column="26" selection-start-line="48" selection-start-column="26" selection-end-line="48" selection-end-column="26" />
         </state>
       </provider>
     </entry>
@@ -1126,20 +1081,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33279222" vertical-offset="1954" max-vertical-offset="15147">
           <caret line="163" column="13" selection-start-line="163" selection-start-column="13" selection-end-line="163" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/Controls/MyJTextField.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5032467" vertical-offset="98" max-vertical-offset="714">
-          <caret line="28" column="5" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/Panels/Constraint.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.24837662" vertical-offset="306" max-vertical-offset="1615">
-          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="52" />
         </state>
       </provider>
     </entry>
@@ -1198,26 +1139,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/InitialStateView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.10641628" vertical-offset="306" max-vertical-offset="2346">
-          <caret line="32" column="52" selection-start-line="32" selection-start-column="52" selection-end-line="32" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/differential/Index.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.74491394" vertical-offset="0" max-vertical-offset="646">
           <caret line="32" column="22" selection-start-line="32" selection-start-column="22" selection-end-line="32" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.03846154" vertical-offset="16" max-vertical-offset="663">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1275,17 +1200,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/ODEBaseModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32108626" vertical-offset="1380" max-vertical-offset="3128">
-          <caret line="122" column="57" selection-start-line="122" selection-start-column="57" selection-end-line="122" selection-end-column="57" />
-          <folding>
-            <element signature="e#3971#3972#0" expanded="true" />
-            <element signature="e#4035#4036#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/jchart2d-3.2.2.jar!/info/monitorenter/gui/chart/IAxis.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.1763727" vertical-offset="2563" max-vertical-offset="3910">
@@ -1297,30 +1211,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2542735" vertical-offset="561" max-vertical-offset="1479">
-          <caret line="48" column="74" selection-start-line="48" selection-start-column="74" selection-end-line="48" selection-end-column="74" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/pendulum/PendulumFunction.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0703125" vertical-offset="279" max-vertical-offset="663">
           <caret line="23" column="34" selection-start-line="23" selection-start-column="34" selection-end-line="23" selection-end-column="34" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/AddTraceView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.6380208" vertical-offset="670" max-vertical-offset="2482">
-          <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
-          <folding>
-            <element signature="e#4439#4440#0" expanded="true" />
-            <element signature="e#4481#4482#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1340,22 +1235,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_25/src.zip!/javax/swing/JLabel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38040346" vertical-offset="4730" max-vertical-offset="26418">
-          <caret line="344" column="16" selection-start-line="344" selection-start-column="16" selection-end-line="344" selection-end-column="16" />
-          <folding>
-            <element signature="e#36106#36133#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/Controls/DialogView.java">
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/controls/DialogView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.46791863" vertical-offset="636" max-vertical-offset="1377">
           <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1370,17 +1255,176 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/SettingsView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36150235" vertical-offset="1469" max-vertical-offset="2159">
+        <state vertical-scroll-proportion="0.49358973" vertical-offset="1469" max-vertical-offset="2159">
           <caret line="111" column="44" selection-start-line="111" selection-start-column="44" selection-end-line="111" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_25/src.zip!/javax/swing/JLabel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.421875" vertical-offset="2167" max-vertical-offset="26452">
+          <caret line="177" column="28" selection-start-line="177" selection-start-column="23" selection-end-line="177" selection-end-column="28" />
+          <folding>
+            <element signature="e#5749#5750#0" expanded="true" />
+            <element signature="e#5802#5803#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/controls/MyJTextField.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.30982906" vertical-offset="93" max-vertical-offset="714">
+          <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_25/src.zip!/java/awt/GridBagLayout.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="11425" max-vertical-offset="37366">
+          <caret line="707" column="0" selection-start-line="707" selection-start-column="0" selection-end-line="707" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_25/src.zip!/java/awt/Container.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="15131" max-vertical-offset="83164">
+          <caret line="969" column="16" selection-start-line="969" selection-start-column="16" selection-end-line="969" selection-end-column="16" />
+          <folding>
+            <element signature="e#37520#37521#0" expanded="true" />
+            <element signature="e#37566#37567#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/panels/JGridBagPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8550107" vertical-offset="24" max-vertical-offset="561">
+          <caret line="30" column="4" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="4" />
+          <folding>
+            <element signature="e#623#624#0" expanded="true" />
+            <element signature="e#677#678#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/custom/RopeInitialStateView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6315789" vertical-offset="1361" max-vertical-offset="1972">
+          <caret line="97" column="13" selection-start-line="97" selection-start-column="13" selection-end-line="97" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#5927#5928#0" expanded="true" />
+            <element signature="e#5978#5979#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/controls/JImageButton.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="42" max-vertical-offset="697">
+          <caret line="18" column="11" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="874" max-vertical-offset="1513">
+          <caret line="46" column="13" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
+          <folding>
+            <element signature="e#1339#1340#0" expanded="true" />
+            <element signature="e#1425#1426#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_25/src.zip!/java/lang/Thread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.49295774" vertical-offset="4088" max-vertical-offset="33388">
+          <caret line="300" column="30" selection-start-line="300" selection-start-column="30" selection-end-line="300" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.1663113" vertical-offset="41" max-vertical-offset="663">
+          <caret line="10" column="46" selection-start-line="10" selection-start-column="35" selection-end-line="10" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/differential/Differential.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.2769953" vertical-offset="0" max-vertical-offset="1496">
+          <caret line="66" column="11" selection-start-line="66" selection-start-column="11" selection-end-line="66" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/InitialStateView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6162047" vertical-offset="204" max-vertical-offset="2380">
+          <caret line="41" column="34" selection-start-line="41" selection-start-column="34" selection-end-line="41" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/MainView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.6760564" vertical-offset="0" max-vertical-offset="3264">
-          <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1544" max-vertical-offset="3621">
+          <caret line="125" column="64" selection-start-line="125" selection-start-column="64" selection-end-line="125" selection-end-column="64" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/TraceListView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="867" max-vertical-offset="2363">
+          <caret line="73" column="38" selection-start-line="73" selection-start-column="38" selection-end-line="73" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/panels/Constraint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1068" max-vertical-offset="1615">
+          <caret line="86" column="20" selection-start-line="86" selection-start-column="20" selection-end-line="86" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/AdditionalLineView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="579" max-vertical-offset="1649">
+          <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
+          <folding>
+            <element signature="e#2318#2319#0" expanded="true" />
+            <element signature="e#2388#2389#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/AddTraceView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1078" max-vertical-offset="2465">
+          <caret line="86" column="57" selection-start-line="86" selection-start-column="57" selection-end-line="86" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sbutterfly/core/ODEBaseModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.42318058" vertical-offset="1084" max-vertical-offset="3434">
+          <caret line="99" column="40" selection-start-line="99" selection-start-column="40" selection-end-line="99" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3238#3239#0" expanded="true" />
+            <element signature="e#3269#3270#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

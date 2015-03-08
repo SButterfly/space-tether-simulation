@@ -1,5 +1,6 @@
 package com.sbutterfly.differential;
 
+import com.sbutterfly.GUI.AdditionalLineView;
 import com.sbutterfly.utils.Log;
 
 import java.util.Iterator;
@@ -45,29 +46,34 @@ public class Differential implements Iterable<TimeVector> {
     }
 
     public TimeVector[] makeDifferential(){
+        return makeDifferential(this.iterator());
+    }
+
+    public TimeVector[] makeDifferential(Iterator<TimeVector> iterator) {
         try (Log.LogTime logTime = Log.recordWorking(this)) {
             TimeVector[] result = new TimeVector[numberOfIterations];
-            int i = 0;
-            for (TimeVector x : this) {
-                result[i++] = x;
+            for (int i = 0; iterator.hasNext(); i++) {
+                result[i] = iterator.next();
             }
             return result;
         }
     }
 
     @Override
-    public Iterator<TimeVector> iterator() {
+    public DifferentialIterator iterator() {
         return new DifferentialIterator();
     }
 
-    public class DifferentialIterator implements Iterator<TimeVector> {
+    public class DifferentialIterator implements Iterator<TimeVector>, AdditionalLineView.Processable {
         private Vector last = startVector;
         private double currentTime = startVector.getTime();
         private double h = time / numberOfIterations;
         private int i = 0;
 
+        private boolean canceled = false;
+
         public boolean hasNext() {
-            return i < numberOfIterations;
+            return !canceled && i < numberOfIterations;
         }
 
         public TimeVector next() throws NoSuchElementException {
@@ -79,6 +85,26 @@ public class Differential implements Iterable<TimeVector> {
             }
             else
                 throw new NoSuchElementException();
+        }
+
+        @Override
+        public double getStatusIndicator() {
+            return currentTime / time;
+        }
+
+        @Override
+        public boolean hasEnded() {
+            return !hasNext();
+        }
+
+        @Override
+        public boolean hasCanceled() {
+            return canceled;
+        }
+
+        @Override
+        public void cancel() {
+            canceled = true;
         }
     }
 }
