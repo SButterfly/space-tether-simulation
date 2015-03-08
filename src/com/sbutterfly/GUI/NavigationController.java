@@ -16,7 +16,7 @@ public class NavigationController {
 
     private static Stack<Frameable> navigationStack = new Stack<>();
 
-    public static void Open(Frameable view){
+    public static void open(Frameable view) {
 
         JFrame frame = view.getFrame();
         int closeOperation = JFrame.EXIT_ON_CLOSE;
@@ -29,21 +29,21 @@ public class NavigationController {
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                Close(view);
+                close(view);
             }
         });
         frame.setDefaultCloseOperation(closeOperation);
         frame.setVisible(true);
         navigationStack.push(view);
 
-        Log.debug(LTAG, "Open " + view.getClass().getName());
+        Log.debug(LTAG, "open " + view.getClass().getName());
     }
 
-    public static void Close(){
-        Close(navigationStack.peek());
+    public static void close() {
+        close(navigationStack.peek());
     }
 
-    public static void Close(Frameable view){
+    public static void close(Frameable view) {
         JFrame frame = view.getFrame();
         frame.setVisible(false);
         frame.dispose();
@@ -56,10 +56,10 @@ public class NavigationController {
             topFrame.setAlwaysOnTop(false);
         }
 
-        Log.debug(LTAG, "Close " + view.getClass().getName());
+        Log.debug(LTAG, "close " + view.getClass().getName());
     }
 
-    public static JFrame EmptyFrame(){
+    public static JFrame getEmptyFrame() {
         JFrame frame = new JFrame();
         frame.setSize(500, 500);
         return frame;

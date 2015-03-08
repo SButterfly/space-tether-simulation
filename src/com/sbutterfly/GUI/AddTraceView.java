@@ -37,7 +37,7 @@ public class AddTraceView extends JGridBagPanel {
     private void createGUI(){
 
         JLabel ylabel = new JLabel("Ось ординат:");
-        JLabel xlabel = new JLabel("Ось абсцис:");
+        JLabel xlabel = new JLabel("Ось абсцисс:");
         JLabel namelabel = new JLabel("Название:");
 
         yComboBox = new JComboBox<>();
@@ -73,6 +73,11 @@ public class AddTraceView extends JGridBagPanel {
 
     public void Init(ODEBaseModel model){
         this.model = model;
+        int lastXSelected = xComboBox.getSelectedIndex();
+        int lastYSelected = yComboBox.getSelectedIndex();
+        lastXSelected = Math.max(lastXSelected, 0);
+        lastYSelected = Math.max(lastYSelected, 0);
+
         yComboBox.removeAllItems();
         xComboBox.removeAllItems();
         setEnabled(true);
@@ -98,6 +103,9 @@ public class AddTraceView extends JGridBagPanel {
             }
             indexes[i] = new Index(j, model.getCustomable(j));
         }
+
+        xComboBox.setSelectedIndex(Math.min(lastXSelected, xComboBox.getItemCount() - 1));
+        yComboBox.setSelectedIndex(Math.min(lastYSelected, yComboBox.getItemCount() - 1));
     }
 
     public void OnSelectionChanged() {
@@ -120,6 +128,7 @@ public class AddTraceView extends JGridBagPanel {
             traceable.name = name;
             traceable.xIndex = indexes[xIndex];
             traceable.yIndex = indexes[yIndex];
+
             listener.onSubmit(traceable);
         }
     }
@@ -127,6 +136,7 @@ public class AddTraceView extends JGridBagPanel {
     public void addSubmitListener(SubmitListener<Traceable> listener){
         listeners.add(listener);
     }
+
     public void removeSubmitListener(SubmitListener<Traceable> listener){
         listeners.remove(listener);
     }

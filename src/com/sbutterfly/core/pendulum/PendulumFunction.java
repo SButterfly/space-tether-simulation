@@ -7,6 +7,7 @@ import com.sbutterfly.differential.Vector;
  * Created by Sergei on 01.01.2015.
  * Функция математического маятника
  */
+@Deprecated
 public class PendulumFunction extends Function {
 
     private double om;

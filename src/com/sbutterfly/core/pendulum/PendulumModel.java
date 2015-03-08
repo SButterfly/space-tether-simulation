@@ -6,6 +6,7 @@ import com.sbutterfly.differential.Function;
 /**
  * Created by Sergei on 12.02.2015.
  */
+@Deprecated
 public class PendulumModel extends ODEBaseModel {
 
     public PendulumModel() {

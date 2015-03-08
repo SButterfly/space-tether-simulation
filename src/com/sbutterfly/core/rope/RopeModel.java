@@ -1,7 +1,9 @@
 package com.sbutterfly.core.rope;
 
+import com.sbutterfly.core.Customable;
 import com.sbutterfly.core.ODEBaseModel;
 import com.sbutterfly.differential.Function;
+import com.sbutterfly.differential.TimeVector;
 
 /**
  * Created by Sergei on 27.02.2015.
@@ -38,7 +40,61 @@ public class RopeModel extends ODEBaseModel {
     }
 
     @Override
+    public String[] paramsExtNames() {
+        return new String[]{"м", "м/с", "рад", "рад/с", "рад", "рад/с"};
+    }
+
+    @Override
     public String[] initialParamsNames() {
-        return new String[]{"m1", "m2", "p", "a", "b", "Lk"};
+        return new String[]{"m1, кг", "m2, кг", "p, кг/м3", "a", "b", "Lk, м"};
+    }
+
+    @Override
+    public String[] customParamsNames() {
+        return new String[]{"t", "x", "y"};
+    }
+
+    @Override
+    public String[] customParamsExtNames() {
+        return new String[]{"с", "м", "м"};
+    }
+
+    @Override
+    public Customable getCustomable(int index) {
+
+        final Customable timeCustomable = new Customable() {
+            @Override
+            public double customize(TimeVector vector) {
+                return vector.getTime();
+            }
+        };
+
+        final Customable xCustomable = new Customable() {
+            @Override
+            public double customize(TimeVector vector) {
+                return Math.sin(vector.get(2)) * vector.get(0);
+            }
+        };
+
+        final Customable yCustomable = new Customable() {
+            @Override
+            public double customize(TimeVector vector) {
+                return Math.cos(vector.get(2)) * vector.get(0);
+            }
+        };
+
+        if (index == 0) {
+            return timeCustomable;
+        }
+
+        if (index == 1) {
+            return xCustomable;
+        }
+
+        if (index == 2) {
+            return yCustomable;
+        }
+
+        throw new NumberFormatException("index is out of range");
     }
 }

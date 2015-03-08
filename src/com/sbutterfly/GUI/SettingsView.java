@@ -1,5 +1,6 @@
 package com.sbutterfly.GUI;
 
+import com.sbutterfly.GUI.Controls.DialogView;
 import com.sbutterfly.GUI.Controls.MyJTextField;
 import com.sbutterfly.GUI.Panels.Constraint;
 import com.sbutterfly.GUI.Panels.JGridBagPanel;
@@ -7,6 +8,7 @@ import com.sbutterfly.differential.EulerODEMethod;
 import com.sbutterfly.differential.ODEMethod;
 import com.sbutterfly.differential.RungeKuttaODEMethod;
 import com.sbutterfly.services.AppSettings;
+import com.sbutterfly.utils.DoubleUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +21,8 @@ public class SettingsView implements Frameable {
     private JGridBagPanel panel;
     private JFrame frame;
     private JComboBox<String> comboBox;
-    private JTextField timeTextField;
+    private MyJTextField timeTextField;
+    private MyJTextField stepTextField;
     private JButton saveButton;
     private JButton cancelButton;
 
@@ -27,11 +30,9 @@ public class SettingsView implements Frameable {
         if (panel == null) {
             panel = new JGridBagPanel();
 
-            JLabel methodLabel = new JLabel();
-            methodLabel.setText("Методы интергрирования");
-
-            JLabel timeLabel = new JLabel();
-            timeLabel.setText("Время интегрирования");
+            JLabel methodLabel = new JLabel("Метод интергрирования: ");
+            JLabel timeLabel = new JLabel("Время интегрирования: ");
+            JLabel stepLabel = new JLabel("Шаг интегрирования: ");
 
             comboBox = new JComboBox<>();
             comboBox.addItem("Рунге-Кутты 4 п.т.");
@@ -39,27 +40,32 @@ public class SettingsView implements Frameable {
             comboBox.setSelectedIndex(0);
 
             timeTextField = new MyJTextField();
+            stepTextField = new MyJTextField();
 
             JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             saveButton = new JButton();
             saveButton.setText("Сохранить");
             saveButton.addActionListener(e -> {
-                save();
-                NavigationController.Close(this);
+                if (save()) {
+                    NavigationController.close(this);
+                }
             });
             buttonsPanel.add(saveButton);
 
             cancelButton = new JButton();
             cancelButton.setText("Отмена");
-            cancelButton.addActionListener(e -> NavigationController.Close(this));
+            cancelButton.addActionListener(e -> NavigationController.close(this));
             buttonsPanel.add(cancelButton);
 
             panel.add(methodLabel, Constraint.create(0, 0).fill(GridBagConstraints.HORIZONTAL).insets(10));
             panel.add(timeLabel, Constraint.create(0, 1).fill(GridBagConstraints.HORIZONTAL).insets(10));
+            panel.add(stepLabel, Constraint.create(0, 2).fill(GridBagConstraints.HORIZONTAL).insets(10));
+
             panel.add(comboBox, Constraint.create(1, 0).fill(GridBagConstraints.HORIZONTAL).insets(10).ipadX(20));
             panel.add(timeTextField, Constraint.create(1, 1).fill(GridBagConstraints.HORIZONTAL).insets(10).ipadX(20));
+            panel.add(stepTextField, Constraint.create(1, 2).fill(GridBagConstraints.HORIZONTAL).insets(10).ipadX(20));
 
-            panel.add(buttonsPanel, Constraint.create(0, 2).fill(GridBagConstraints.HORIZONTAL).insets(10).gridWidth(2));
+            panel.add(buttonsPanel, Constraint.create(0, 3).fill(GridBagConstraints.HORIZONTAL).insets(10).gridWidth(2));
 
             setValues();
         }
@@ -70,6 +76,7 @@ public class SettingsView implements Frameable {
     private void setValues() {
         ODEMethod method = AppSettings.getODEMethod();
         double seconds = AppSettings.getODETime();
+        double step = AppSettings.getODEStep();
 
         int index = -1;
         if (method instanceof RungeKuttaODEMethod){
@@ -84,22 +91,31 @@ public class SettingsView implements Frameable {
         }
 
         comboBox.setSelectedIndex(index);
-        timeTextField.setText(seconds + "");
+        timeTextField.setText(DoubleUtils.toString(seconds));
+        stepTextField.setText(DoubleUtils.toString(step));
     }
 
-    private void save() {
-        int index = comboBox.getSelectedIndex();
-        double seconds = Double.parseDouble(timeTextField.getText());
-        ODEMethod method = null;
-        if (index == 0){
-            method = new RungeKuttaODEMethod();
-        }
-        if (index == 1){
-            method = new EulerODEMethod();
-        }
+    private boolean save() {
+        try {
+            int index = comboBox.getSelectedIndex();
+            double seconds = Double.parseDouble(timeTextField.getText());
+            double step = Double.parseDouble(stepTextField.getText());
+            ODEMethod method = null;
+            if (index == 0) {
+                method = new RungeKuttaODEMethod();
+            }
+            if (index == 1) {
+                method = new EulerODEMethod();
+            }
 
-        AppSettings.setODEMethod(method);
-        AppSettings.setODETime(seconds);
+            AppSettings.setODEMethod(method);
+            AppSettings.setODETime(seconds);
+            AppSettings.setODEStep(step);
+            return true;
+        } catch (NumberFormatException e) {
+            DialogView.showError("Проверьте корректность ввода введенных данных!");
+            return false;
+        }
     }
 
     @Override
@@ -108,7 +124,7 @@ public class SettingsView implements Frameable {
             frame = new JFrame("Настройки");
             frame.getContentPane().add(getComponent());
             frame.pack();
-            frame.setSize(400, 200);
+            frame.setSize(400, 300);
             frame.getRootPane().setDefaultButton(saveButton);
         }
         return frame;

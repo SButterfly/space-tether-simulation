@@ -10,6 +10,7 @@ import com.sbutterfly.utils.FileAccessor;
 import com.sbutterfly.utils.FileUtils;
 import com.sbutterfly.utils.Log;
 import info.monitorenter.gui.chart.Chart2D;
+import info.monitorenter.gui.chart.IAxis;
 import info.monitorenter.gui.chart.ITrace2D;
 import info.monitorenter.gui.chart.traces.Trace2DSimple;
 
@@ -58,11 +59,13 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
         chart.setPreferredSize(new Dimension(700, 500));
         chart.setMinimumSize(chart.getPreferredSize());
         chart.setPaintLabels(false);
+        chart.getAxisX().setAxisTitle(new IAxis.AxisTitle(""));
+        chart.getAxisY().setAxisTitle(new IAxis.AxisTitle(""));
 
         viewsPanel.add(chart, getConstraint(1, 0, 1, 3).weightX(1).weightY(1));
 
         menuView = new MenuView();
-        menuView.addSettingsActionListener(e -> NavigationController.Open(new SettingsView()));
+        menuView.addSettingsActionListener(e -> NavigationController.open(new SettingsView()));
         menuView.addNewActionListener(e -> onNew_click(e));
         menuView.addOpenActionListener(e -> onOpen_click(e));
         menuView.addSaveActionListener(e -> onSave_click(e));
@@ -98,7 +101,7 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
     @Override
     public JFrame getFrame() {
         if (frame == null) {
-            frame = new JFrame("My Program Change TITLE!!!");
+            frame = new JFrame("Ермаков Сергей. 6413 Б 300. ВКР");
             frame.setJMenuBar(menuView);
             frame.getContentPane().add(rootPanel);
             frame.pack();
@@ -115,13 +118,19 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
 
     public void onAdd(AddTraceView.Traceable traceable) {
 
-        ITrace2D trace1 = new Trace2DSimple();
-        chart.addTrace(trace1);
+        ITrace2D trace = new Trace2DSimple(traceable.name);
+        chart.addTrace(trace);
+        model.setToTrace(traceable.yIndex, traceable.xIndex, trace);
+        traceListView.Add(trace);
 
-        model.setToTrace(traceable.yIndex, traceable.xIndex, trace1);
-        trace1.setName(traceable.name);
+        IAxis.AxisTitle xAxisTitle = new IAxis.AxisTitle(model.getFullAxisName(traceable.xIndex));
+        IAxis.AxisTitle yAxisTitle = new IAxis.AxisTitle(model.getFullAxisName(traceable.yIndex));
 
-        traceListView.Add(trace1);
+        xAxisTitle.setTitleFont(new Font(null, Font.PLAIN, 15));
+        yAxisTitle.setTitleFont(new Font(null, Font.PLAIN, 15));
+
+        chart.getAxisX().setAxisTitle(xAxisTitle);
+        chart.getAxisY().setAxisTitle(yAxisTitle);
     }
 
     //region Menu handlers

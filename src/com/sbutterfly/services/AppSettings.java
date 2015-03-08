@@ -1,6 +1,9 @@
 package com.sbutterfly.services;
 
-import com.sbutterfly.differential.*;
+import com.sbutterfly.differential.EulerODEMethod;
+import com.sbutterfly.differential.ODEMethod;
+import com.sbutterfly.differential.RungeKuttaODEMethod;
+
 import java.util.prefs.Preferences;
 
 /**
@@ -10,6 +13,7 @@ public class AppSettings {
 
     private static final String ODE_METHOD_KEY = "odemethod";
     private static final String ODE_TIME_KEY = "odetime";
+    private static final String ODE_STEP_KEY = "odestep";
 
     private static Preferences getPreferences(){
         return Preferences.userNodeForPackage(AppSettings.class);
@@ -56,5 +60,15 @@ public class AppSettings {
     public static void setODETime(double time){
         Preferences preferences = getPreferences();
         preferences.putDouble(ODE_TIME_KEY, time);
+    }
+
+    public static double getODEStep() {
+        Preferences preferences = getPreferences();
+        return preferences.getDouble(ODE_STEP_KEY, 0.01);
+    }
+
+    public static void setODEStep(double h) {
+        Preferences preferences = getPreferences();
+        preferences.putDouble(ODE_STEP_KEY, h);
     }
 }

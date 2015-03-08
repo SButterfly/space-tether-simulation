@@ -26,7 +26,7 @@ public abstract class ODEBaseModel implements ODEModelSerializer.ODESerializable
     }
 
     public int getNumberOfIterations() {
-        return (int) (getODETime() / 0.25);
+        return (int) (getODETime() / AppSettings.getODEStep());
     }
 
     public ODEMethod getMethod() {
@@ -41,8 +41,16 @@ public abstract class ODEBaseModel implements ODEModelSerializer.ODESerializable
         return new String[0];
     }
 
+    public String[] paramsExtNames() {
+        return new String[0];
+    }
+
     public String[] customParamsNames() {
-        return new String[]{"time"};
+        return new String[]{"t"};
+    }
+
+    public String[] customParamsExtNames() {
+        return new String[]{"с"};
     }
 
     public TimeVector getStartParamsVector() {
@@ -102,9 +110,23 @@ public abstract class ODEBaseModel implements ODEModelSerializer.ODESerializable
         }
     }
 
-    private double getValue(TimeVector vector, Index index) {
+    public double getValue(TimeVector vector, Index index) {
         Customable customable = index.getCustomable();
         return customable == null ? vector.get(index.getIndex()) : customable.customize(vector);
+    }
+
+    public String getName(Index index) {
+        Customable customable = index.getCustomable();
+        return customable == null ? paramsNames()[index.getIndex()] : customParamsNames()[index.getIndex()];
+    }
+
+    public String getExtName(Index index) {
+        Customable customable = index.getCustomable();
+        return customable == null ? paramsExtNames()[index.getIndex()] : customParamsExtNames()[index.getIndex()];
+    }
+
+    public String getFullAxisName(Index index) {
+        return getName(index) + ", " + getExtName(index);
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener){

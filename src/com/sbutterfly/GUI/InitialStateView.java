@@ -5,6 +5,7 @@ import com.sbutterfly.GUI.Controls.MyJTextField;
 import com.sbutterfly.GUI.Panels.Constraint;
 import com.sbutterfly.GUI.Panels.JGridBagPanel;
 import com.sbutterfly.core.ODEBaseModel;
+import com.sbutterfly.utils.DoubleUtils;
 import com.sbutterfly.utils.Log;
 
 import javax.swing.*;
@@ -103,7 +104,7 @@ public class InitialStateView extends JGridBagPanel {
                 JLabel label = new JLabel(nameList.get(i) + ":");
                 panel.add(label, getConstraint(0, lastRow, 1, 1));
 
-                JTextField textField = new MyJTextField(valueList.get(i) + "");
+                JTextField textField = new MyJTextField(DoubleUtils.toString(valueList.get(i)));
                 panel.add(textField, getConstraint(1, lastRow, 1 + (i == n - 1 ? 2 : 0), 1));
 
                 final int finalI = i;
