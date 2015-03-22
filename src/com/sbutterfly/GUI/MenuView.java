@@ -16,6 +16,7 @@ public class MenuView extends JMenuBar {
     private JMenuItem saveItem;
     @Deprecated
     private JMenuItem saveAsItem;
+    @Deprecated
     private JMenuItem printItem;
 
     private JMenuItem settingsItem;
@@ -49,7 +50,7 @@ public class MenuView extends JMenuBar {
 
         printItem = new JMenuItem("Напечатать ??");
         printItem.setFont(font);
-        fileMenu.add(printItem);
+        //fileMenu.add(printItem);
 
         add(fileMenu);
 
@@ -95,6 +96,7 @@ public class MenuView extends JMenuBar {
         openItem.addActionListener(listener);
     }
 
+    @Deprecated
     public void addPrintActionListener(ActionListener listener){
         printItem.addActionListener(listener);
     }

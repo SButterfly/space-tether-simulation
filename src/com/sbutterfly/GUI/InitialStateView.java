@@ -143,7 +143,7 @@ public class InitialStateView extends JGridBagPanel {
                 .insets(3, 5);
     }
 
-    private static interface Settable {
+    protected static interface Settable {
         void OnSet(double value);
     }
 }

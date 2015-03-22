@@ -1,9 +1,9 @@
-package com.sbutterfly.GUI.Controls;
+package com.sbutterfly.GUI.controls;
 
 import com.sbutterfly.GUI.Frameable;
 import com.sbutterfly.GUI.NavigationController;
-import com.sbutterfly.GUI.Panels.Constraint;
-import com.sbutterfly.GUI.Panels.JGridBagPanel;
+import com.sbutterfly.GUI.panels.Constraint;
+import com.sbutterfly.GUI.panels.JGridBagPanel;
 import com.sbutterfly.utils.Log;
 
 import javax.swing.*;
@@ -64,7 +64,7 @@ public class DialogView implements Frameable {
 
     private void createGUI() {
         rootPanel = new JGridBagPanel();
-        JLabel label = new JLabel();
+        JLabel label = new MultiLineJLabel();
         label.setText(message);
 
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -84,7 +84,7 @@ public class DialogView implements Frameable {
             frame = new JFrame(getTitle());
             frame.getContentPane().add(rootPanel);
             frame.pack();
-            frame.setSize(300, 200);
+            frame.setSize(500, 300);
             frame.getRootPane().setDefaultButton(submitButton);
         }
         return frame;

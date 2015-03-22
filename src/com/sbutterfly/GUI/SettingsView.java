@@ -31,8 +31,8 @@ public class SettingsView implements Frameable {
             panel = new JGridBagPanel();
 
             JLabel methodLabel = new JLabel("Метод интергрирования: ");
-            JLabel timeLabel = new JLabel("Время интегрирования: ");
-            JLabel stepLabel = new JLabel("Шаг интегрирования: ");
+            JLabel timeLabel = new JLabel("Время интегрирования, c: ");
+            JLabel stepLabel = new JLabel("Шаг интегрирования, c: ");
 
             comboBox = new JComboBox<>();
             comboBox.addItem("Рунге-Кутты 4 п.т.");
@@ -98,8 +98,8 @@ public class SettingsView implements Frameable {
     private boolean save() {
         try {
             int index = comboBox.getSelectedIndex();
-            double seconds = Double.parseDouble(timeTextField.getText());
-            double step = Double.parseDouble(stepTextField.getText());
+            double seconds = DoubleUtils.parse(timeTextField.getText());
+            double step = DoubleUtils.parse(stepTextField.getText());
             ODEMethod method = null;
             if (index == 0) {
                 method = new RungeKuttaODEMethod();
@@ -108,12 +108,16 @@ public class SettingsView implements Frameable {
                 method = new EulerODEMethod();
             }
 
+            if (seconds <= 0 || step <= 0) {
+                throw new NumberFormatException();
+            }
+
             AppSettings.setODEMethod(method);
             AppSettings.setODETime(seconds);
             AppSettings.setODEStep(step);
             return true;
         } catch (NumberFormatException e) {
-            DialogView.showError("Проверьте корректность ввода введенных данных!");
+            DialogView.showError("Проверьте корректность ввода введенных данных!\nВведенные значения должны быть положительными");
             return false;
         }
     }

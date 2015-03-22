@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="jlm_greek">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jlm_greek.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jlm_cyrillic.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jlatexmath-minimal-1.0.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

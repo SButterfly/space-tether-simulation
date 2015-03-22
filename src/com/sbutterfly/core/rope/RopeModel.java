@@ -20,6 +20,7 @@ public class RopeModel extends ODEBaseModel {
         setInitialParameter(3, 4);
         setInitialParameter(4, 5);
         setInitialParameter(5, 30000);
+        setInitialParameter(6, 1000);
     }
 
     @Override
@@ -30,13 +31,14 @@ public class RopeModel extends ODEBaseModel {
         final double a = getInitialParameter(3);
         final double b = getInitialParameter(4);
         final double lk = getInitialParameter(5);
+        final double h = getInitialParameter(6);
 
-        return new RopeFunction(m1, m2, p, a, b, lk);
+        return new RopeFunction(m1, m2, p, a, b, lk, h);
     }
 
     @Override
     public String[] paramsNames() {
-        return new String[]{"L", "Lt", "O", "Ot", "B", "Bt"};
+        return new String[]{"L", "V", "θ", "θ˙", "β", "β˙"};
     }
 
     @Override
@@ -46,7 +48,7 @@ public class RopeModel extends ODEBaseModel {
 
     @Override
     public String[] initialParamsNames() {
-        return new String[]{"m1, кг", "m2, кг", "p, кг/м3", "a", "b", "Lk, м"};
+        return new String[]{"m1, кг", "m2, кг", "ρ, кг/м3", "a", "b", "Lk, м", "H, км"};
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.sbutterfly.GUI.Panels;
+package com.sbutterfly.GUI.panels;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,4 +27,6 @@ public class JGridBagPanel extends JPanel {
     public void add(JComponent component, Constraint constraint) {
         super.add(component, constraint.get());
     }
+
+
 }

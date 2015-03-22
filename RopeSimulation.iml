@@ -10,5 +10,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="com.google.code.gson:gson:2.3.1" level="project" />
     <orderEntry type="library" name="jchart2d-3.2.2" level="project" />
+    <orderEntry type="library" name="jlm_greek" level="project" />
   </component>
 </module>

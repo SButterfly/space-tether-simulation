@@ -1,6 +1,7 @@
 package com.sbutterfly.GUI;
 
-import com.sbutterfly.GUI.custom.RopeInitialStateView;
+import com.sbutterfly.GUI.controls.DialogView;
+import com.sbutterfly.GUI.hardcoded.RopeInitialStateView;
 import com.sbutterfly.GUI.panels.Constraint;
 import com.sbutterfly.GUI.panels.JBoxLayout;
 import com.sbutterfly.GUI.panels.JGridBagPanel;
@@ -106,7 +107,7 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
     @Override
     public JFrame getFrame() {
         if (frame == null) {
-            frame = new JFrame("Ермаков Сергей. 6413 Б 300. ВКР");
+            frame = new JFrame("Программа развертывания космической тросовой системы");
             frame.setJMenuBar(menuView);
             frame.getContentPane().add(rootPanel);
             frame.pack();
@@ -216,6 +217,7 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
                 setModel(model);
             } catch (Exception ex) {
                 Log.error(this, ex);
+                DialogView.showError("Файл поврежден или недопустимого формата");
             }
         } else {
             Log.debug(this, "Cancelled");

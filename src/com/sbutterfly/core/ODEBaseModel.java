@@ -15,8 +15,8 @@ import java.util.StringTokenizer;
  */
 public abstract class ODEBaseModel implements ODEModelSerializer.ODESerializable {
 
-    private final double[] startParamsVector = new double[initialParamsNames().length];
-    private final double[] initialParamsVector = new double[paramsNames().length];
+    private final double[] startParamsVector = new double[paramsNames().length];
+    private final double[] initialParamsVector = new double[initialParamsNames().length];
     private final ArrayList<PropertyChangeListener> listeners = new ArrayList<>();
     private TimeVector[] vectors;
     private volatile Differential.DifferentialIterator iterator;

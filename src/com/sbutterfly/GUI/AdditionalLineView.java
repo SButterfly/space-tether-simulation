@@ -60,7 +60,7 @@ public class AdditionalLineView extends JGridBagPanel {
             while (!processable.hasEnded()) {
                 setStatusIndicator(processable.getStatusIndicator());
                 try {
-                    Thread.sleep((long) 0.01);
+                    Thread.sleep((long) 0.1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

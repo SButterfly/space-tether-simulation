@@ -26,8 +26,8 @@ public class RopeFunction extends Function {
 
     private final double K = 398600.02;
     private final double R = 6371;
-    private final double Om = Math.sqrt(K / (R * R * R));
-    private final double Om2 = Om * Om;
+    private final double Om;
+    private final double Om2;
 
     private double sinO;
     private double cosO;
@@ -36,7 +36,7 @@ public class RopeFunction extends Function {
     private double sin2O;
     private double sin2B;
 
-    public RopeFunction(double m1, double m2, double p, double a, double b, double lk) {
+    public RopeFunction(double m1, double m2, double p, double a, double b, double lk, double h) {
         this.m1 = m1;
         this.m2 = m2;
         this.p = p;
@@ -44,6 +44,8 @@ public class RopeFunction extends Function {
         this.b = b;
         this.Lk = lk;
         this.m = m1 + m2;
+        this.Om = Math.sqrt(K / ((R + h) * pow(R + h)));
+        this.Om2 = Om * Om;
     }
 
     private double V(final double L) {
