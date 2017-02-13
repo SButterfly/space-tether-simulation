@@ -1,30 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AnalysisUIOptions">
-    <option name="ANALYSIS_IN_BACKGROUND" value="true" />
-  </component>
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/src/com/sbutterfly/GUI/hardcoded/RopeInitialStateView.java" line="127" mnemonic="9" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="40536ae3-b573-4c1e-9a87-8898cc66d2ed" name="Default" comment="add limit control">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/sbutterfly/utils/Func.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/sbutterfly/GUI/Controls/DialogView.java" afterPath="" />
+    <list default="true" id="40536ae3-b573-4c1e-9a87-8898cc66d2ed" name="Default" comment="bachelor fixes">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/GUI/InitialStateView.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/GUI/InitialStateView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/GUI/MainView.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/GUI/MainView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/GUI/SettingsView.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/GUI/SettingsView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/GUI/hardcoded/RopeInitialStateView.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/GUI/hardcoded/RopeInitialStateView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/core/ODEBaseModel.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/core/ODEBaseModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeFunction.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeModel.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/core/rope/RopeModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/differential/Differential.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/differential/Differential.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/differential/EulerODEMethod.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/differential/EulerODEMethod.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/differential/ODEMethod.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/differential/ODEMethod.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/differential/RungeKuttaODEMethod.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/differential/RungeKuttaODEMethod.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/differential/TimeVector.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/differential/TimeVector.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/differential/Vector.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/differential/Vector.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sbutterfly/utils/FileAccessor.java" afterPath="$PROJECT_DIR$/src/com/sbutterfly/utils/FileAccessor.java" />
     </list>
     <ignored path="RopeSimulation.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -729,7 +710,7 @@
       <workItem from="1432065049263" duration="239000" />
       <workItem from="1432105715436" duration="243000" />
       <workItem from="1433426886145" duration="2279000" />
-      <workItem from="1487018961471" duration="88000" />
+      <workItem from="1487018961471" duration="143000" />
     </task>
     <task id="LOCAL-00001" summary="always create new Constrains">
       <created>1423942617076</created>
@@ -822,11 +803,18 @@
       <option name="project" value="LOCAL" />
       <updated>1425801992549</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="bachelor fixes">
+      <created>1487019094628</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1487019094628</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="219452000" />
+    <option name="totallyTimeSpent" value="219507000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -918,9 +906,6 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="processedProjectFiles" value="true" />
   </component>
-  <component name="UpdateCopyrightCheckinHandler">
-    <option name="UPDATE_COPYRIGHT" value="true" />
-  </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
       <collection />
@@ -935,6 +920,7 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="always create new Constrains" />
     <MESSAGE value="UI improvements" />
     <MESSAGE value="create custom Panels and Controls. other improvements" />
@@ -952,10 +938,9 @@
     <MESSAGE value="add statusbar indicator" />
     <MESSAGE value="cleanup" />
     <MESSAGE value="add limit control" />
-    <option name="LAST_COMMIT_MESSAGE" value="add limit control" />
+    <MESSAGE value="bachelor fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="bachelor fixes" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
-    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
-    <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1089,6 +1074,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1156,6 +1142,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="112" column="48" lean-forward="false" selection-start-line="112" selection-start-column="48" selection-end-line="112" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
