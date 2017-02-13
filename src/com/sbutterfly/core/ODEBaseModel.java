@@ -3,6 +3,7 @@ package com.sbutterfly.core;
 import com.sbutterfly.GUI.AdditionalLineView;
 import com.sbutterfly.differential.*;
 import com.sbutterfly.services.AppSettings;
+import com.sbutterfly.utils.Func;
 import info.monitorenter.gui.chart.ITrace2D;
 
 import java.beans.PropertyChangeEvent;
@@ -89,6 +90,42 @@ public abstract class ODEBaseModel implements ODEModelSerializer.ODESerializable
         };
     }
 
+    public Vector getEps(ODEMethod method, double time, double h){
+        Differential differential = new Differential(getFunction(),
+                getStartParamsVector(),
+                time,
+                (int) (time/h),
+                method);
+        TimeVector lastH = null;
+        for (TimeVector vector : differential) {
+            lastH = vector;
+            if (lastH.isAllNaN())
+                break;
+        }
+        differential = new Differential(getFunction(),
+                getStartParamsVector(),
+                time,
+                (int) (time*2/h),
+                method);
+        TimeVector lastH2 = null;
+        for (TimeVector vector : differential) {
+            lastH2 = vector;
+            if (lastH2.isAllNaN())
+                break;
+        }
+
+        double[] result = new double[lastH.size()];
+        int _2p = 1 << method.getP();
+        for (int i = 0, n = result.length; i < n; i++){
+            result[i] = Math.abs((lastH2.get(i) - lastH.get(i))*_2p/(_2p - 1));
+        }
+        return new Vector(result);
+    }
+
+    public synchronized boolean hasValues(){
+        return vectors != null;
+    }
+
     public synchronized TimeVector[] values(){
         return values(true);
     }
@@ -96,7 +133,20 @@ public abstract class ODEBaseModel implements ODEModelSerializer.ODESerializable
     public synchronized TimeVector[] values(boolean useCache){
         if (vectors == null || !useCache) {
             Differential differential = new Differential(getFunction(), getStartParamsVector(), getODETime(), getNumberOfIterations(), getMethod());
-            iterator = differential.iterator();
+            //TODO remove
+            if (true) {
+                iterator = differential.iterator();
+            }
+            else {
+                iterator = differential.iterator(new Func<Boolean, TimeVector>() {
+                    @Override
+                    public Boolean invoke(TimeVector arg1) {
+                        double currentLength = arg1.get(0);
+                        double maxLength = ODEBaseModel.this.getInitialParameter(5);
+                        return currentLength + 500 >= maxLength;
+                    }
+                }); //останавливаемся, когда длина тросса на 0.5 км меньше запланированной
+            }
             vectors = differential.makeDifferential(iterator);
             if (iterator.hasCanceled()) {
                 vectors = null;
@@ -162,23 +212,25 @@ public abstract class ODEBaseModel implements ODEModelSerializer.ODESerializable
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append(startParamsVector.length);
-        stringBuilder.append(' ');
+        stringBuilder.append('\n');
         for (int i = 0, n = startParamsVector.length; i < n; i++) {
             stringBuilder.append(getStartParameter(i));
             stringBuilder.append(' ');
         }
+        stringBuilder.append('\n');
 
         stringBuilder.append(initialParamsVector.length);
-        stringBuilder.append(' ');
+        stringBuilder.append('\n');
         for (int i = 0, n = initialParamsVector.length; i < n; i++) {
             stringBuilder.append(getInitialParameter(i));
             stringBuilder.append(' ');
         }
+        stringBuilder.append('\n');
 
         TimeVector[] values = values();
 
         stringBuilder.append(values.length);
-        stringBuilder.append(' ');
+        stringBuilder.append('\n');
 
         for (TimeVector vector : values) {
             stringBuilder.append(vector.getTime());
@@ -191,6 +243,7 @@ public abstract class ODEBaseModel implements ODEModelSerializer.ODESerializable
                 stringBuilder.append(x);
                 stringBuilder.append(' ');
             }
+            stringBuilder.append('\n');
         }
         return stringBuilder.toString();
     }

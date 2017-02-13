@@ -39,6 +39,30 @@ public class Vector implements Iterable<Double>{
         this.values = vector.values;
     }
 
+    public double getAVG(){
+        double result = 0;
+        for (int i = 0; i < values.length; i++){
+            result += values[i];
+        }
+        return result;
+    }
+
+    public boolean isAllNaN(){
+        for (double a : values){
+            if (!Double.isNaN(a))
+                return false;
+        }
+        return true;
+    }
+
+    public boolean isAnyNaN() {
+        for (double a : values){
+            if (Double.isNaN(a))
+                return true;
+        }
+        return false;
+    }
+
     public static Vector sum(Vector x, Vector y){
         if (x.size() != y.size()) throw new ArrayIndexOutOfBoundsException("Вектора должны быть одной длины");
 

@@ -45,4 +45,8 @@ public class RungeKuttaODEMethod implements ODEMethod {
         Vector result = Vector.mulThenSum(k3, h, x);
         return _function.Diff(result);
     }
+
+    public int getP(){
+        return 4;
+    }
 }

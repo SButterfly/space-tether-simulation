@@ -1,6 +1,5 @@
 package com.sbutterfly.GUI;
 
-import com.sbutterfly.GUI.controls.DialogView;
 import com.sbutterfly.GUI.hardcoded.RopeInitialStateView;
 import com.sbutterfly.GUI.panels.Constraint;
 import com.sbutterfly.GUI.panels.JBoxLayout;
@@ -71,7 +70,7 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
         viewsPanel.add(additionalLineView, getConstraint(0, 3, 3, 1));
 
         menuView = new MenuView();
-        menuView.addSettingsActionListener(e -> NavigationController.open(new SettingsView()));
+        menuView.addSettingsActionListener(e -> NavigationController.open(new SettingsView(model)));
         menuView.addNewActionListener(e -> onNew_click(e));
         menuView.addOpenActionListener(e -> onOpen_click(e));
         menuView.addSaveActionListener(e -> onSave_click(e));
@@ -87,12 +86,12 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
         }
 
         this.model = model;
-        if (initialStateView != null) {
-            rootPanel.remove(initialStateView);
-        }
 
         initialStateView = new RopeInitialStateView(model);
         initialStateView.addSubmitListener(e -> onSubmit(e));
+        if (model.hasValues()){
+            onSubmit(model);
+        }
         viewsPanel.add(initialStateView, getConstraint(0, 0, 1, 1));
         viewsPanel.updateUI();
         rootPanel.updateUI();
@@ -121,13 +120,25 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
         addTraceView.setEnabled(false);
 
         new Thread(() -> {
-            model.values(false);
-            AdditionalLineView.Processable p = model.getProcessable();
-            if (p != null && !p.hasCanceled()) {
-                SwingUtilities.invokeLater(() -> addTraceView.Init(model));
-                additionalLineView.setText("Расчет закончен");
-            } else {
-                additionalLineView.setText("Расчет отменен");
+            try {
+                model.values(false);
+                AdditionalLineView.Processable p = model.getProcessable();
+                if (p != null && !p.hasCanceled()) {
+                    SwingUtilities.invokeLater(() -> addTraceView.Init(model));
+                    additionalLineView.setText("Расчет закончен");
+                } else {
+                    additionalLineView.setText("Расчет отменен");
+                }
+            }
+            catch (Exception e){
+                AdditionalLineView.Processable p = model.getProcessable();
+                if (p != null) {
+                    p.cancel();
+                }
+                SwingUtilities.invokeLater(() -> {
+                    additionalLineView.setText("Произошла ошибка");
+                    JOptionPane.showMessageDialog(null, e.getMessage());
+                });
             }
         }).start();
 
@@ -187,11 +198,13 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
             }
             Log.debug(this, "Selected: " + file.getName());
 
+            final File ffile = file;
             try {
-                String serialized = ODEModelSerializer.serialize(model, FileUtils.getSerializeType(file));
-                FileAccessor.write(file, serialized);
+                String serialized = ODEModelSerializer.serialize(model, FileUtils.getSerializeType(ffile));
+                FileAccessor.write(ffile, serialized);
             } catch (Exception ex) {
                 Log.error(this, ex);
+                JOptionPane.showMessageDialog(null, "Произошла ошибка при сохраенении файла");
             }
         } else {
             Log.debug(this, "Cancelled");
@@ -210,14 +223,13 @@ public class MainView implements Frameable, SubmitListener<ODEBaseModel> {
             File file = fileChooser.getSelectedFile();
             String ext = FileUtils.getExtension(file);
             Log.debug(this, "Selected: " + file.getName());
-
             try {
                 String text = FileAccessor.read(file);
                 ODEBaseModel model = ODEModelSerializer.deserialize(text);
                 setModel(model);
             } catch (Exception ex) {
                 Log.error(this, ex);
-                DialogView.showError("Файл поврежден или недопустимого формата");
+                JOptionPane.showMessageDialog(null, "Файл поврежден или недопустимого формата");
             }
         } else {
             Log.debug(this, "Cancelled");

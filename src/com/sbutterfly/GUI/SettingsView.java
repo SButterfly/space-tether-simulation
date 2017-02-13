@@ -1,12 +1,14 @@
 package com.sbutterfly.GUI;
 
-import com.sbutterfly.GUI.controls.DialogView;
+import com.sbutterfly.GUI.controls.MultiLineJLabel;
 import com.sbutterfly.GUI.controls.MyJTextField;
 import com.sbutterfly.GUI.panels.Constraint;
 import com.sbutterfly.GUI.panels.JGridBagPanel;
+import com.sbutterfly.core.ODEBaseModel;
 import com.sbutterfly.differential.EulerODEMethod;
 import com.sbutterfly.differential.ODEMethod;
 import com.sbutterfly.differential.RungeKuttaODEMethod;
+import com.sbutterfly.differential.Vector;
 import com.sbutterfly.services.AppSettings;
 import com.sbutterfly.utils.DoubleUtils;
 
@@ -25,6 +27,14 @@ public class SettingsView implements Frameable {
     private MyJTextField stepTextField;
     private JButton saveButton;
     private JButton cancelButton;
+    private JButton epsButton;
+    private JLabel epsLabel;
+
+    private final ODEBaseModel model;
+
+    public SettingsView(ODEBaseModel model) {
+        this.model = model;
+    }
 
     public JComponent getComponent() {
         if (panel == null) {
@@ -43,6 +53,13 @@ public class SettingsView implements Frameable {
             stepTextField = new MyJTextField();
 
             JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+            epsButton = new JButton("Оценить погрешность");
+            epsButton.addActionListener(e -> startEpsCalc());
+            buttonsPanel.add(epsButton);
+
+            epsLabel = new MultiLineJLabel();
+
             saveButton = new JButton();
             saveButton.setText("Сохранить");
             saveButton.addActionListener(e -> {
@@ -66,11 +83,45 @@ public class SettingsView implements Frameable {
             panel.add(stepTextField, Constraint.create(1, 2).fill(GridBagConstraints.HORIZONTAL).insets(10).ipadX(20));
 
             panel.add(buttonsPanel, Constraint.create(0, 3).fill(GridBagConstraints.HORIZONTAL).insets(10).gridWidth(2));
+            panel.add(epsLabel, Constraint.create(0, 4).fill(GridBagConstraints.HORIZONTAL).insets(10).gridWidth(2));
 
             setValues();
         }
 
         return panel;
+    }
+
+    private void startEpsCalc(){
+
+        if (!save()) return;
+
+        epsButton.setEnabled(false);
+        epsLabel.setText("Оценка погрешности начата");
+
+        new Thread(() -> {
+            try {
+                Vector eps = model.getEps(AppSettings.getODEMethod(), AppSettings.getODETime(), AppSettings.getODEStep());
+
+                SwingUtilities.invokeLater(() -> {
+                    StringBuilder buff = new StringBuilder();
+                    buff.append("Погрешность:\n");
+                    buff.append("<table>");
+                    for (int i = 0; i < eps.size(); i++) {
+                        buff.append(String.format("<tr><td>%s</td><td></td><td>%s</td></tr>", model.paramsNames()[i] + ", " + model.paramsExtNames()[i] + ":", DoubleUtils.toString(eps.get(i))));
+                    }
+                    buff.append("</table>");
+                    epsLabel.setText(buff.toString());
+                    epsButton.setEnabled(true);
+                });
+            }
+            catch (Exception e){
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(null, e.getMessage());
+                    epsLabel.setText("");
+                    epsButton.setEnabled(true);
+                });
+            }
+        }).start();
     }
 
     private void setValues() {
@@ -117,7 +168,7 @@ public class SettingsView implements Frameable {
             AppSettings.setODEStep(step);
             return true;
         } catch (NumberFormatException e) {
-            DialogView.showError("Проверьте корректность ввода введенных данных!\nВведенные значения должны быть положительными");
+            JOptionPane.showMessageDialog(null, "Проверьте корректность ввода введенных данных!\nВведенные значения должны быть положительными");
             return false;
         }
     }

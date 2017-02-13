@@ -27,4 +27,11 @@ public class TimeVector extends Vector {
     public TimeVector clone() {
         return new TimeVector(time, this);
     }
+
+    @Override
+    public String toString() {
+        return "TimeVector{" +
+                "time=" + time +
+                "} " + super.toString();
+    }
 }

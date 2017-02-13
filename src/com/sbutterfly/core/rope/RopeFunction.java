@@ -64,7 +64,7 @@ public class RopeFunction extends Function {
         return pow(L) * (12d * m1 * m2 - 8d * L * p * m2 + 4d * L * p * m1 - 3d * pow(L * p)) / (12d * m);
     }
 
-    private double T(final double L, final double Lt) {
+    public double T(final double L, final double Lt) {
         return V(L) * Om2 * (a * (L - Lk) + b * Lt / Om + 3d * Lk);
     }
 

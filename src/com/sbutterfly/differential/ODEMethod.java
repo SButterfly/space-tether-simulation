@@ -5,4 +5,5 @@ package com.sbutterfly.differential;
  */
 public interface ODEMethod {
     Vector Next(Function function, Vector x, double h);
+    int getP();
 }

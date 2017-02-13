@@ -37,7 +37,7 @@ public class InitialStateView extends JGridBagPanel {
         headerLabel.setText("Начальные параметры:");
 
         JButton submitButton = new JButton();
-        submitButton.setText("Расчитать");
+        submitButton.setText("Рассчитать");
         submitButton.addActionListener(e -> {
             for (SubmitListener<ODEBaseModel> listener : list) {
                 listener.onSubmit(model);
@@ -143,7 +143,7 @@ public class InitialStateView extends JGridBagPanel {
                 .insets(3, 5);
     }
 
-    protected static interface Settable {
+    protected interface Settable {
         void OnSet(double value);
     }
 }

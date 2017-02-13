@@ -14,4 +14,9 @@ public class EulerODEMethod implements ODEMethod {
 
         return result;
     }
+
+    @Override
+    public int getP() {
+        return 1;
+    }
 }

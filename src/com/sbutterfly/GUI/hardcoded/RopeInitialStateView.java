@@ -2,7 +2,6 @@ package com.sbutterfly.GUI.hardcoded;
 
 import com.sbutterfly.GUI.InitialStateView;
 import com.sbutterfly.GUI.SubmitListener;
-import com.sbutterfly.GUI.controls.DialogView;
 import com.sbutterfly.GUI.controls.MyJTextField;
 import com.sbutterfly.GUI.panels.Constraint;
 import com.sbutterfly.core.ODEBaseModel;
@@ -52,7 +51,7 @@ public class RopeInitialStateView extends InitialStateView {
     @Override
     protected void createGUI() {
 
-        submitButton = new JButton("Расчитать");
+        submitButton = new JButton("Рассчитать");
         submitButton.addActionListener(e -> {
             if (continuewSubmit_Hack) {
                 for (SubmitListener<ODEBaseModel> listener : list) {
@@ -63,7 +62,7 @@ public class RopeInitialStateView extends InitialStateView {
             }
         });
 
-        add(new JLabel("Параметры троссовой системы:"), Constraint.create(0, lastRow++, 2, 1).insets(5).fill(GridBagConstraints.HORIZONTAL));
+        add(new JLabel("Параметры тросовой системы:"), Constraint.create(0, lastRow++, 2, 1).insets(5).fill(GridBagConstraints.HORIZONTAL));
 
         add(new JLabel(getModel().initialParamsNames()[0] + ":", SwingConstants.RIGHT), Constraint.create(0, lastRow).fill(GridBagConstraints.HORIZONTAL));
         add((m1TextField = new MyJTextField(DoubleUtils.toString(getModel().getInitialParameter(0)))), Constraint.create(1, lastRow++));
@@ -137,7 +136,7 @@ public class RopeInitialStateView extends InitialStateView {
                 }
             } catch (NumberFormatException ex) {
                 continuewSubmit_Hack = false;
-                DialogView.showError("Проверьте корректность ввода введенных данных!\nВведенные значения должны быть неотрицательными");
+                JOptionPane.showMessageDialog(null, "Проверьте корректность ввода введенных данных!\nВведенные значения должны быть неотрицательными");
             }
         }
     }
