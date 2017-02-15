@@ -1,0 +1,15 @@
+repositories {
+    jcenter()
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+dependencies {
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'net.sf.jchart2d:jchart2d:3.3.2'
+    compile 'com.jidesoft:jide-oss:3.6.18'
+    compile 'org.apache.xmlgraphics:xmlgraphics-commons:2.1'
+}
+
+mainClassName = "com.sbutterfly.Main"

@@ -11,12 +11,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
  * Created by Sergei on 14.02.2015.
  */
 public class TraceListView extends JGridBagPanel {
+
+    private final static URL DELETE_IMAGE = TraceListView.class
+            .getClassLoader().getResource("delete.png");
 
     private JGridBagPanel listPanel;
 
@@ -57,7 +61,7 @@ public class TraceListView extends JGridBagPanel {
         JLabel label = new JLabel(trace.getName());
         JCheckBox checkBox = new JCheckBox("", true);
         checkBox.addChangeListener(e -> trace.setVisible(checkBox.isSelected()));
-        JButton button = new JImageButton("assets/delete.png");
+        JButton button = new JImageButton(DELETE_IMAGE);
         button.addActionListener(e -> {
             listPanel.remove(label);
             listPanel.remove(checkBox);

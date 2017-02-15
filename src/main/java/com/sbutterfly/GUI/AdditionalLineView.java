@@ -8,11 +8,15 @@ import com.sbutterfly.utils.Log;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
 /**
  * Created by Sergei on 31.01.2015.
  */
 public class AdditionalLineView extends JGridBagPanel {
+
+    private final static URL CANCEL_IMAGE = AdditionalLineView.class
+            .getClassLoader().getResource("cancel.png");
 
     Processable processable;
     private JLabel label;
@@ -38,7 +42,7 @@ public class AdditionalLineView extends JGridBagPanel {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         panel.add(progressBar);
 
-        cancelButton = new JImageButton("assets/cancel.png");
+        cancelButton = new JImageButton(CANCEL_IMAGE);
         cancelButton.addActionListener(e -> {
             if (processable != null) {
                 processable.cancel();

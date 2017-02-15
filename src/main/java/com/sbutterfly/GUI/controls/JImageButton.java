@@ -2,6 +2,7 @@ package com.sbutterfly.GUI.controls;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 /**
  * Created by Sergei on 21.02.2015.
@@ -16,7 +17,7 @@ public class JImageButton extends JButton {
         init();
     }
 
-    public JImageButton(String imagePath) {
+    public JImageButton(URL imagePath) {
         init();
         ImageIcon icon = new ImageIcon(imagePath);
         int width = 17 * icon.getIconWidth() / icon.getIconHeight();
