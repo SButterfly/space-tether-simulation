@@ -27,7 +27,7 @@ public class PendulumFunction extends Function {
     }
 
     @Override
-    public Vector Diff(Vector x) {
+    public Vector diff(Vector x) {
 
         if (x.size() != 2){
             throw new RuntimeException("Размер вектора должен быть равен 2.");

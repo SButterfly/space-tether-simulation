@@ -81,7 +81,7 @@ public class RopeFunction extends Function {
     }
 
     @Override
-    public synchronized Vector Diff(Vector x) {
+    public synchronized Vector diff(Vector x) {
         if (x.size() != 6) {
             throw new RuntimeException("Размер вектора должен быть равен 6.");
         }

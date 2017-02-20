@@ -8,7 +8,7 @@ public class EulerODEMethod implements ODEMethod {
     @Override
     public Vector Next(Function function, Vector x, double h) {
 
-        Vector diffx = function.Diff(x);
+        Vector diffx = function.diff(x);
         Vector mul = Vector.mul(h, diffx);
         Vector result = Vector.sum(x, mul);
 

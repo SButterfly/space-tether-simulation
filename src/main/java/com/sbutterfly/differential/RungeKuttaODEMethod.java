@@ -25,25 +25,25 @@ public class RungeKuttaODEMethod implements ODEMethod {
     }
 
     private Vector K1(final Vector x, final double h) {
-        return _function.Diff(x);
+        return _function.diff(x);
     }
 
     private Vector K2(final Vector x, final double h) {
         Vector k1 = K1(x, h);
         Vector result = Vector.mulThenSum(k1, h / 2d, x);
-        return _function.Diff(result);
+        return _function.diff(result);
     }
 
     private Vector K3(final Vector x, final double h) {
         Vector k2 = K2(x, h);
         Vector result = Vector.mulThenSum(k2, h / 2d, x);
-        return _function.Diff(result);
+        return _function.diff(result);
     }
 
     private Vector K4(final Vector x, final double h) {
         Vector k3 = K3(x, h);
         Vector result = Vector.mulThenSum(k3, h, x);
-        return _function.Diff(result);
+        return _function.diff(result);
     }
 
     public int getP(){
