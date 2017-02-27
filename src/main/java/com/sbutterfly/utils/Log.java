@@ -10,19 +10,22 @@ import java.util.TimeZone;
  */
 public class Log {
     private static SimpleDateFormat format;
+
     static {
         format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS");
         format.setTimeZone(TimeZone.getTimeZone("Etc/GMT-4"));
     }
 
-    public static void write(LogLvl loglvl, String tag, String message) {
+    private Log() {
+    }
 
+    public static void write(LogLvl loglvl, String tag, String message) {
         String time = format.format(new Date());
         String lvl = loglvl.toString();
         PrintStream stream;
-        if (loglvl == LogLvl.Error || loglvl == LogLvl.Warning){
+        if (loglvl == LogLvl.Error || loglvl == LogLvl.Warning) {
             stream = System.err;
-        }else{
+        } else {
             stream = System.out;
         }
 
@@ -71,15 +74,15 @@ public class Log {
         e.printStackTrace();
     }
 
-    public static LogTime recordWorking(String tag){
+    public static LogTime recordWorking(String tag) {
         return new LogTime(tag);
     }
 
-    public static LogTime recordWorking(Object tag){
+    public static LogTime recordWorking(Object tag) {
         return new LogTime(getObjectTag(tag));
     }
 
-    private static String getObjectTag(Object obj){
+    private static String getObjectTag(Object obj) {
         return obj.getClass().getSimpleName();
     }
 
@@ -92,38 +95,39 @@ public class Log {
 
     public static class LogTime implements AutoCloseable {
 
-        private static final Object lock = new Object();
-        private static int ID = 0;
+        private static final Object LOCK = new Object();
+        private static int Id = 0;
         private String tag;
         private Stopwatch stopwatch;
         private int id = -1;
 
         {
-            synchronized (lock) {
-                id = ID++;
+            synchronized (LOCK) {
+                id = Id++;
             }
         }
+
         public LogTime(String tag) {
             stopwatch = new Stopwatch();
             this.tag = tag;
-            debug(this.tag, "Start timing! ID: " + id);
+            debug(this.tag, "Start timing! Id: " + id);
         }
 
         public int getId() {
             return id;
         }
 
-        public Date getStartTime(){
+        public Date getStartTime() {
             return stopwatch.getStartTime();
         }
 
-        public Date getElapsedTime(){
+        public Date getElapsedTime() {
             return stopwatch.getElapsedTime();
         }
 
         @Override
         public void close() {
-            debug(this.tag, "End timing! %s ID: %d", stopwatch, id);
+            debug(this.tag, "End timing! %s Id: %d", stopwatch, id);
             tag = null;
             stopwatch = null;
         }

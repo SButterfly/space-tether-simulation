@@ -1,6 +1,7 @@
-package com.sbutterfly.GUI.panels;
+package com.sbutterfly.gui.panels;
 
-import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 /**
  * Created by Sergei on 15.02.2015.
@@ -17,77 +18,77 @@ public class Constraint {
         return new Constraint().gridX(gridX).gridY(gridY).gridWidth(gridWidth).gridHeight(gridHeight);
     }
 
-    public Constraint gridX(int value){
+    public Constraint gridX(int value) {
         c.gridx = value;
         return this;
     }
 
-    public Constraint gridY(int value){
+    public Constraint gridY(int value) {
         c.gridy = value;
         return this;
     }
 
-    public Constraint weightX(double value){
+    public Constraint weightX(double value) {
         c.weightx = value;
         return this;
     }
 
-    public Constraint weightY(double value){
+    public Constraint weightY(double value) {
         c.weighty = value;
         return this;
     }
 
-    public Constraint gridHeight(int value){
+    public Constraint gridHeight(int value) {
         c.gridheight = value;
         return this;
     }
 
-    public Constraint gridWidth(int value){
+    public Constraint gridWidth(int value) {
         c.gridwidth = value;
         return this;
     }
 
-    public Constraint anchor(int value){
+    public Constraint anchor(int value) {
         c.anchor = value;
         return this;
     }
 
-    public Constraint ipadY(int value){
+    public Constraint ipadY(int value) {
         c.ipady = value;
         return this;
     }
 
-    public Constraint ipadX(int value){
+    public Constraint ipadX(int value) {
         c.ipadx = value;
         return this;
     }
 
-    public Constraint fill(int value){
+    public Constraint fill(int value) {
         c.fill = value;
         return this;
     }
 
-    public Constraint insets(int top, int left, int bottom, int right){
+    public Constraint insets(int top, int left, int bottom, int right) {
         c.insets = new Insets(top, left, bottom, right);
         return this;
     }
 
-    public Constraint insets(int topBottom, int leftRight){
+    public Constraint insets(int topBottom, int leftRight) {
         c.insets = new Insets(topBottom, leftRight, topBottom, leftRight);
         return this;
     }
 
-    public Constraint insets(int value){
+    public Constraint insets(int value) {
         c.insets = new Insets(value, value, value, value);
         return this;
     }
 
-    public Constraint insets(Insets value){
+    public Constraint insets(Insets value) {
         c.insets = value;
         return this;
     }
 
-    public GridBagConstraints get(){
+    public GridBagConstraints get() {
         return c;
     }
 }

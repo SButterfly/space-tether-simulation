@@ -1,15 +1,15 @@
-package com.sbutterfly.core.rope;
+package com.sbutterfly.core.callbackrope;
 
 import com.sbutterfly.core.Customable;
-import com.sbutterfly.core.ODEBaseModel;
+import com.sbutterfly.core.BaseSystem;
 import com.sbutterfly.differential.TimeVector;
 
 /**
  * Created by Sergei on 27.02.2015.
  */
-public class RopeModel extends ODEBaseModel {
+public class CallbackRopeSystem extends BaseSystem {
 
-    public RopeModel() {
+    public CallbackRopeSystem() {
         setStartParameter(0, 1);
         setStartParameter(1, 2.5);
 
@@ -23,7 +23,7 @@ public class RopeModel extends ODEBaseModel {
     }
 
     @Override
-    public RopeFunction getFunction() {
+    public CallbackRopeFunction getFunction() {
         final double m1 = getInitialParameter(0);
         final double m2 = getInitialParameter(1);
         final double p = getInitialParameter(2);
@@ -32,7 +32,7 @@ public class RopeModel extends ODEBaseModel {
         final double lk = getInitialParameter(5);
         final double h = getInitialParameter(6);
 
-        return new RopeFunction(m1, m2, p, a, b, lk, h);
+        return new CallbackRopeFunction(m1, m2, p, a, b, lk, h);
     }
 
     @Override
@@ -85,7 +85,8 @@ public class RopeModel extends ODEBaseModel {
         };
 
         final Customable tCustomable = new Customable() {
-            final RopeFunction function = getFunction();
+            final CallbackRopeFunction function = getFunction();
+
             @Override
             public double customize(TimeVector vector) {
                 return function.T(vector.get(0), vector.get(1));

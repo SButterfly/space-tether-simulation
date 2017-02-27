@@ -1,14 +1,17 @@
-package com.sbutterfly.GUI;
+package com.sbutterfly.gui;
 
-import com.sbutterfly.GUI.controls.EmptyPanel;
-import com.sbutterfly.GUI.controls.JImageButton;
-import com.sbutterfly.GUI.panels.Constraint;
-import com.sbutterfly.GUI.panels.JGridBagPanel;
+import com.sbutterfly.gui.controls.EmptyPanel;
+import com.sbutterfly.gui.controls.JImageButton;
+import com.sbutterfly.gui.panels.Constraint;
+import com.sbutterfly.gui.panels.JGridBagPanel;
 import com.sbutterfly.utils.Log;
 import info.monitorenter.gui.chart.ITrace2D;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -19,8 +22,8 @@ import java.util.ArrayList;
  */
 public class TraceListView extends JGridBagPanel {
 
-    private final static URL DELETE_IMAGE = TraceListView.class
-            .getClassLoader().getResource("delete.png");
+    private static final URL DELETE_IMAGE = TraceListView.class
+        .getClassLoader().getResource("delete.png");
 
     private JGridBagPanel listPanel;
 
@@ -56,8 +59,7 @@ public class TraceListView extends JGridBagPanel {
         Log.debug(this, "GUI was created");
     }
 
-    public void Add(ITrace2D trace){
-
+    public void add(ITrace2D trace) {
         JLabel label = new JLabel(trace.getName());
         JCheckBox checkBox = new JCheckBox("", true);
         checkBox.addChangeListener(e -> trace.setVisible(checkBox.isSelected()));
@@ -69,7 +71,7 @@ public class TraceListView extends JGridBagPanel {
             listPanel.updateUI();
             itemsCount--;
             updateDeleteAllButtonState();
-            for (SubmitListener<ITrace2D> listener : removeListeners){
+            for (SubmitListener<ITrace2D> listener : removeListeners) {
                 listener.onSubmit(trace);
             }
         });
@@ -77,7 +79,7 @@ public class TraceListView extends JGridBagPanel {
         int row = list.size();
         trace.setColor(getColor(row));
         label.setForeground(trace.getColor());
-        listPanel.add(label, getConstraint(0, row+1));
+        listPanel.add(label, getConstraint(0, row + 1));
         listPanel.add(checkBox, getConstraint(1, row + 1).fill(GridBagConstraints.CENTER));
         listPanel.add(button, getConstraint(2, row + 1).fill(GridBagConstraints.NONE));
 
@@ -93,12 +95,12 @@ public class TraceListView extends JGridBagPanel {
         itemsCount++;
         updateDeleteAllButtonState();
 
-        for (ActionListener listener : addListeners){
+        for (ActionListener listener : addListeners) {
             listener.actionPerformed(new ActionEvent(this, 0, "add"));
         }
     }
 
-    private Color getColor(int i){
+    private Color getColor(int i) {
         i %= 5;
         if (i == 0) return Color.BLUE;
         if (i == 1) return Color.RED;
@@ -107,33 +109,34 @@ public class TraceListView extends JGridBagPanel {
         return Color.DARK_GRAY;
     }
 
-    public void addAddListener(ActionListener listener){
+    public void addAddListener(ActionListener listener) {
         addListeners.add(listener);
     }
 
-    public void removeAddListener(ActionListener listener){
+    public void removeAddListener(ActionListener listener) {
         addListeners.remove(listener);
     }
 
-    public void addRemoveListener(SubmitListener<ITrace2D> listener){
+    public void addRemoveListener(SubmitListener<ITrace2D> listener) {
         removeListeners.add(listener);
     }
 
-    public void removeRemoveListener(SubmitListener<ITrace2D> listener){
+    public void removeRemoveListener(SubmitListener<ITrace2D> listener) {
         removeListeners.remove(listener);
     }
 
-    public void addRemoveAllListener(ActionListener listener){
+    public void addRemoveAllListener(ActionListener listener) {
         removeAllListeners.add(listener);
     }
-    public void removeRemoveAllListener(ActionListener listener){
+
+    public void removeRemoveAllListener(ActionListener listener) {
         removeAllListeners.remove(listener);
     }
 
     private Constraint getConstraint(int gridX, int gridY) {
         return Constraint.create(gridX, gridY)
-                .fill(GridBagConstraints.HORIZONTAL)
-                .insets(5);
+            .fill(GridBagConstraints.HORIZONTAL)
+            .insets(5);
     }
 
     private void updateDeleteAllButtonState() {

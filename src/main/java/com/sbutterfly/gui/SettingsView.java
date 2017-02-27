@@ -1,10 +1,10 @@
-package com.sbutterfly.GUI;
+package com.sbutterfly.gui;
 
-import com.sbutterfly.GUI.controls.MultiLineJLabel;
-import com.sbutterfly.GUI.controls.MyJTextField;
-import com.sbutterfly.GUI.panels.Constraint;
-import com.sbutterfly.GUI.panels.JGridBagPanel;
-import com.sbutterfly.core.ODEBaseModel;
+import com.sbutterfly.gui.controls.MultiLineJLabel;
+import com.sbutterfly.gui.controls.MyJTextField;
+import com.sbutterfly.gui.panels.Constraint;
+import com.sbutterfly.gui.panels.JGridBagPanel;
+import com.sbutterfly.core.BaseSystem;
 import com.sbutterfly.differential.EulerODEMethod;
 import com.sbutterfly.differential.ODEMethod;
 import com.sbutterfly.differential.RungeKuttaODEMethod;
@@ -30,9 +30,9 @@ public class SettingsView implements Frameable {
     private JButton epsButton;
     private JLabel epsLabel;
 
-    private final ODEBaseModel model;
+    private final BaseSystem model;
 
-    public SettingsView(ODEBaseModel model) {
+    public SettingsView(BaseSystem model) {
         this.model = model;
     }
 
@@ -91,7 +91,7 @@ public class SettingsView implements Frameable {
         return panel;
     }
 
-    private void startEpsCalc(){
+    private void startEpsCalc() {
 
         if (!save()) return;
 
@@ -113,8 +113,7 @@ public class SettingsView implements Frameable {
                     epsLabel.setText(buff.toString());
                     epsButton.setEnabled(true);
                 });
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 SwingUtilities.invokeLater(() -> {
                     JOptionPane.showMessageDialog(null, e.getMessage());
                     epsLabel.setText("");
@@ -130,14 +129,14 @@ public class SettingsView implements Frameable {
         double step = AppSettings.getODEStep();
 
         int index = -1;
-        if (method instanceof RungeKuttaODEMethod){
+        if (method instanceof RungeKuttaODEMethod) {
             index = 0;
         }
-        if (method instanceof EulerODEMethod){
+        if (method instanceof EulerODEMethod) {
             index = 1;
         }
 
-        if (index == -1){
+        if (index == -1) {
             throw new RuntimeException("No implemented index for " + method);
         }
 
@@ -179,7 +178,7 @@ public class SettingsView implements Frameable {
             frame = new JFrame("Настройки");
             frame.getContentPane().add(getComponent());
             frame.pack();
-            frame.setSize(400, 300);
+            frame.setSize(600, 300);
             frame.getRootPane().setDefaultButton(saveButton);
         }
         return frame;

@@ -1,4 +1,4 @@
-package com.sbutterfly.GUI;
+package com.sbutterfly.gui;
 
 import com.sbutterfly.utils.Log;
 
@@ -14,16 +14,18 @@ public class NavigationController {
 
     private static final String LTAG = NavigationController.class.getSimpleName();
 
-    private static Stack<Frameable> navigationStack = new Stack<>();
+    private static final Stack<Frameable> NAVIGATION_STACK = new Stack<>();
+
+    private NavigationController() {
+    }
 
     public static void open(Frameable view) {
-
         JFrame frame = view.getFrame();
         int closeOperation = JFrame.EXIT_ON_CLOSE;
 
-        if (!navigationStack.empty()){
+        if (!NAVIGATION_STACK.empty()) {
             closeOperation = JFrame.DO_NOTHING_ON_CLOSE;
-            navigationStack.peek().getFrame().setEnabled(false);
+            NAVIGATION_STACK.peek().getFrame().setEnabled(false);
         }
 
         frame.addWindowListener(new WindowAdapter() {
@@ -34,23 +36,23 @@ public class NavigationController {
         });
         frame.setDefaultCloseOperation(closeOperation);
         frame.setVisible(true);
-        navigationStack.push(view);
+        NAVIGATION_STACK.push(view);
 
         Log.debug(LTAG, "open " + view.getClass().getName());
     }
 
     public static void close() {
-        close(navigationStack.peek());
+        close(NAVIGATION_STACK.peek());
     }
 
     public static void close(Frameable view) {
         JFrame frame = view.getFrame();
         frame.setVisible(false);
         frame.dispose();
-        navigationStack.remove(view);
+        NAVIGATION_STACK.remove(view);
 
-        if (!navigationStack.empty()) {
-            JFrame topFrame = navigationStack.peek().getFrame();
+        if (!NAVIGATION_STACK.empty()) {
+            JFrame topFrame = NAVIGATION_STACK.peek().getFrame();
             topFrame.setEnabled(true);
             topFrame.setAlwaysOnTop(true);
             topFrame.setAlwaysOnTop(false);

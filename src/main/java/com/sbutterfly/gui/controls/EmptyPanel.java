@@ -1,7 +1,7 @@
-package com.sbutterfly.GUI.controls;
+package com.sbutterfly.gui.controls;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Dimension;
 
 /**
  * Created by Sergei on 28.02.2015.

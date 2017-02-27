@@ -1,4 +1,4 @@
-package com.sbutterfly.core.rope;
+package com.sbutterfly.core.callbackrope;
 
 import com.sbutterfly.differential.Function;
 import com.sbutterfly.differential.Vector;
@@ -8,10 +8,10 @@ import static java.lang.Math.sin;
 
 /**
  * Функция моделирования развертки КА.
- *
- * Created by Sergei on 26.02.2015
+ * <p>
+ * Created by Sergei on 26.02.2015.
  */
-public class RopeFunction extends Function {
+public class CallbackRopeFunction extends Function {
 
     private final double m1;
     private final double m2;
@@ -37,7 +37,7 @@ public class RopeFunction extends Function {
     private double sin2O;
     private double sin2B;
 
-    public RopeFunction(double m1, double m2, double p, double a, double b, double lk, double h) {
+    public CallbackRopeFunction(double m1, double m2, double p, double a, double b, double lk, double h) {
         this.m1 = m1;
         this.m2 = m2;
         this.p = p;

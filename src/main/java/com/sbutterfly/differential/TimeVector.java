@@ -2,7 +2,7 @@ package com.sbutterfly.differential;
 
 /**
  * Created by Sergei on 29.01.2015.
- *
+ * <p>
  * Vector, which has one more field for time.
  */
 public class TimeVector extends Vector {
@@ -31,7 +31,7 @@ public class TimeVector extends Vector {
     @Override
     public String toString() {
         return "TimeVector{" +
-                "time=" + time +
-                "} " + super.toString();
+            "time=" + time +
+            "} " + super.toString();
     }
 }

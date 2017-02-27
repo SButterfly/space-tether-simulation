@@ -1,9 +1,9 @@
-package com.sbutterfly.GUI;
+package com.sbutterfly.gui;
 
-import com.sbutterfly.GUI.controls.MyJTextField;
-import com.sbutterfly.GUI.panels.Constraint;
-import com.sbutterfly.GUI.panels.JGridBagPanel;
-import com.sbutterfly.core.ODEBaseModel;
+import com.sbutterfly.gui.controls.MyJTextField;
+import com.sbutterfly.gui.panels.Constraint;
+import com.sbutterfly.gui.panels.JGridBagPanel;
+import com.sbutterfly.core.BaseSystem;
 import com.sbutterfly.differential.Index;
 import com.sbutterfly.utils.Log;
 
@@ -21,7 +21,6 @@ public class AddTraceView extends JGridBagPanel {
     private JTextField nameTextField;
     private JButton submitButton;
 
-    private ODEBaseModel model;
     private Index[] indexes;
     private ArrayList<SubmitListener<Traceable>> listeners = new ArrayList<>();
 
@@ -34,8 +33,7 @@ public class AddTraceView extends JGridBagPanel {
         return yName + "(" + xName + ")";
     }
 
-    private void createGUI(){
-
+    private void createGUI() {
         JLabel ylabel = new JLabel("Ось ординат:");
         JLabel xlabel = new JLabel("Ось абсцисс:");
         JLabel namelabel = new JLabel("Название:");
@@ -47,7 +45,7 @@ public class AddTraceView extends JGridBagPanel {
         nameTextField = new MyJTextField();
 
         submitButton = new JButton("Добавить");
-        submitButton.addActionListener(e -> OnAdd());
+        submitButton.addActionListener(e -> onAdd());
 
         add(ylabel, getConstraint(0, 0));
         add(xlabel, getConstraint(0, 1));
@@ -71,9 +69,8 @@ public class AddTraceView extends JGridBagPanel {
         submitButton.setEnabled(value);
     }
 
-    public void Init(ODEBaseModel model){
+    public void init(BaseSystem model) {
         this.setEnabled(true);
-        this.model = model;
         int lastXSelected = xComboBox.getSelectedIndex();
         int lastYSelected = yComboBox.getSelectedIndex();
         lastXSelected = Math.max(lastXSelected, 0);
@@ -90,7 +87,7 @@ public class AddTraceView extends JGridBagPanel {
 
         int i = 0;
         for (; i < names.length; i++) {
-            if (names[i] != null){
+            if (names[i] != null) {
                 yComboBox.addItem(names[i]);
                 xComboBox.addItem(names[i]);
             }
@@ -117,14 +114,14 @@ public class AddTraceView extends JGridBagPanel {
         nameTextField.setText(name);
     }
 
-    private void OnAdd(){
+    private void onAdd() {
 
         int xIndex = xComboBox.getSelectedIndex();
         int yIndex = yComboBox.getSelectedIndex();
 
         String name = nameTextField.getText();
 
-        for (SubmitListener<Traceable> listener : listeners){
+        for (SubmitListener<Traceable> listener : listeners) {
             Traceable traceable = new Traceable();
             traceable.name = name;
             traceable.xIndex = indexes[xIndex];
@@ -134,11 +131,11 @@ public class AddTraceView extends JGridBagPanel {
         }
     }
 
-    public void addSubmitListener(SubmitListener<Traceable> listener){
+    public void addSubmitListener(SubmitListener<Traceable> listener) {
         listeners.add(listener);
     }
 
-    public void removeSubmitListener(SubmitListener<Traceable> listener){
+    public void removeSubmitListener(SubmitListener<Traceable> listener) {
         listeners.remove(listener);
     }
 

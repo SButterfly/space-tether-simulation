@@ -1,4 +1,4 @@
-package com.sbutterfly.GUI.controls;
+package com.sbutterfly.gui.controls;
 
 import javax.swing.*;
 import javax.swing.text.Document;

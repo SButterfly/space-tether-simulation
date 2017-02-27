@@ -15,32 +15,35 @@ public class AppSettings {
     private static final String ODE_TIME_KEY = "odetime";
     private static final String ODE_STEP_KEY = "odestep";
 
-    private static Preferences getPreferences(){
+    private AppSettings() {
+    }
+
+    private static Preferences getPreferences() {
         return Preferences.userNodeForPackage(AppSettings.class);
     }
 
-    public static ODEMethod getODEMethod(){
+    public static ODEMethod getODEMethod() {
         Preferences preferences = getPreferences();
 
         int methodInt = preferences.getInt(ODE_METHOD_KEY, 0);
 
-        if (methodInt == 0){
+        if (methodInt == 0) {
             return new RungeKuttaODEMethod();
         }
-        if (methodInt == 1){
+        if (methodInt == 1) {
             return new EulerODEMethod();
         }
 
         throw new RuntimeException("Couldn't get ODEMethod");
     }
 
-    public static void setODEMethod(ODEMethod method){
+    public static void setODEMethod(ODEMethod method) {
         Preferences preferences = getPreferences();
         int val = -1;
-        if (method instanceof RungeKuttaODEMethod){
+        if (method instanceof RungeKuttaODEMethod) {
             val = 0;
         }
-        if (method instanceof EulerODEMethod){
+        if (method instanceof EulerODEMethod) {
             val = 1;
         }
 
@@ -52,12 +55,12 @@ public class AppSettings {
         throw new RuntimeException("Couldn't save this type of ODEMethod");
     }
 
-    public static double getODETime(){
+    public static double getODETime() {
         Preferences preferences = getPreferences();
         return preferences.getDouble(ODE_TIME_KEY, 1000);
     }
 
-    public static void setODETime(double time){
+    public static void setODETime(double time) {
         Preferences preferences = getPreferences();
         preferences.putDouble(ODE_TIME_KEY, time);
     }

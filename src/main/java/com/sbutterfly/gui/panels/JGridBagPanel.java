@@ -1,4 +1,4 @@
-package com.sbutterfly.GUI.panels;
+package com.sbutterfly.gui.panels;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,11 +1,11 @@
-package com.sbutterfly.GUI.hardcoded;
+package com.sbutterfly.gui.hardcoded;
 
-import com.sbutterfly.GUI.InitialStateView;
-import com.sbutterfly.GUI.SubmitListener;
-import com.sbutterfly.GUI.controls.MyJTextField;
-import com.sbutterfly.GUI.panels.Constraint;
-import com.sbutterfly.core.ODEBaseModel;
-import com.sbutterfly.core.rope.RopeModel;
+import com.sbutterfly.gui.InitialStateView;
+import com.sbutterfly.gui.SubmitListener;
+import com.sbutterfly.gui.controls.MyJTextField;
+import com.sbutterfly.gui.panels.Constraint;
+import com.sbutterfly.core.BaseSystem;
+import com.sbutterfly.core.rope.RopeSystem;
 import com.sbutterfly.differential.Index;
 import com.sbutterfly.utils.DoubleUtils;
 import com.sbutterfly.utils.Log;
@@ -24,7 +24,7 @@ public class RopeInitialStateView extends InitialStateView {
 
     private MyJTextField aTextField;
     private MyJTextField bTextField;
-    private MyJTextField LkTextField;
+    private MyJTextField lkTextField;
     private MyJTextField hTextField;
 
     private MyJTextField s0TextField;
@@ -36,11 +36,11 @@ public class RopeInitialStateView extends InitialStateView {
 
     private JButton submitButton;
 
-    private boolean continuewSubmit_Hack = true;
+    private boolean continueSubmitHack = true;
 
-    public RopeInitialStateView(ODEBaseModel model) {
+    public RopeInitialStateView(BaseSystem model) {
         super(model);
-        if (!(model instanceof RopeModel)) {
+        if (!(model instanceof RopeSystem)) {
             throw new IllegalArgumentException("model must be type of RopeModel");
         }
         if (model.paramsNames().length != 6 && model.initialParamsNames().length != 6) {
@@ -53,12 +53,12 @@ public class RopeInitialStateView extends InitialStateView {
 
         submitButton = new JButton("Рассчитать");
         submitButton.addActionListener(e -> {
-            if (continuewSubmit_Hack) {
-                for (SubmitListener<ODEBaseModel> listener : list) {
+            if (continueSubmitHack) {
+                for (SubmitListener<BaseSystem> listener : list) {
                     listener.onSubmit(getModel());
                 }
             } else {
-                continuewSubmit_Hack = true;
+                continueSubmitHack = true;
             }
         });
 
@@ -77,8 +77,8 @@ public class RopeInitialStateView extends InitialStateView {
         submitButton.addActionListener(e -> onSet(pTextField, value -> getModel().setInitialParameter(2, value)));
 
         add(new JLabel(getModel().initialParamsNames()[5] + ":", SwingConstants.RIGHT), Constraint.create(0, lastRow).fill(GridBagConstraints.HORIZONTAL));
-        add((LkTextField = new MyJTextField(DoubleUtils.toString(getModel().getInitialParameter(5)))), Constraint.create(1, lastRow++));
-        submitButton.addActionListener(e -> onSet(LkTextField, value -> getModel().setInitialParameter(5, value)));
+        add((lkTextField = new MyJTextField(DoubleUtils.toString(getModel().getInitialParameter(5)))), Constraint.create(1, lastRow++));
+        submitButton.addActionListener(e -> onSet(lkTextField, value -> getModel().setInitialParameter(5, value)));
 
         add(new JLabel(getModel().initialParamsNames()[6] + ":", SwingConstants.RIGHT), Constraint.create(0, lastRow).fill(GridBagConstraints.HORIZONTAL));
         add((hTextField = new MyJTextField(DoubleUtils.toString(getModel().getInitialParameter(6)))), Constraint.create(1, lastRow++));
@@ -126,7 +126,7 @@ public class RopeInitialStateView extends InitialStateView {
     }
 
     private void onSet(JTextField textField, Settable settable) {
-        if (continuewSubmit_Hack) {
+        if (continueSubmitHack) {
             try {
                 double val = DoubleUtils.parse(textField.getText());
                 if (val >= 0) {
@@ -135,14 +135,14 @@ public class RopeInitialStateView extends InitialStateView {
                     throw new NumberFormatException();
                 }
             } catch (NumberFormatException ex) {
-                continuewSubmit_Hack = false;
+                continueSubmitHack = false;
                 JOptionPane.showMessageDialog(null, "Проверьте корректность ввода введенных данных!\nВведенные значения должны быть неотрицательными");
             }
         }
     }
 
     @Override
-    public RopeModel getModel() {
-        return (RopeModel) super.getModel();
+    public RopeSystem getModel() {
+        return (RopeSystem) super.getModel();
     }
 }

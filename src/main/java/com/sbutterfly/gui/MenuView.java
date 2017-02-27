@@ -1,4 +1,4 @@
-package com.sbutterfly.GUI;
+package com.sbutterfly.gui;
 
 import com.sbutterfly.utils.Log;
 
@@ -14,10 +14,6 @@ public class MenuView extends JMenuBar {
     private JMenuItem newItem;
     private JMenuItem openItem;
     private JMenuItem saveItem;
-    @Deprecated
-    private JMenuItem saveAsItem;
-    @Deprecated
-    private JMenuItem printItem;
 
     private JMenuItem settingsItem;
 
@@ -48,10 +44,6 @@ public class MenuView extends JMenuBar {
         saveItem.setFont(font);
         fileMenu.add(saveItem);
 
-        printItem = new JMenuItem("Напечатать ??");
-        printItem.setFont(font);
-        //fileMenu.add(printItem);
-
         add(fileMenu);
 
         JMenu settingsMenu = new JMenu("Настройки");
@@ -79,39 +71,29 @@ public class MenuView extends JMenuBar {
         Log.debug(this, "GUI was created");
     }
 
-    public void addNewActionListener(ActionListener listener){
+    public void addNewActionListener(ActionListener listener) {
         newItem.addActionListener(listener);
     }
 
-    public void addSaveActionListener(ActionListener listener){
+    public void addSaveActionListener(ActionListener listener) {
         saveItem.addActionListener(listener);
     }
 
-    @Deprecated
-    public void addSaveAsActionListener(ActionListener listener){
-        saveAsItem.addActionListener(listener);
-    }
-
-    public void addOpenActionListener(ActionListener listener){
+    public void addOpenActionListener(ActionListener listener) {
         openItem.addActionListener(listener);
     }
 
-    @Deprecated
-    public void addPrintActionListener(ActionListener listener){
-        printItem.addActionListener(listener);
-    }
 
-
-    public void addSettingsActionListener(ActionListener listener){
+    public void addSettingsActionListener(ActionListener listener) {
         settingsItem.addActionListener(listener);
     }
 
 
-    public void addHelpActionListener(ActionListener listener){
+    public void addHelpActionListener(ActionListener listener) {
         helpItem.addActionListener(listener);
     }
 
-    public void addCreditsActionListener(ActionListener listener){
+    public void addCreditsActionListener(ActionListener listener) {
         creditsItem.addActionListener(listener);
     }
 }

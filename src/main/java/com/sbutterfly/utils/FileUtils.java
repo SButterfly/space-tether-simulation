@@ -1,7 +1,5 @@
 package com.sbutterfly.utils;
 
-import com.sbutterfly.core.ODEModelSerializer;
-
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 
@@ -10,17 +8,17 @@ import java.io.File;
  */
 public class FileUtils {
 
-    public final static String ode = "ode";
-    public final static String odex = "odex";
+    public static final String ODE = "ode";
+    public static final String ODEX = "odex";
 
-    public final static FileNameExtensionFilter bothFilter = new FileNameExtensionFilter("Мат. модели", ode, odex);
+    public static final FileNameExtensionFilter ODE_FILTER = new FileNameExtensionFilter("Мат. модели", ODE);
 
-    public final static FileNameExtensionFilter odeFilter = new FileNameExtensionFilter("Мат. модели", ode);
-    public final static FileNameExtensionFilter odexFilter = new FileNameExtensionFilter("Мат. модели с расчетом", odex);
+    private FileUtils() {
+    }
 
     /*
-     * Get the extension of a file.
-     */
+         * Get the extension of a file.
+         */
     public static String getExtension(File file) {
         String ext = "";
         String str = file.getName();
@@ -34,17 +32,5 @@ public class FileUtils {
 
     public static File setExtension(File file, String ext) {
         return new File(file.getPath() + "." + ext);
-    }
-
-    public static ODEModelSerializer.SerializeType getSerializeType(File file) {
-        String extension = getExtension(file);
-
-        if (extension.equals(ode)) {
-            return ODEModelSerializer.SerializeType.Params;
-        }
-        if (extension.equals(odex)) {
-            return ODEModelSerializer.SerializeType.ParamsAndValues;
-        }
-        throw new IllegalArgumentException();
     }
 }

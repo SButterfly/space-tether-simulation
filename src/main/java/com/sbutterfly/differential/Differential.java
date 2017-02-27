@@ -1,6 +1,6 @@
 package com.sbutterfly.differential;
 
-import com.sbutterfly.GUI.AdditionalLineView;
+import com.sbutterfly.gui.AdditionalLineView;
 import com.sbutterfly.utils.Func;
 import com.sbutterfly.utils.Log;
 
@@ -23,7 +23,8 @@ public class Differential implements Iterable<TimeVector> {
         this(function, startVector, time, numberOfIterations, new RungeKuttaODEMethod());
     }
 
-    public Differential(Function function, TimeVector startVector, double time, int numberOfIterations, ODEMethod method){
+    public Differential(Function function, TimeVector startVector, double time, int numberOfIterations,
+                        ODEMethod method) {
         this.function = function;
         this.startVector = startVector;
         this.time = time;
@@ -34,20 +35,24 @@ public class Differential implements Iterable<TimeVector> {
     public ODEMethod getMethod() {
         return method;
     }
+
     public Function getFunction() {
         return function;
     }
+
     public TimeVector getStartVector() {
         return startVector;
     }
+
     public double getTime() {
         return time;
     }
+
     public int getNumberOfIterations() {
         return numberOfIterations;
     }
 
-    public TimeVector[] makeDifferential(){
+    public TimeVector[] makeDifferential() {
         return makeDifferential(this.iterator());
     }
 
@@ -55,11 +60,12 @@ public class Differential implements Iterable<TimeVector> {
         try (Log.LogTime logTime = Log.recordWorking(this)) {
             ArrayList<TimeVector> arrayList = new ArrayList<>(numberOfIterations);
             int i = 0;
-            for (;iterator.hasNext(); i++) {
+            for (; iterator.hasNext(); i++) {
                 TimeVector vector = iterator.next();
-                if (vector.isAnyNaN()){
+                if (vector.isAnyNaN()) {
                     Log.warning(this, "Some param is NaN is null; throw!!");
-                    throw new RuntimeException("Одно или несколько значения стало NaN. Проверьте параметры метода численного интегрирования.");
+                    throw new RuntimeException("Одно или несколько значения стало NaN. " +
+                        "Проверьте параметры метода численного интегрирования.");
                 }
                 arrayList.add(vector);
             }
@@ -105,13 +111,13 @@ public class Differential implements Iterable<TimeVector> {
         }
 
         public TimeVector next() throws NoSuchElementException {
-            if (hasNext()){
-                last = method.Next(function, last, h);
+            if (hasNext()) {
+                last = method.next(function, last, h);
                 currentTime += h;
                 return new TimeVector(currentTime, last);
-            }
-            else
+            } else {
                 throw new NoSuchElementException();
+            }
         }
 
         @Override

@@ -1,10 +1,10 @@
-package com.sbutterfly.GUI;
+package com.sbutterfly.gui;
 
-import com.sbutterfly.GUI.controls.EmptyPanel;
-import com.sbutterfly.GUI.controls.MyJTextField;
-import com.sbutterfly.GUI.panels.Constraint;
-import com.sbutterfly.GUI.panels.JGridBagPanel;
-import com.sbutterfly.core.ODEBaseModel;
+import com.sbutterfly.gui.controls.EmptyPanel;
+import com.sbutterfly.gui.controls.MyJTextField;
+import com.sbutterfly.gui.panels.Constraint;
+import com.sbutterfly.gui.panels.JGridBagPanel;
+import com.sbutterfly.core.BaseSystem;
 import com.sbutterfly.utils.DoubleUtils;
 import com.sbutterfly.utils.Log;
 
@@ -17,17 +17,16 @@ import java.util.ArrayList;
  */
 public class InitialStateView extends JGridBagPanel {
 
-    protected ArrayList<SubmitListener<ODEBaseModel>> list = new ArrayList<>();
-    private ODEBaseModel model;
+    protected ArrayList<SubmitListener<BaseSystem>> list = new ArrayList<>();
+    private BaseSystem model;
     private int lastRow = 0;
 
-    public InitialStateView(ODEBaseModel model)
-    {
+    public InitialStateView(BaseSystem model) {
         this.model = model;
         createGUI();
     }
 
-    public ODEBaseModel getModel() {
+    public BaseSystem getModel() {
         return model;
     }
 
@@ -39,7 +38,7 @@ public class InitialStateView extends JGridBagPanel {
         JButton submitButton = new JButton();
         submitButton.setText("Рассчитать");
         submitButton.addActionListener(e -> {
-            for (SubmitListener<ODEBaseModel> listener : list) {
+            for (SubmitListener<BaseSystem> listener : list) {
                 listener.onSubmit(model);
             }
         });
@@ -93,15 +92,15 @@ public class InitialStateView extends JGridBagPanel {
         ArrayList<Double> valueList = new ArrayList<>(names.length);
         ArrayList<Settable> settables = new ArrayList<>(names.length);
 
-        for (int i = 0, n = names.length; i < n; i++){
-            if (names[i] != null && settable[i] != null){
+        for (int i = 0, n = names.length; i < n; i++) {
+            if (names[i] != null && settable[i] != null) {
                 nameList.add(names[i]);
                 valueList.add(values[i]);
                 settables.add(settable[i]);
             }
         }
 
-        for (int i = 0, n = settables.size(); i < n; i+=2, lastRow++){
+        for (int i = 0, n = settables.size(); i < n; i += 2, lastRow++) {
 
             if (i < n) {
 
@@ -129,18 +128,19 @@ public class InitialStateView extends JGridBagPanel {
         }
     }
 
-    public void addSubmitListener(SubmitListener<ODEBaseModel> listener){
+    public void addSubmitListener(SubmitListener<BaseSystem> listener) {
         list.add(listener);
     }
-    public void removeSubmitListener(SubmitListener<ODEBaseModel> listener){
+
+    public void removeSubmitListener(SubmitListener<BaseSystem> listener) {
         list.remove(listener);
     }
 
     private Constraint getConstraint(int gridX, int gridY, int gridWidth, int gridHeight) {
         return Constraint.create(gridX, gridY, gridWidth, gridHeight)
-                .fill(GridBagConstraints.HORIZONTAL)
-                .weightX(1)
-                .insets(3, 5);
+            .fill(GridBagConstraints.HORIZONTAL)
+            .weightX(1)
+            .insets(3, 5);
     }
 
     protected interface Settable {

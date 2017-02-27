@@ -4,6 +4,10 @@ package com.sbutterfly.utils;
  * Created by Sergei on 05.03.2015.
  */
 public class DoubleUtils {
+
+    private DoubleUtils() {
+    }
+
     public static String toString(double value) {
         String str = Double.toString(value);
         if (str.endsWith(".0")) {

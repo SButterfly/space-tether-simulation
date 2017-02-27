@@ -1,7 +1,9 @@
-package com.sbutterfly.GUI.panels;
+package com.sbutterfly.gui.panels;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import java.awt.FlowLayout;
+import java.awt.LayoutManager;
 
 /**
  * Created by Sergei on 21.02.2015.

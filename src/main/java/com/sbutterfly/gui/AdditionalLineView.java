@@ -1,8 +1,8 @@
-package com.sbutterfly.GUI;
+package com.sbutterfly.gui;
 
-import com.sbutterfly.GUI.controls.JImageButton;
-import com.sbutterfly.GUI.panels.Constraint;
-import com.sbutterfly.GUI.panels.JGridBagPanel;
+import com.sbutterfly.gui.controls.JImageButton;
+import com.sbutterfly.gui.panels.Constraint;
+import com.sbutterfly.gui.panels.JGridBagPanel;
 import com.sbutterfly.utils.Log;
 
 import javax.swing.*;
@@ -15,8 +15,8 @@ import java.net.URL;
  */
 public class AdditionalLineView extends JGridBagPanel {
 
-    private final static URL CANCEL_IMAGE = AdditionalLineView.class
-            .getClassLoader().getResource("cancel.png");
+    private static final URL CANCEL_IMAGE = AdditionalLineView.class
+        .getClassLoader().getResource("cancel.png");
 
     Processable processable;
     private JLabel label;
@@ -74,7 +74,7 @@ public class AdditionalLineView extends JGridBagPanel {
         }).start();
     }
 
-    public String getText(){
+    public String getText() {
         return label.getText();
     }
 
@@ -82,11 +82,11 @@ public class AdditionalLineView extends JGridBagPanel {
         SwingUtilities.invokeLater(() -> label.setText(value));
     }
 
-    public double getStatusIndicator(){
+    public double getStatusIndicator() {
         return progressBar.getPercentComplete();
     }
 
-    public void setStatusIndicator(double value){
+    public void setStatusIndicator(double value) {
         SwingUtilities.invokeLater(() -> {
             int val = (int) Math.round(value * 100);
             progressBar.setValue(val);
@@ -95,14 +95,15 @@ public class AdditionalLineView extends JGridBagPanel {
         });
     }
 
-    public void addCancelActionListener(ActionListener listener){
+    public void addCancelActionListener(ActionListener listener) {
         cancelButton.addActionListener(listener);
     }
-    public void removeCancelActionListener(ActionListener listener){
+
+    public void removeCancelActionListener(ActionListener listener) {
         cancelButton.removeActionListener(listener);
     }
 
-    public static interface Processable {
+    public interface Processable {
         double getStatusIndicator();
 
         boolean hasEnded();

@@ -1,7 +1,7 @@
 package com.sbutterfly;
 
-import com.sbutterfly.GUI.MainView;
-import com.sbutterfly.GUI.NavigationController;
+import com.sbutterfly.gui.MainView;
+import com.sbutterfly.gui.NavigationController;
 
 import javax.swing.*;
 

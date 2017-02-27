@@ -23,16 +23,16 @@ public class PendulumFunction extends Function {
 
     public void setOm(double om) {
         this.om = om;
-        this.minusOm2 = -om*om;
+        this.minusOm2 = -om * om;
     }
 
     @Override
     public Vector diff(Vector x) {
 
-        if (x.size() != 2){
+        if (x.size() != 2) {
             throw new RuntimeException("Размер вектора должен быть равен 2.");
         }
 
-        return new Vector(x.get(1), minusOm2*x.get(0));
+        return new Vector(x.get(1), minusOm2 * x.get(0));
     }
 }
