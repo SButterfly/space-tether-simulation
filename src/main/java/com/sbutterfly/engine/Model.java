@@ -4,6 +4,7 @@ import com.sbutterfly.engine.trace.Axis;
 import com.sbutterfly.engine.trace.Trace;
 import com.sbutterfly.engine.trace.TraceDescription;
 
+import java.awt.Color;
 import java.util.List;
 
 /**
@@ -12,6 +13,17 @@ import java.util.List;
  * @author s-ermakov
  */
 public abstract class Model {
+
+    private String name;
+    private Color color;
+
+    public String getName() {
+        return name == null ? "Безымянный" : name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     /**
      * Возвращает описание модели в ввиде списка групп параметров, необходимых к заданию.
@@ -29,4 +41,12 @@ public abstract class Model {
     public abstract void setInitialValue(Axis k, Double v);
 
     public abstract Trace getTrace(TraceDescription traceDescription);
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 }

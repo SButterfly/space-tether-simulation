@@ -1,7 +1,7 @@
 package com.sbutterfly.gui.hardcoded;
 
 import com.sbutterfly.gui.InitialStateView;
-import com.sbutterfly.gui.SubmitListener;
+import com.sbutterfly.gui.helpers.EventListener;
 import com.sbutterfly.gui.controls.MyJTextField;
 import com.sbutterfly.gui.panels.Constraint;
 import com.sbutterfly.core.BaseSystem;
@@ -53,7 +53,7 @@ public class RopeInitialStateView extends InitialStateView {
         submitButton = new JButton("Рассчитать");
         submitButton.addActionListener(e -> {
             if (continueSubmitHack) {
-                for (SubmitListener<BaseSystem> listener : listeners) {
+                for (EventListener<BaseSystem> listener : listeners) {
                     listener.onSubmit(getSystem());
                 }
             } else {

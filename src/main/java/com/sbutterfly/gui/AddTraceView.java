@@ -1,6 +1,8 @@
 package com.sbutterfly.gui;
 
 import com.sbutterfly.gui.controls.MyJTextField;
+import com.sbutterfly.gui.helpers.EventHandler;
+import com.sbutterfly.gui.helpers.EventListener;
 import com.sbutterfly.gui.panels.Constraint;
 import com.sbutterfly.gui.panels.JGridBagPanel;
 import com.sbutterfly.core.BaseSystem;
@@ -9,11 +11,12 @@ import com.sbutterfly.utils.Log;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Created by Sergei on 13.02.2015.
+ * @deprecated Delete as soon as possible
  */
+@Deprecated
 public class AddTraceView extends JGridBagPanel {
 
     private JComboBox<String> yComboBox;
@@ -22,7 +25,7 @@ public class AddTraceView extends JGridBagPanel {
     private JButton submitButton;
 
     private Index[] indexes;
-    private ArrayList<SubmitListener<Traceable>> listeners = new ArrayList<>();
+    private EventHandler<Traceable> eventHandler = new EventHandler<>();
 
     public AddTraceView() {
         createGUI();
@@ -120,23 +123,19 @@ public class AddTraceView extends JGridBagPanel {
         int yIndex = yComboBox.getSelectedIndex();
 
         String name = nameTextField.getText();
-
-        for (SubmitListener<Traceable> listener : listeners) {
-            Traceable traceable = new Traceable();
-            traceable.name = name;
-            traceable.xIndex = indexes[xIndex];
-            traceable.yIndex = indexes[yIndex];
-
-            listener.onSubmit(traceable);
-        }
+        Traceable traceable = new Traceable();
+        traceable.name = name;
+        traceable.xIndex = indexes[xIndex];
+        traceable.yIndex = indexes[yIndex];
+        eventHandler.invoke(traceable);
     }
 
-    public void addSubmitListener(SubmitListener<Traceable> listener) {
-        listeners.add(listener);
+    public void addSubmitListener(EventListener<Traceable> listener) {
+        eventHandler.add(listener);
     }
 
-    public void removeSubmitListener(SubmitListener<Traceable> listener) {
-        listeners.remove(listener);
+    public void removeSubmitListener(EventListener<Traceable> listener) {
+        eventHandler.remove(listener);
     }
 
     private Constraint getConstraint(int gridX, int gridY) {

@@ -4,7 +4,10 @@ import com.sbutterfly.core.BaseSystem;
 import com.sbutterfly.core.SystemSerializer;
 import com.sbutterfly.core.rope.RopeSystem;
 import com.sbutterfly.engine.Model;
+import com.sbutterfly.engine.ModelSet;
+import com.sbutterfly.engine.trace.TraceDescription;
 import com.sbutterfly.gui.hardcoded.RopeInitialStateView;
+import com.sbutterfly.gui.helpers.EventListener;
 import com.sbutterfly.gui.panels.Constraint;
 import com.sbutterfly.gui.panels.JBoxLayout;
 import com.sbutterfly.gui.panels.JGridBagPanel;
@@ -23,30 +26,30 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * Created by Sergei on 31.01.2015.
  */
-public class MainView implements Frameable, SubmitListener<BaseSystem> {
+public class MainView implements Frameable, EventListener<BaseSystem> {
     private JPanel rootPanel;
     private JGridBagPanel viewsPanel;
     private JFrame frame;
 
     private MenuView menuView;
     private InitialStateView initialStateView;
-    private AddTraceView addTraceView;
-    private TraceListView traceListView;
+    private ModelsListView modelsListView;
+    private TraceSelectionView traceSelectionView;
     private Chart2D chart;
     private AdditionalLineView additionalLineView;
 
-    private Set<Model> modelSet = new LinkedHashSet<>();
+    private ModelSet<Model> modelSet = new LinkedHashSet<>();
 
     private BaseSystem currentModel;
 
@@ -59,14 +62,15 @@ public class MainView implements Frameable, SubmitListener<BaseSystem> {
         rootPanel = new JBoxLayout(BoxLayout.Y_AXIS);
         viewsPanel = new JGridBagPanel();
 
-        addTraceView = new AddTraceView();
-        addTraceView.addSubmitListener(e -> onAdd(e));
-        viewsPanel.add(addTraceView, getConstraint(0, 1, 1, 1));
+        modelsListView = new ModelsListView();
+        modelsListView.addRemoveListener(e -> chart.removeTrace(e));
+        modelsListView.addRemoveAllListener(e -> chart.removeAllTraces());
+        viewsPanel.add(modelsListView, getConstraint(0, 1, 1, 1));
 
-        traceListView = new TraceListView();
-        traceListView.addRemoveListener(e -> chart.removeTrace(e));
-        traceListView.addRemoveAllListener(e -> chart.removeAllTraces());
-        viewsPanel.add(traceListView, getConstraint(0, 2, 1, 1));
+        traceSelectionView = new TraceSelectionView();
+        traceSelectionView.setTraceDescriptions(modelSet.getModelTraces());
+        traceSelectionView.addSubmitListenter(td -> traceSelectionChanged(td));
+        viewsPanel.add(traceSelectionView, getConstraint(0, 2, 1, 1));
 
         chart = new Chart2D();
         chart.setPreferredSize(new Dimension(700, 500));
@@ -86,6 +90,22 @@ public class MainView implements Frameable, SubmitListener<BaseSystem> {
         menuView.addOpenActionListener(e -> oLoadModel(e));
         menuView.addSaveActionListener(e -> onSaveModel(e));
         rootPanel.add(viewsPanel);
+    }
+
+    private void traceSelectionChanged(TraceDescription traceDescription) {
+        ITrace2D trace = new Trace2DSimple(traceable.name);
+        chart.addTrace(trace);
+        currentModel.setToTrace(traceable.yIndex, traceable.xIndex, trace);
+        modelsListView.add(trace);
+
+        IAxis.AxisTitle xAxisTitle = new IAxis.AxisTitle(currentModel.getFullAxisName(traceable.xIndex));
+        IAxis.AxisTitle yAxisTitle = new IAxis.AxisTitle(currentModel.getFullAxisName(traceable.yIndex));
+
+        xAxisTitle.setTitleFont(new Font(null, Font.PLAIN, 15));
+        yAxisTitle.setTitleFont(new Font(null, Font.PLAIN, 15));
+
+        chart.getAxisX().setAxisTitle(xAxisTitle);
+        chart.getAxisY().setAxisTitle(yAxisTitle);
     }
 
     public void setModel(BaseSystem model) {
@@ -160,27 +180,11 @@ public class MainView implements Frameable, SubmitListener<BaseSystem> {
         additionalLineView.setProcessable(processable);
     }
 
-    public void onAdd(AddTraceView.Traceable traceable) {
-        ITrace2D trace = new Trace2DSimple(traceable.name);
-        chart.addTrace(trace);
-        currentModel.setToTrace(traceable.yIndex, traceable.xIndex, trace);
-        traceListView.add(trace);
-
-        IAxis.AxisTitle xAxisTitle = new IAxis.AxisTitle(currentModel.getFullAxisName(traceable.xIndex));
-        IAxis.AxisTitle yAxisTitle = new IAxis.AxisTitle(currentModel.getFullAxisName(traceable.yIndex));
-
-        xAxisTitle.setTitleFont(new Font(null, Font.PLAIN, 15));
-        yAxisTitle.setTitleFont(new Font(null, Font.PLAIN, 15));
-
-        chart.getAxisX().setAxisTitle(xAxisTitle);
-        chart.getAxisY().setAxisTitle(yAxisTitle);
-    }
-
     private void onNewModel(ActionEvent e) {
         Log.debug(this, "on new clicked");
 
         modelSet.clear();
-        traceListView.clear();
+        modelsListView.clear();
 
 
         BaseSystem model = new RopeSystem();
@@ -244,5 +248,15 @@ public class MainView implements Frameable, SubmitListener<BaseSystem> {
         } else {
             Log.debug(this, "Cancelled");
         }
+    }
+
+    private Color getColor(int i) {
+        model.setColor(getColor(row));
+        i %= 5;
+        if (i == 0) return Color.BLUE;
+        if (i == 1) return Color.RED;
+        if (i == 2) return Color.CYAN;
+        if (i == 3) return Color.GREEN;
+        return Color.DARK_GRAY;
     }
 }

@@ -5,6 +5,8 @@ import com.sbutterfly.engine.Model;
 import com.sbutterfly.engine.trace.Axis;
 import com.sbutterfly.gui.controls.EmptyPanel;
 import com.sbutterfly.gui.controls.MyJTextField;
+import com.sbutterfly.gui.helpers.EventHandler;
+import com.sbutterfly.gui.helpers.EventListener;
 import com.sbutterfly.gui.panels.Constraint;
 import com.sbutterfly.gui.panels.JGridBagPanel;
 import com.sbutterfly.utils.DoubleUtils;
@@ -15,7 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
  */
 public class InitialStateView extends JGridBagPanel {
 
-    private final ArrayList<SubmitListener<Event>> listeners = new ArrayList<>();
+    private final EventHandler<Event> eventHandler = new EventHandler<>();
 
     // Используется String вместо Double, чтобы валидация происходила в самом конце перед сохранением.
     private final Map<Axis, String> params = new HashMap<>();
@@ -111,21 +112,19 @@ public class InitialStateView extends JGridBagPanel {
             map.forEach((k, v) -> model.setInitialValue(k, v));
 
             Event event = new Event(model, state);
-            for (SubmitListener<Event> listener : listeners) {
-                listener.onSubmit(event);
-            }
+            eventHandler.invoke(event);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Проверьте корректность ввода введенных данных!\n" +
                     "Введенные значения должны быть неотрицательными");
         }
     }
 
-    public void addSubmitListener(SubmitListener<Event> listener) {
-        listeners.add(listener);
+    public void addSubmitListener(EventListener<Event> listener) {
+        eventHandler.add(listener);
     }
 
-    public void removeSubmitListener(SubmitListener<Event> listener) {
-        listeners.remove(listener);
+    public void removeSubmitListener(EventListener<Event> listener) {
+        eventHandler.remove(listener);
     }
 
     private Constraint getConstraint(int gridX, int gridY, int gridWidth, int gridHeight) {
