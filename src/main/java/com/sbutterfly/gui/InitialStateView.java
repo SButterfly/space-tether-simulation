@@ -1,139 +1,131 @@
 package com.sbutterfly.gui;
 
+import com.sbutterfly.engine.GroupAxisDescription;
+import com.sbutterfly.engine.Model;
+import com.sbutterfly.engine.trace.Axis;
 import com.sbutterfly.gui.controls.EmptyPanel;
 import com.sbutterfly.gui.controls.MyJTextField;
 import com.sbutterfly.gui.panels.Constraint;
 import com.sbutterfly.gui.panels.JGridBagPanel;
-import com.sbutterfly.core.BaseSystem;
 import com.sbutterfly.utils.DoubleUtils;
 import com.sbutterfly.utils.Log;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import java.awt.GridBagConstraints;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by Sergei on 02.02.2015.
  */
 public class InitialStateView extends JGridBagPanel {
 
-    protected ArrayList<SubmitListener<BaseSystem>> list = new ArrayList<>();
-    private BaseSystem model;
+    private final ArrayList<SubmitListener<Event>> listeners = new ArrayList<>();
+
+    // Используется String вместо Double, чтобы валидация происходила в самом конце перед сохранением.
+    private final Map<Axis, String> params = new HashMap<>();
+
+    private Model model;
+    private State state;
+
     private int lastRow = 0;
 
-    public InitialStateView(BaseSystem model) {
-        this.model = model;
-        createGUI();
+    public InitialStateView() {
     }
 
-    public BaseSystem getModel() {
+    public Model getModel() {
         return model;
     }
 
-    protected void createGUI() {
-
-        JLabel headerLabel = new JLabel();
-        headerLabel.setText("Начальные параметры:");
-
-        JButton submitButton = new JButton();
-        submitButton.setText("Рассчитать");
-        submitButton.addActionListener(e -> {
-            for (SubmitListener<BaseSystem> listener : list) {
-                listener.onSubmit(model);
-            }
-        });
-
-        add(headerLabel, getConstraint(0, lastRow++, 1, 1).gridWidth(4));
-
-        setAdditionalParams(this, submitButton);
-
-        add(new EmptyPanel(), getConstraint(0, lastRow++, 1, 1).gridWidth(4));
-
-        setStartParams(this, submitButton);
-
-        add(submitButton, getConstraint(0, lastRow, 4, 1).fill(GridBagConstraints.NONE).anchor(GridBagConstraints.EAST));
-
-        Log.debug(this, "GUI was created");
+    public State getState() {
+        return state;
     }
 
-    private void setAdditionalParams(JGridBagPanel panel, JButton saveButton) {
-
-        int size = model.initialParamsNames().length;
-        double[] values = new double[size];
-        Settable[] settable = new Settable[size];
-        String[] names = model.initialParamsNames();
-
-        for (int i = 0; i < size; i++) {
-            final int finalI = i;
-            values[finalI] = model.getInitialParameter(finalI);
-            settable[finalI] = value -> model.setInitialParameter(finalI, value);
-        }
-
-        setParams(panel, saveButton, names, values, settable);
+    public void setModel(Model model, State state) {
+        this.model = model;
+        this.state = state;
+        clear();
+        createGUI();
     }
 
-    private void setStartParams(JGridBagPanel panel, JButton saveButton) {
-        int size = model.paramsNames().length;
-        double[] values = new double[size];
-        Settable[] settable = new Settable[size];
-        String[] names = model.paramsNames();
-
-        for (int i = 0; i < size; i++) {
-            final int finalI = i;
-            values[finalI] = model.getStartParameter(finalI);
-            settable[finalI] = value -> model.setStartParameter(finalI, value);
-        }
-
-        setParams(panel, saveButton, names, values, settable);
-    }
-
-    private void setParams(JGridBagPanel panel, JButton saveButton, String[] names, double[] values, Settable[] settable) {
-        ArrayList<String> nameList = new ArrayList<>(names.length);
-        ArrayList<Double> valueList = new ArrayList<>(names.length);
-        ArrayList<Settable> settables = new ArrayList<>(names.length);
-
-        for (int i = 0, n = names.length; i < n; i++) {
-            if (names[i] != null && settable[i] != null) {
-                nameList.add(names[i]);
-                valueList.add(values[i]);
-                settables.add(settable[i]);
+    private void createGUI() {
+        List<GroupAxisDescription> list = model.getModelDescription();
+        for (GroupAxisDescription groupAxisDescription : list) {
+            addGroupName(groupAxisDescription.getName());
+            for (Axis axis : groupAxisDescription) {
+                addAxis(axis, DoubleUtils.toString(model.getInitialValue(axis)));
             }
         }
 
-        for (int i = 0, n = settables.size(); i < n; i += 2, lastRow++) {
+        add(new EmptyPanel(), getConstraint(0, lastRow++, 1, 1).gridWidth(2));
 
-            if (i < n) {
+        if (state == State.CREATE) {
+            JButton submitButton = new JButton();
+            submitButton.setText("Добавить");
+            add(submitButton, getConstraint(0, lastRow, 2, 1)
+                    .fill(GridBagConstraints.NONE)
+                    .anchor(GridBagConstraints.EAST));
+            submitButton.addActionListener(l -> submitChanges());
+        } else {
+            // TODO
+            throw new UnsupportedOperationException("Unsupported state");
+        }
 
-                JLabel label = new JLabel(nameList.get(i) + ":");
-                panel.add(label, getConstraint(0, lastRow, 1, 1));
+        Log.debug(this, "GUI updated");
+    }
 
-                JTextField textField = new MyJTextField(DoubleUtils.toString(valueList.get(i)));
-                panel.add(textField, getConstraint(1, lastRow, 1 + (i == n - 1 ? 2 : 0), 1));
+    private void clear() {
+        removeAll();
+        params.clear();
+    }
 
-                final int finalI = i;
-                saveButton.addActionListener(e -> settables.get(finalI).OnSet(Double.parseDouble(textField.getText())));
+    private void addGroupName(String groupName) {
+        JLabel headerLabel = new JLabel(groupName);
+        add(headerLabel, getConstraint(0, lastRow, 1, 1).gridWidth(2));
+        lastRow++;
+    }
+
+    private void addAxis(Axis axis, String value) {
+        params.put(axis, value);
+
+        JLabel label = new JLabel(axis.getHumanReadableName() + ":");
+        add(label, getConstraint(0, lastRow, 1, 1));
+
+        JTextField textField = new MyJTextField(value);
+        textField.addActionListener(a -> params.put(axis, textField.getText()));
+        add(textField, getConstraint(1, lastRow, 1, 1));
+
+        lastRow++;
+    }
+
+    private void submitChanges() {
+        try {
+            Map<Axis, Double> map = params.entrySet().stream()
+                    .collect(Collectors.toMap(Map.Entry::getKey, e -> DoubleUtils.nonNegativeParse(e.getValue())));
+            map.forEach((k, v) -> model.setInitialValue(k, v));
+
+            Event event = new Event(model, state);
+            for (SubmitListener<Event> listener : listeners) {
+                listener.onSubmit(event);
             }
-
-            if (i + 1 < n) {
-
-                JLabel label = new JLabel(nameList.get(i + 1) + ":");
-                panel.add(label, getConstraint(2, lastRow, 1, 1));
-
-                JTextField textField = new MyJTextField(valueList.get(i + 1) + "");
-                panel.add(textField, getConstraint(3, lastRow, 1, 1));
-
-                final int finalI = i + 1;
-                saveButton.addActionListener(e -> settables.get(finalI).OnSet(Double.parseDouble(textField.getText())));
-            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Проверьте корректность ввода введенных данных!\n" +
+                    "Введенные значения должны быть неотрицательными");
         }
     }
 
-    public void addSubmitListener(SubmitListener<BaseSystem> listener) {
-        list.add(listener);
+    public void addSubmitListener(SubmitListener<Event> listener) {
+        listeners.add(listener);
     }
 
-    public void removeSubmitListener(SubmitListener<BaseSystem> listener) {
-        list.remove(listener);
+    public void removeSubmitListener(SubmitListener<Event> listener) {
+        listeners.remove(listener);
     }
 
     private Constraint getConstraint(int gridX, int gridY, int gridWidth, int gridHeight) {
@@ -143,8 +135,27 @@ public class InitialStateView extends JGridBagPanel {
             .insets(3, 5);
     }
 
-    protected interface Settable {
-        void OnSet(double value);
+    private enum State {
+        CREATE,
+        EDIT
+    }
+
+    public static class Event {
+        private final Model model;
+        private final State state;
+
+        private Event(Model model, State state) {
+            this.model = model;
+            this.state = state;
+        }
+
+        public Model getModel() {
+            return model;
+        }
+
+        public State getState() {
+            return state;
+        }
     }
 }
 

@@ -22,4 +22,6 @@ public class ModelSet<T extends Model> {
     public int size() {
         return list.size();
     }
+
+    public void clear()
 }

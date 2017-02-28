@@ -39,9 +39,9 @@ public class AddTraceView extends JGridBagPanel {
         JLabel namelabel = new JLabel("Название:");
 
         yComboBox = new JComboBox<>();
-        yComboBox.addActionListener(e -> OnSelectionChanged());
+        yComboBox.addActionListener(e -> onSelectionChanged());
         xComboBox = new JComboBox<>();
-        xComboBox.addActionListener(e -> OnSelectionChanged());
+        xComboBox.addActionListener(e -> onSelectionChanged());
         nameTextField = new MyJTextField();
 
         submitButton = new JButton("Добавить");
@@ -106,7 +106,7 @@ public class AddTraceView extends JGridBagPanel {
         yComboBox.setSelectedIndex(Math.min(lastYSelected, yComboBox.getItemCount() - 1));
     }
 
-    public void OnSelectionChanged() {
+    public void onSelectionChanged() {
         String xName = (String) xComboBox.getSelectedItem();
         String yName = (String) yComboBox.getSelectedItem();
 

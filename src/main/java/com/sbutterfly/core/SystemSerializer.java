@@ -34,11 +34,6 @@ public class SystemSerializer {
         throw new IllegalArgumentException("name");
     }
 
-    public enum SerializeType {
-        @Deprecated
-        Params
-    }
-
     public interface Serializable {
         String serialize();
 

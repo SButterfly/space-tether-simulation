@@ -1,12 +1,13 @@
 package com.sbutterfly.gui;
 
+import com.sbutterfly.core.BaseSystem;
+import com.sbutterfly.core.SystemSerializer;
+import com.sbutterfly.core.rope.RopeSystem;
+import com.sbutterfly.engine.Model;
 import com.sbutterfly.gui.hardcoded.RopeInitialStateView;
 import com.sbutterfly.gui.panels.Constraint;
 import com.sbutterfly.gui.panels.JBoxLayout;
 import com.sbutterfly.gui.panels.JGridBagPanel;
-import com.sbutterfly.core.BaseSystem;
-import com.sbutterfly.core.SystemSerializer;
-import com.sbutterfly.core.rope.RopeSystem;
 import com.sbutterfly.utils.FileAccessor;
 import com.sbutterfly.utils.FileUtils;
 import com.sbutterfly.utils.Log;
@@ -27,6 +28,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Created by Sergei on 31.01.2015.
@@ -42,6 +45,8 @@ public class MainView implements Frameable, SubmitListener<BaseSystem> {
     private TraceListView traceListView;
     private Chart2D chart;
     private AdditionalLineView additionalLineView;
+
+    private Set<Model> modelSet = new LinkedHashSet<>();
 
     private BaseSystem currentModel;
 
@@ -85,7 +90,6 @@ public class MainView implements Frameable, SubmitListener<BaseSystem> {
 
     public void setModel(BaseSystem model) {
         addTraceView.setEnabled(false);
-        traceListView.clear();
         chart.removeAllTraces();
         if (initialStateView != null) {
             viewsPanel.remove(initialStateView);
@@ -105,8 +109,8 @@ public class MainView implements Frameable, SubmitListener<BaseSystem> {
 
     private Constraint getConstraint(int gridX, int gridY, int gridWidth, int gridHeight) {
         return Constraint.create(gridX, gridY, gridWidth, gridHeight)
-            .fill(GridBagConstraints.BOTH)
-            .insets(5);
+                .fill(GridBagConstraints.BOTH)
+                .insets(5);
     }
 
     @Override
@@ -172,10 +176,13 @@ public class MainView implements Frameable, SubmitListener<BaseSystem> {
         chart.getAxisY().setAxisTitle(yAxisTitle);
     }
 
-    //region Menu handlers
-
     private void onNewModel(ActionEvent e) {
         Log.debug(this, "on new clicked");
+
+        modelSet.clear();
+        traceListView.clear();
+
+
         BaseSystem model = new RopeSystem();
 
         setModel(model);
@@ -238,6 +245,4 @@ public class MainView implements Frameable, SubmitListener<BaseSystem> {
             Log.debug(this, "Cancelled");
         }
     }
-
-    //endregion
 }

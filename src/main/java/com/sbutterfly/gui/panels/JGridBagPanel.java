@@ -27,6 +27,4 @@ public class JGridBagPanel extends JPanel {
     public void add(JComponent component, Constraint constraint) {
         super.add(component, constraint.get());
     }
-
-
 }
