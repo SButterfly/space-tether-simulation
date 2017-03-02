@@ -1,5 +1,6 @@
 package com.sbutterfly.gui;
 
+import com.sbutterfly.engine.ModelSet;
 import com.sbutterfly.gui.controls.MultiLineJLabel;
 import com.sbutterfly.gui.controls.MyJTextField;
 import com.sbutterfly.gui.panels.Constraint;
@@ -32,8 +33,8 @@ public class SettingsView implements Frameable {
 
     private final BaseSystem model;
 
-    public SettingsView(BaseSystem model) {
-        this.model = model;
+    public SettingsView(ModelSet modelSet) {
+        this.model = modelSet;
     }
 
     public JComponent getComponent() {

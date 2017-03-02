@@ -138,10 +138,10 @@ public class ModelsListView extends JGridBagPanel {
     }
 
     public enum Status {
-        SHOWED,
-        HID,
+        ADDED,
         DELETED,
-        ADDED
+        SHOWED,
+        HID
     }
 
     public static class ModelEvent {

@@ -1,6 +1,7 @@
 package com.sbutterfly.core;
 
 import com.sbutterfly.core.rope.RopeSystem;
+import com.sbutterfly.engine.ModelSet;
 
 /**
  * Created by Sergei on 21.02.2015.
@@ -18,7 +19,11 @@ public class SystemSerializer {
         return classValue + NAME_SEPARATOR + serObject;
     }
 
-    public static BaseSystem deserialize(String value) {
+    public static String serialize(ModelSet modelSet) {
+        return null;
+    }
+
+    public static ModelSet deserialize(String value) {
         String[] str = value.split(NAME_SEPARATOR);
 
         BaseSystem model = modelFactory(str[0]);

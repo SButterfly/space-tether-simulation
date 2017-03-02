@@ -3,7 +3,10 @@ package com.sbutterfly.engine;
 import com.sbutterfly.engine.trace.Axis;
 import com.sbutterfly.engine.trace.Trace;
 import com.sbutterfly.engine.trace.TraceDescription;
+import com.sbutterfly.gui.AdditionalLineView;
 
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import java.awt.Color;
 import java.util.List;
 
@@ -25,6 +28,14 @@ public abstract class Model {
         this.name = name;
     }
 
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     /**
      * Возвращает описание модели в ввиде списка групп параметров, необходимых к заданию.
      */
@@ -42,11 +53,52 @@ public abstract class Model {
 
     public abstract Trace getTrace(TraceDescription traceDescription);
 
-    public Color getColor() {
-        return color;
+    /**
+     * Пересчитывает значения системы
+     */
+    public void refresh() {
+
+
+        // TODO move to Model realization
+
+        this.currentModel = model;
+        addTraceView.setEnabled(false);
+
+        // TODO change to thread pool
+        new Thread(() -> {
+            try {
+                model.values(false);
+                AdditionalLineView.Processable p = model.getProcessable();
+                if (p != null && !p.hasCanceled()) {
+                    SwingUtilities.invokeLater(() -> addTraceView.init(model));
+                    additionalLineView.setText("Расчет закончен");
+                } else {
+                    additionalLineView.setText("Расчет отменен");
+                }
+            } catch (Exception e) {
+                AdditionalLineView.Processable p = model.getProcessable();
+                if (p != null) {
+                    p.cancel();
+                }
+                SwingUtilities.invokeLater(() -> {
+                    additionalLineView.setText("Произошла ошибка");
+                    JOptionPane.showMessageDialog(null, e.getMessage());
+                });
+            }
+        }).start();
+
+        AdditionalLineView.Processable processable = null;
+        while (processable == null || processable.hasEnded()) {
+            processable = model.getProcessable();
+        }
+        additionalLineView.setText("Выполняется расчет");
+        additionalLineView.setProcessable(processable);
+
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public enum Status {
+        EMPTY, // значения отсутствуют
+        IN_PROGRESS, // производится отсчет
+        READY // расчет завершен
     }
 }

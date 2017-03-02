@@ -110,6 +110,7 @@ public class InitialStateView extends JGridBagPanel {
             Map<Axis, Double> map = params.entrySet().stream()
                     .collect(Collectors.toMap(Map.Entry::getKey, e -> DoubleUtils.nonNegativeParse(e.getValue())));
             map.forEach((k, v) -> model.setInitialValue(k, v));
+            model.refresh();
 
             Event event = new Event(model, state);
             eventHandler.invoke(event);
@@ -134,7 +135,7 @@ public class InitialStateView extends JGridBagPanel {
             .insets(3, 5);
     }
 
-    private enum State {
+    public enum State {
         CREATE,
         EDIT
     }

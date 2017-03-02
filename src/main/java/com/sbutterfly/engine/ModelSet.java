@@ -10,7 +10,12 @@ import java.util.List;
  *
  * @author s-ermakov
  */
-public abstract class ModelSet<T extends Model> extends ArrayList<T> {
+public abstract class ModelSet extends ArrayList<Model> {
+
+    /**
+     * Создает новую модель, но не сохраняет ее.
+     */
+    public abstract Model createModel();
 
     public abstract List<TraceDescription> getModelTraces();
 }
