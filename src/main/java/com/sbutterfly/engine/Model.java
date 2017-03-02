@@ -1,5 +1,6 @@
 package com.sbutterfly.engine;
 
+import com.sbutterfly.core.BaseSystem;
 import com.sbutterfly.engine.trace.Axis;
 import com.sbutterfly.engine.trace.Trace;
 import com.sbutterfly.engine.trace.TraceDescription;
@@ -19,6 +20,7 @@ public abstract class Model {
 
     private String name;
     private Color color;
+    private BaseSystem system;
 
     public String getName() {
         return name == null ? "Безымянный" : name;
@@ -94,6 +96,10 @@ public abstract class Model {
         additionalLineView.setText("Выполняется расчет");
         additionalLineView.setProcessable(processable);
 
+    }
+
+    public BaseSystem getSystem() {
+        return system;
     }
 
     public enum Status {

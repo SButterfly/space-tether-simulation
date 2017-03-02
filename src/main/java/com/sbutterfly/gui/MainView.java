@@ -42,6 +42,7 @@ public class MainView implements Frameable {
     private TraceSelectionView traceSelectionView;
     private AdditionalLineView additionalLineView;
     private ChartView chartView;
+    private SettingsView settingsView;
 
     private ModelSet modelSet = ModelSetFactory.createNewModelSet();
     private ColorIterator colorIterator = new ColorIterator();
@@ -109,8 +110,11 @@ public class MainView implements Frameable {
         additionalLineView = new AdditionalLineView();
         viewsPanel.add(additionalLineView, getConstraint(0, 3, 3, 1));
 
+        settingsView = new SettingsView();
+        settingsView.setModelSet(modelSet);
+
         menuView = new MenuView();
-        menuView.addSettingsActionListener(e -> NavigationController.open(new SettingsView(modelSet)));
+        menuView.addSettingsActionListener(e -> NavigationController.open(settingsView));
         menuView.addNewActionListener(e -> onNewModelSet(e));
         menuView.addOpenActionListener(e -> oLoadModel(e));
         menuView.addSaveActionListener(e -> onSaveModel(e));

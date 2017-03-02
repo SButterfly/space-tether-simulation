@@ -1,24 +1,34 @@
 package com.sbutterfly.gui;
 
-import com.sbutterfly.engine.ModelSet;
-import com.sbutterfly.gui.controls.MultiLineJLabel;
-import com.sbutterfly.gui.controls.MyJTextField;
-import com.sbutterfly.gui.panels.Constraint;
-import com.sbutterfly.gui.panels.JGridBagPanel;
 import com.sbutterfly.core.BaseSystem;
 import com.sbutterfly.differential.EulerODEMethod;
 import com.sbutterfly.differential.ODEMethod;
 import com.sbutterfly.differential.RungeKuttaODEMethod;
 import com.sbutterfly.differential.Vector;
+import com.sbutterfly.engine.Model;
+import com.sbutterfly.engine.ModelSet;
+import com.sbutterfly.gui.controls.MultiLineJLabel;
+import com.sbutterfly.gui.controls.MyJTextField;
+import com.sbutterfly.gui.panels.Constraint;
+import com.sbutterfly.gui.panels.JGridBagPanel;
 import com.sbutterfly.services.AppSettings;
+import com.sbutterfly.services.Execution;
 import com.sbutterfly.utils.DoubleUtils;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
 
 /**
  * Created by Sergei on 01.02.2015.
  */
+@SuppressWarnings("magicnumber")
 public class SettingsView implements Frameable {
 
     private JGridBagPanel panel;
@@ -31,10 +41,17 @@ public class SettingsView implements Frameable {
     private JButton epsButton;
     private JLabel epsLabel;
 
-    private final BaseSystem model;
+    private ModelSet modelSet;
 
-    public SettingsView(ModelSet modelSet) {
-        this.model = modelSet;
+    public SettingsView() {
+    }
+
+    public ModelSet getModelSet() {
+        return modelSet;
+    }
+
+    public void setModelSet(ModelSet modelSet) {
+        this.modelSet = modelSet;
     }
 
     public JComponent getComponent() {
@@ -83,7 +100,8 @@ public class SettingsView implements Frameable {
             panel.add(timeTextField, Constraint.create(1, 1).fill(GridBagConstraints.HORIZONTAL).insets(10).ipadX(20));
             panel.add(stepTextField, Constraint.create(1, 2).fill(GridBagConstraints.HORIZONTAL).insets(10).ipadX(20));
 
-            panel.add(buttonsPanel, Constraint.create(0, 3).fill(GridBagConstraints.HORIZONTAL).insets(10).gridWidth(2));
+            panel.add(buttonsPanel, Constraint.create(0, 3).fill(GridBagConstraints.HORIZONTAL).insets(10)
+                    .gridWidth(2));
             panel.add(epsLabel, Constraint.create(0, 4).fill(GridBagConstraints.HORIZONTAL).insets(10).gridWidth(2));
 
             setValues();
@@ -93,35 +111,44 @@ public class SettingsView implements Frameable {
     }
 
     private void startEpsCalc() {
-
-        if (!save()) return;
+        if (!save()) {
+            return;
+        }
 
         epsButton.setEnabled(false);
         epsLabel.setText("Оценка погрешности начата");
 
-        new Thread(() -> {
+        Execution.submit(() -> {
             try {
-                Vector eps = model.getEps(AppSettings.getODEMethod(), AppSettings.getODETime(), AppSettings.getODEStep());
+                Model model = modelSet.createModel();
+                BaseSystem system = model.getSystem();
 
-                SwingUtilities.invokeLater(() -> {
+                // legacy
+                // TODO rewrite to
+                Vector eps = system.getEps(AppSettings.getODEMethod(), AppSettings.getODETime(),
+                        AppSettings.getODEStep());
+
+                Execution.submitInMain(() -> {
                     StringBuilder buff = new StringBuilder();
                     buff.append("Погрешность:\n");
                     buff.append("<table>");
                     for (int i = 0; i < eps.size(); i++) {
-                        buff.append(String.format("<tr><td>%s</td><td></td><td>%s</td></tr>", model.paramsNames()[i] + ", " + model.paramsExtNames()[i] + ":", DoubleUtils.toString(eps.get(i))));
+                        buff.append(String.format("<tr><td>%s</td><td></td><td>%s</td></tr>",
+                                system.paramsNames()[i] + ", " + system.paramsExtNames()[i] + ":",
+                                DoubleUtils.toString(eps.get(i))));
                     }
                     buff.append("</table>");
                     epsLabel.setText(buff.toString());
                     epsButton.setEnabled(true);
                 });
             } catch (Exception e) {
-                SwingUtilities.invokeLater(() -> {
+                Execution.submitInMain(() -> {
                     JOptionPane.showMessageDialog(null, e.getMessage());
                     epsLabel.setText("");
                     epsButton.setEnabled(true);
                 });
             }
-        }).start();
+        });
     }
 
     private void setValues() {
@@ -168,7 +195,8 @@ public class SettingsView implements Frameable {
             AppSettings.setODEStep(step);
             return true;
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Проверьте корректность ввода введенных данных!\nВведенные значения должны быть положительными");
+            JOptionPane.showMessageDialog(null, "Проверьте корректность ввода введенных данных!\n" +
+                    "Введенные значения должны быть положительными");
             return false;
         }
     }
