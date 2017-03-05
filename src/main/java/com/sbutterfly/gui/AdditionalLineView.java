@@ -1,34 +1,29 @@
 package com.sbutterfly.gui;
 
-import com.sbutterfly.gui.controls.JImageButton;
 import com.sbutterfly.gui.panels.Constraint;
 import com.sbutterfly.gui.panels.JGridBagPanel;
 import com.sbutterfly.utils.Log;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.net.URL;
+import javax.swing.JLabel;
+import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
 
 /**
  * Created by Sergei on 31.01.2015.
  */
+@SuppressWarnings("magicnumber")
 public class AdditionalLineView extends JGridBagPanel {
 
-    private static final URL CANCEL_IMAGE = AdditionalLineView.class
-        .getClassLoader().getResource("cancel.png");
-
-    Processable processable;
     private JLabel label;
     private JProgressBar progressBar;
-    private JButton cancelButton;
 
     public AdditionalLineView() {
         createGUI();
     }
 
     private void createGUI() {
-
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 20));
 
         label = new JLabel();
@@ -39,39 +34,13 @@ public class AdditionalLineView extends JGridBagPanel {
         progressBar.setPreferredSize(new Dimension(200, 20));
         progressBar.setMaximumSize(new Dimension(200, 20));
 
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        panel.add(progressBar);
-
-        cancelButton = new JImageButton(CANCEL_IMAGE);
-        cancelButton.addActionListener(e -> {
-            if (processable != null) {
-                processable.cancel();
-            }
-        });
-        panel.add(cancelButton);
-
-        add(label, Constraint.create(0, 0).weightX(1).fill(GridBagConstraints.HORIZONTAL).anchor(GridBagConstraints.WEST).insets(3, 5));
-        add(panel, Constraint.create(1, 0).insets(3, 5));
+        add(label, Constraint.create(0, 0).weightX(1).fill(GridBagConstraints.HORIZONTAL)
+                .anchor(GridBagConstraints.WEST).insets(3, 5));
+        add(progressBar, Constraint.create(1, 0).insets(3, 5));
 
         setStatusIndicator(0);
 
         Log.debug(this, "GUI was created");
-    }
-
-    public void setProcessable(Processable processable) {
-        this.processable = processable;
-        new Thread(() -> {
-            while (!processable.hasEnded()) {
-                setStatusIndicator(processable.getStatusIndicator());
-                try {
-                    Thread.sleep((long) 0.1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            setStatusIndicator(0);
-            this.processable = null;
-        }).start();
     }
 
     public String getText() {
@@ -79,11 +48,7 @@ public class AdditionalLineView extends JGridBagPanel {
     }
 
     public void setText(String value) {
-        SwingUtilities.invokeLater(() -> label.setText(value));
-    }
-
-    public double getStatusIndicator() {
-        return progressBar.getPercentComplete();
+        label.setText(value);
     }
 
     public void setStatusIndicator(double value) {
@@ -91,25 +56,6 @@ public class AdditionalLineView extends JGridBagPanel {
             int val = (int) Math.round(value * 100);
             progressBar.setValue(val);
             progressBar.setStringPainted(val != 0);
-            cancelButton.setEnabled(val != 0);
         });
-    }
-
-    public void addCancelActionListener(ActionListener listener) {
-        cancelButton.addActionListener(listener);
-    }
-
-    public void removeCancelActionListener(ActionListener listener) {
-        cancelButton.removeActionListener(listener);
-    }
-
-    public interface Processable {
-        double getStatusIndicator();
-
-        boolean hasEnded();
-
-        boolean hasCanceled();
-
-        void cancel();
     }
 }

@@ -11,7 +11,6 @@ import com.sbutterfly.services.ModelSetFactory;
 import com.sbutterfly.utils.FileAccessor;
 import com.sbutterfly.utils.FileUtils;
 import com.sbutterfly.utils.Log;
-import info.monitorenter.gui.chart.IAxis;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.swing.BoxLayout;
@@ -101,9 +100,6 @@ public class MainView implements Frameable {
         chartView = new ChartView();
         chartView.setPreferredSize(new Dimension(700, 500));
         chartView.setMinimumSize(chartView.getPreferredSize());
-        chartView.setPaintLabels(false);
-        chartView.getAxisX().setAxisTitle(new IAxis.AxisTitle(""));
-        chartView.getAxisY().setAxisTitle(new IAxis.AxisTitle(""));
 
         viewsPanel.add(chartView, getConstraint(1, 0, 1, 3).weightX(1).weightY(1));
 

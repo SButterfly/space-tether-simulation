@@ -4,6 +4,7 @@ import com.sbutterfly.gui.AdditionalLineView;
 import com.sbutterfly.differential.*;
 import com.sbutterfly.services.AppSettings;
 import info.monitorenter.gui.chart.ITrace2D;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.StringTokenizer;
 
@@ -212,10 +213,14 @@ public abstract class BaseSystem implements SystemSerializer.Serializable {
             setStartParameter(i, val);
         }
 
-        int intialParamsSize = Integer.parseInt(tokenizer.nextToken());
-        for (int j = 0; j < intialParamsSize; j++) {
+        int initialParamsSize = Integer.parseInt(tokenizer.nextToken());
+        for (int j = 0; j < initialParamsSize; j++) {
             double val = Double.parseDouble(tokenizer.nextToken());
             setInitialParameter(j, val);
         }
+    }
+
+    public void clear() {
+        throw new NotImplementedException();
     }
 }

@@ -88,12 +88,10 @@ public class Differential implements Iterable<TimeVector> {
         return new DifferentialIterator(exitFunc);
     }
 
-    public class DifferentialIterator implements Iterator<TimeVector>, AdditionalLineView.Processable {
+    public class DifferentialIterator implements Iterator<TimeVector> {
         private Vector last = startVector;
         private double currentTime = startVector.getTime();
         private double h = time / numberOfIterations;
-
-        private boolean canceled = false;
 
         private Func<Boolean, TimeVector> exitFunc;
 
@@ -107,7 +105,7 @@ public class Differential implements Iterable<TimeVector> {
         }
 
         public boolean hasNext() {
-            return !canceled && !exitFunc.invoke(new TimeVector(currentTime, last));
+            return !exitFunc.invoke(new TimeVector(currentTime, last));
         }
 
         public TimeVector next() throws NoSuchElementException {
@@ -127,17 +125,7 @@ public class Differential implements Iterable<TimeVector> {
 
         @Override
         public boolean hasEnded() {
-            return !hasNext() || canceled;
-        }
-
-        @Override
-        public boolean hasCanceled() {
-            return canceled;
-        }
-
-        @Override
-        public void cancel() {
-            canceled = true;
+            return !hasNext();
         }
     }
 }

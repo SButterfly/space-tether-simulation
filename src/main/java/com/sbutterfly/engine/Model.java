@@ -4,10 +4,10 @@ import com.sbutterfly.core.BaseSystem;
 import com.sbutterfly.engine.trace.Axis;
 import com.sbutterfly.engine.trace.Trace;
 import com.sbutterfly.engine.trace.TraceDescription;
-import com.sbutterfly.gui.AdditionalLineView;
+import com.sbutterfly.gui.helpers.EventHandler;
+import com.sbutterfly.services.Execution;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import java.awt.Color;
 import java.util.List;
 
@@ -17,6 +17,10 @@ import java.util.List;
  * @author s-ermakov
  */
 public abstract class Model {
+
+    private final EventHandler<Event> eventHandler = new EventHandler<>();
+
+    private Status status = Status.EMPTY;
 
     private String name;
     private Color color;
@@ -55,47 +59,34 @@ public abstract class Model {
 
     public abstract Trace getTrace(TraceDescription traceDescription);
 
+    public Status getStatus() {
+        return status;
+    }
+
+    private void setStatus(Status status) {
+        this.status = status;
+        eventHandler.invoke(new Event(status, this));
+    }
+
     /**
-     * Пересчитывает значения системы
+     * Пересчитывает значения системы.
      */
     public void refresh() {
-
-
-        // TODO move to Model realization
-
-        this.currentModel = model;
-        addTraceView.setEnabled(false);
-
-        // TODO change to thread pool
-        new Thread(() -> {
+        system.clear();
+        setStatus(Status.EMPTY);
+        Execution.submit(() -> {
             try {
-                model.values(false);
-                AdditionalLineView.Processable p = model.getProcessable();
-                if (p != null && !p.hasCanceled()) {
-                    SwingUtilities.invokeLater(() -> addTraceView.init(model));
-                    additionalLineView.setText("Расчет закончен");
-                } else {
-                    additionalLineView.setText("Расчет отменен");
-                }
+                setStatus(Status.IN_PROGRESS);
+                system.values(false);
+                setStatus(Status.READY);
             } catch (Exception e) {
-                AdditionalLineView.Processable p = model.getProcessable();
-                if (p != null) {
-                    p.cancel();
-                }
-                SwingUtilities.invokeLater(() -> {
-                    additionalLineView.setText("Произошла ошибка");
-                    JOptionPane.showMessageDialog(null, e.getMessage());
-                });
+                system.clear();
+                setStatus(Status.FAILED);
+
+                // TODO quickfix
+                Execution.submitInMain(() -> JOptionPane.showMessageDialog(null, e.getMessage()));
             }
-        }).start();
-
-        AdditionalLineView.Processable processable = null;
-        while (processable == null || processable.hasEnded()) {
-            processable = model.getProcessable();
-        }
-        additionalLineView.setText("Выполняется расчет");
-        additionalLineView.setProcessable(processable);
-
+        });
     }
 
     public BaseSystem getSystem() {
@@ -105,6 +96,35 @@ public abstract class Model {
     public enum Status {
         EMPTY, // значения отсутствуют
         IN_PROGRESS, // производится отсчет
-        READY // расчет завершен
+        READY, // расчет завершен
+        FAILED // расчет упал
+    }
+
+    public class Event {
+        private final Status status;
+        private final Model model;
+
+        private double percent;
+
+        public Event(Status status, Model model) {
+            this.status = status;
+            this.model = model;
+        }
+
+        public Status getStatus() {
+            return status;
+        }
+
+        public Model getModel() {
+            return model;
+        }
+
+        public double getPercent() {
+            return percent;
+        }
+
+        public void setPercent(double percent) {
+            this.percent = percent;
+        }
     }
 }

@@ -16,11 +16,11 @@ public class TraceDescription {
         this.yAxis = yAxis;
     }
 
-    public Axis getxAxis() {
+    public Axis getXAxis() {
         return xAxis;
     }
 
-    public Axis getyAxis() {
+    public Axis getYAxis() {
         return yAxis;
     }
 

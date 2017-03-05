@@ -16,6 +16,7 @@ import java.awt.*;
 /**
  * Created by Sergei on 08.03.2015.
  */
+@Deprecated
 public class RopeInitialStateView extends InitialStateView {
     int lastRow = 0;
     private MyJTextField m1TextField;
