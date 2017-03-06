@@ -11,7 +11,7 @@ import static java.lang.Math.sin;
  * <p>
  * Created by Sergei on 26.02.2015.
  */
-public class CallbackRopeFunction extends Function {
+public class CallbackRopeFunction implements Function {
 
     private final double m1;
     private final double m2;
@@ -106,6 +106,11 @@ public class CallbackRopeFunction extends Function {
         final double v4 = Ott(Lt, L, Ot, O, Bt, B);
         final double v6 = Btt(Lt, L, Ot, O, Bt, B);
         return new Vector(Lt, v2, Ot, v4, Bt, v6);
+    }
+
+    @Override
+    public int getDimension() {
+        return 6;
     }
 
     private double pow(final double value) {

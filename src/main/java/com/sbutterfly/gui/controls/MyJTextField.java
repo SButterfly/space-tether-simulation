@@ -7,33 +7,34 @@ import java.awt.*;
 /**
  * Created by Sergei on 15.02.2015.
  */
+@SuppressWarnings("magicnumber")
 public class MyJTextField extends JTextField {
 
     public MyJTextField() {
-        Init();
+        init();
     }
 
     public MyJTextField(String text) {
         super(text);
-        Init();
+        init();
     }
 
     public MyJTextField(int columns) {
         super(columns);
-        Init();
+        init();
     }
 
     public MyJTextField(String text, int columns) {
         super(text, columns);
-        Init();
+        init();
     }
 
     public MyJTextField(Document doc, String text, int columns) {
         super(doc, text, columns);
-        Init();
+        init();
     }
 
-    private void Init(){
+    private void init(){
         setMinimumSize(new Dimension(50, 20));
         setPreferredSize(getMinimumSize());
     }

@@ -1,6 +1,7 @@
 package com.sbutterfly.gui.controls;
 
-import javax.swing.*;
+import javax.swing.Icon;
+import javax.swing.JLabel;
 
 /**
  * Created by Sergei on 09.03.2015.

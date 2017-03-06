@@ -7,7 +7,7 @@ package com.sbutterfly.differential;
  */
 public class TimeVector extends Vector {
 
-    private final double time;
+    private double time;
 
     public TimeVector(double time, double... values) {
         super(values);
@@ -21,6 +21,10 @@ public class TimeVector extends Vector {
 
     public double getTime() {
         return time;
+    }
+
+    public void setTime(double time) {
+        this.time = time;
     }
 
     @Override

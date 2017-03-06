@@ -11,40 +11,28 @@ public class Vector implements Iterable<Double> {
 
     private final double[] values;
 
-    private Vector(int n) {
-        values = new double[n];
-    }
-
-    public Vector(double v1) {
-        values = new double[]{v1};
-    }
-
-    public Vector(double v1, double v2) {
-        values = new double[]{v1, v2};
-    }
-
-    public Vector(double v1, double v2, double v3) {
-        values = new double[]{v1, v2, v3};
-    }
-
-    public Vector(double v1, double v2, double v3, double v4) {
-        values = new double[]{v1, v2, v3, v4};
-    }
-
-    public Vector(double v1, double v2, double v3, double v4, double v5) {
-        values = new double[]{v1, v2, v3, v4, v5};
-    }
-
-    public Vector(double v1, double v2, double v3, double v4, double v5, double v6) {
-        values = new double[]{v1, v2, v3, v4, v5, v6};
+    public Vector(int length) {
+        values = new double[length];
     }
 
     public Vector(double... values) {
-        this.values = values.clone();
+        this.values = values;
     }
 
     public Vector(Vector vector) {
-        this.values = vector.values;
+        this.values = vector.values.clone();
+    }
+
+    public int size() {
+        return values.length;
+    }
+
+    public double get(int index) {
+        return values[index];
+    }
+
+    public void set(int index, double value) {
+        values[index] = value;
     }
 
     public boolean isAllNaN() {
@@ -98,7 +86,7 @@ public class Vector implements Iterable<Double> {
             throw new IllegalArgumentException("Пустой массив");
         }
         if (v.length == 1) {
-            return v[0].clone();
+            return new Vector(v[0]);
         }
 
         Vector result = new Vector(v[0].size());
@@ -135,26 +123,9 @@ public class Vector implements Iterable<Double> {
         return result;
     }
 
-    public int size() {
-        return values.length;
-    }
-
-    public double get(int index) {
-        return values[index];
-    }
-
-    @Override
-    public Vector clone() {
-        return new Vector(this);
-    }
-
     @Override
     public String toString() {
-        return '{' + Arrays.toString(values) + '}';
-    }
-
-    public double[] toArray() {
-        return values.clone();
+        return Arrays.toString(values);
     }
 
     @Override

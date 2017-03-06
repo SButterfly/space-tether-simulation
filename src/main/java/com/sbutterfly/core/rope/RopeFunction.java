@@ -11,7 +11,7 @@ import static java.lang.Math.sin;
  *
  * Created by Sergei on 26.02.2015
  */
-public class RopeFunction extends Function {
+public class RopeFunction implements Function {
 
     private final double m1;
     private final double m2;
@@ -83,8 +83,8 @@ public class RopeFunction extends Function {
 
     @Override
     public synchronized Vector diff(Vector x) {
-        if (x.size() != 6) {
-            throw new RuntimeException("Размер вектора должен быть равен 6.");
+        if (x.size() != getDimension()) {
+            throw new RuntimeException("Размер вектора должен быть равен " + getDimension());
         }
 
         final double L = x.get(0);
@@ -106,6 +106,11 @@ public class RopeFunction extends Function {
         final double v4 = Ott(Lt, L, Ot, O, Bt, B);
         final double v6 = Btt(Lt, L, Ot, O, Bt, B);
         return new Vector(Lt, v2, Ot, v4, Bt, v6);
+    }
+
+    @Override
+    public int getDimension() {
+        return 6;
     }
 
     private double pow(final double value) {

@@ -1,12 +1,18 @@
 package com.sbutterfly.gui.controls;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import java.awt.Dimension;
+import java.awt.Image;
 import java.net.URL;
 
 /**
  * Created by Sergei on 21.02.2015.
  */
+@SuppressWarnings("magicnumber")
 public class JImageButton extends JButton {
     public JImageButton() {
         init();

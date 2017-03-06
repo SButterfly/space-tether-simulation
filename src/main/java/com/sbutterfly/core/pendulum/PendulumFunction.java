@@ -8,7 +8,7 @@ import com.sbutterfly.differential.Vector;
  * Функция математического маятника
  */
 @Deprecated
-public class PendulumFunction extends Function {
+public class PendulumFunction implements Function {
 
     private double om;
     private double minusOm2;
@@ -28,11 +28,15 @@ public class PendulumFunction extends Function {
 
     @Override
     public Vector diff(Vector x) {
-
-        if (x.size() != 2) {
-            throw new RuntimeException("Размер вектора должен быть равен 2.");
+        if (x.size() != getDimension()) {
+            throw new RuntimeException("Размер вектора должен быть равен " + getDimension());
         }
 
         return new Vector(x.get(1), minusOm2 * x.get(0));
+    }
+
+    @Override
+    public int getDimension() {
+        return 2;
     }
 }

@@ -48,10 +48,4 @@ public class SystemSerializer {
 
         throw new IllegalArgumentException("name");
     }
-
-    public interface Serializable {
-        String serialize();
-
-        void deserialize(String value);
-    }
 }

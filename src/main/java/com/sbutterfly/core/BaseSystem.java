@@ -13,69 +13,10 @@ import java.util.StringTokenizer;
  * колебания маятника, простая система развертывания, система развертывания с обатной связью.
  *
  * @author s-ermakov
+ * @deprecated Use Model
  */
-public abstract class BaseSystem implements SystemSerializer.Serializable {
-
-    private final double[] startParamsVector = new double[paramsNames().length];
-    private final double[] initialParamsVector = new double[initialParamsNames().length];
-    private TimeVector[] vectors;
-    private volatile Differential.DifferentialIterator iterator;
-
-    public abstract Function getFunction();
-
-    public double getODETime() {
-        return AppSettings.getODETime();
-    }
-
-    public int getNumberOfIterations() {
-        return (int) (getODETime() / AppSettings.getODEStep());
-    }
-
-    public ODEMethod getMethod() {
-        return AppSettings.getODEMethod();
-    }
-
-    public String[] initialParamsNames() {
-        return new String[0];
-    }
-
-    public String[] paramsNames() {
-        return new String[0];
-    }
-
-    public String[] paramsExtNames() {
-        return new String[0];
-    }
-
-    public String[] customParamsNames() {
-        return new String[]{"t"};
-    }
-
-    public String[] customParamsExtNames() {
-        return new String[]{"с"};
-    }
-
-    public TimeVector getStartParamsVector() {
-        return new TimeVector(0, startParamsVector);
-    }
-
-    public double getStartParameter(int index) {
-        return startParamsVector[index];
-    }
-
-    public void setStartParameter(int index, double v) {
-        if (startParamsVector[index] == v) return;
-        startParamsVector[index] = v;
-    }
-
-    public double getInitialParameter(int index) {
-        return initialParamsVector[index];
-    }
-
-    public void setInitialParameter(int index, double v) {
-        if (initialParamsVector[index] == v) return;
-        initialParamsVector[index] = v;
-    }
+@Deprecated
+public abstract class BaseSystem {
 
     public Customable getCustomable(int index) {
         if (index != 0) throw new NumberFormatException("Index is out of diapason");
@@ -119,70 +60,27 @@ public abstract class BaseSystem implements SystemSerializer.Serializable {
         return new Vector(result);
     }
 
-    public synchronized boolean hasValues() {
+    public boolean hasValues() {
         return vectors != null;
     }
 
-    public synchronized TimeVector[] values() {
+    public DifferentialResult values() {
         return values(true);
     }
 
-    public synchronized TimeVector[] values(boolean useCache) {
+    public DifferentialResult values(boolean useCache) {
         if (vectors == null || !useCache) {
-            Differential differential = new Differential(getFunction(), getStartParamsVector(), getODETime(), getNumberOfIterations(), getMethod());
-            //TODO remove
-            if (true) {
-                iterator = differential.iterator();
-            } else {
-                iterator = differential.iterator(timeVector -> {
-                    double currentLength = timeVector.get(0);
-                    double maxLength = BaseSystem.this.getInitialParameter(5);
-                    return currentLength + 500 >= maxLength;
-                }); //останавливаемся, когда длина тросса на 0.5 км меньше запланированной
-            }
-            vectors = differential.makeDifferential(iterator);
-            if (iterator.hasCanceled()) {
-                vectors = null;
-            }
+            Differential differential = new Differential(getFunction(), getStartParamsVector(), 0.0,
+                    getODETime(), getNumberOfIterations(), getMethod());
+            vectors = differential.different();
         }
         return vectors;
     }
-
-    public AdditionalLineView.Processable getProcessable() {
-        return iterator;
-    }
-
-    public void setToTrace(Index yIndex, Index xIndex, ITrace2D trace2D) {
-        TimeVector[] vectors = values();
-        for (int i = 0, n = vectors.length; i < n; i++) {
-
-            final double x = getValue(vectors[i], xIndex);
-            final double y = getValue(vectors[i], yIndex);
-
-            trace2D.addPoint(x, y);
-        }
-    }
-
     public double getValue(TimeVector vector, Index index) {
         Customable customable = index.getCustomable();
         return customable == null ? vector.get(index.getIndex()) : customable.customize(vector);
     }
 
-    public String getName(Index index) {
-        Customable customable = index.getCustomable();
-        return customable == null ? paramsNames()[index.getIndex()] : customParamsNames()[index.getIndex()];
-    }
-
-    public String getExtName(Index index) {
-        Customable customable = index.getCustomable();
-        return customable == null ? paramsExtNames()[index.getIndex()] : customParamsExtNames()[index.getIndex()];
-    }
-
-    public String getFullAxisName(Index index) {
-        return getName(index) + ", " + getExtName(index);
-    }
-
-    @Override
     public String serialize() {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -203,7 +101,6 @@ public abstract class BaseSystem implements SystemSerializer.Serializable {
         return stringBuilder.toString();
     }
 
-    @Override
     public void deserialize(String value) {
         StringTokenizer tokenizer = new StringTokenizer(value);
 
@@ -221,6 +118,20 @@ public abstract class BaseSystem implements SystemSerializer.Serializable {
     }
 
     public void clear() {
-        throw new NotImplementedException();
+        vectors = null;
+    }
+
+    public abstract Function getFunction();
+
+    public double getODETime() {
+        return AppSettings.getODETime();
+    }
+
+    public int getNumberOfIterations() {
+        return (int) (getODETime() / AppSettings.getODEStep());
+    }
+
+    public ODEMethod getMethod() {
+        return AppSettings.getODEMethod();
     }
 }
