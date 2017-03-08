@@ -1,7 +1,5 @@
 package com.sbutterfly.engine.trace;
 
-import com.sun.istack.internal.NotNull;
-
 /**
  * Класс, описывающий названия осей.
  *
@@ -12,7 +10,7 @@ public class Axis {
     private final String name;
     private final String humanReadableName;
 
-    public Axis(@NotNull String name, String humanReadableName) {
+    public Axis(String name, String humanReadableName) {
         this.name = name;
         this.humanReadableName = humanReadableName;
     }

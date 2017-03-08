@@ -10,7 +10,6 @@ import com.sbutterfly.gui.panels.JGridBagPanel;
 import com.sbutterfly.services.ModelSetFactory;
 import com.sbutterfly.utils.FileUtils;
 import com.sbutterfly.utils.Log;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
@@ -71,7 +70,7 @@ public class MainView implements Frameable {
                     onModelAppeared(e.getModel());
                     break;
                 default:
-                    throw new NotImplementedException();
+                    throw new RuntimeException("Don't know state: " + e.getState());
             }
         });
 
@@ -91,7 +90,7 @@ public class MainView implements Frameable {
                     onModelDisappeared(e.getModel());
                     break;
                 default:
-                    throw new NotImplementedException();
+                    throw new RuntimeException("Don't know status: " + e.getStatus());
             }
         });
         viewsPanel.add(modelsListView, getConstraint(0, 1, 1, 1));
