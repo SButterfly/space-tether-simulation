@@ -24,8 +24,8 @@ public class RopeModelSet extends ModelSet {
     @Override
     public List<TraceDescription> getModelTraces() {
         return Arrays.asList(
-                new TraceDescription(L_axis(), Time_axis()),
-                new TraceDescription(V_axis(), Time_axis())
+                new TraceDescription(Time_axis(), L_axis()),
+                new TraceDescription(Time_axis(), V_axis())
         );
     }
 }

@@ -9,8 +9,6 @@ public class TraceDescription {
     private final Axis xAxis;
     private final Axis yAxis;
 
-    private String name;
-
     public TraceDescription(Axis xAxis, Axis yAxis) {
         this.xAxis = xAxis;
         this.yAxis = yAxis;
@@ -25,19 +23,13 @@ public class TraceDescription {
     }
 
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return getYAxis().getHumanReadableName() + " / " + getXAxis().getHumanReadableName();
     }
 
     @Override
     public String toString() {
         return "TraceDescription{" +
-                "xAxis=" + xAxis +
-                ", yAxis=" + yAxis +
-                ", name='" + name + '\'' +
+                "name='" + getName() + '\'' +
                 '}';
     }
 }

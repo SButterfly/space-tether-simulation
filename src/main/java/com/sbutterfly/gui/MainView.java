@@ -53,6 +53,7 @@ public class MainView implements Frameable {
     public MainView() {
         createGUI();
         createNewModel(modelSet.createModel());
+        traceSelectionChanged(modelSet.getModelTraces().get(0));
     }
 
     private void createGUI() {
@@ -97,7 +98,7 @@ public class MainView implements Frameable {
                     throw new RuntimeException("Don't know status: " + e.getStatus());
             }
         });
-        viewsPanel.add(modelsListView, getConstraint(0, 1, 1, 1));
+        viewsPanel.add(modelsListView, getConstraint(0, 1, 1, 1).weightY(1));
 
         traceSelectionView = new TraceSelectionView();
         traceSelectionView.setTraceDescriptions(modelSet.getModelTraces());

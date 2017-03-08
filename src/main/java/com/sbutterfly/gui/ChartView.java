@@ -9,8 +9,10 @@ import info.monitorenter.gui.chart.ITrace2D;
 import info.monitorenter.gui.chart.traces.Trace2DSimple;
 
 import java.awt.Font;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author s-ermakov
@@ -19,6 +21,7 @@ import java.util.List;
 public class ChartView extends Chart2D {
 
     private final List<Model> models = new LinkedList<>();
+    private final Map<Model, ITrace2D> modelToTrace = new HashMap<>();
     private TraceDescription currentTraceDescription;
 
     public ChartView() {
@@ -28,14 +31,22 @@ public class ChartView extends Chart2D {
 
     public void addModel(Model model) {
         models.add(model);
+        if (currentTraceDescription != null) {
+            addTrace(model, currentTraceDescription);
+        }
     }
 
     public void removeModel(Model model) {
         models.remove(model);
+        ITrace2D trace2D = modelToTrace.get(model);
+        this.removeTrace(trace2D);
+
+        modelToTrace.remove(model);
     }
 
     public void refresh() {
-        super.removeAll();
+        super.removeAllTraces();
+        modelToTrace.clear();
         setAxisDescription(currentTraceDescription);
         if (currentTraceDescription != null) {
             models.forEach(m -> addTrace(m, currentTraceDescription));
@@ -50,8 +61,9 @@ public class ChartView extends Chart2D {
     private void addTrace(Model model, TraceDescription traceDescription) {
         Trace trace = model.getTrace(traceDescription);
         ITrace2D viewTrace = new Trace2DSimple();
-        trace.getValues().forEach(v -> viewTrace.addPoint(v.get(0), v.get(1)));
         this.addTrace(viewTrace);
+        trace.getValues().forEach(v -> viewTrace.addPoint(v.get(0), v.get(1)));
+        modelToTrace.put(model, viewTrace);
     }
 
     private void setAxisDescription(TraceDescription traceDescription) {
@@ -66,5 +78,6 @@ public class ChartView extends Chart2D {
 
         this.getAxisX().setAxisTitle(xAxisTitle);
         this.getAxisY().setAxisTitle(yAxisTitle);
+        this.updateUI();
     }
 }
