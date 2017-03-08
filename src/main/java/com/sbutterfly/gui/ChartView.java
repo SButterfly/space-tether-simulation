@@ -80,4 +80,14 @@ public class ChartView extends Chart2D {
         this.getAxisY().setAxisTitle(yAxisTitle);
         this.updateUI();
     }
+
+    public void appierModel(Model model) {
+        ITrace2D trace2D = modelToTrace.get(model);
+        trace2D.setVisible(true);
+    }
+
+    public void hideModel(Model model) {
+        ITrace2D trace2D = modelToTrace.get(model);
+        trace2D.setVisible(false);
+    }
 }

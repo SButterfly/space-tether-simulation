@@ -85,12 +85,14 @@ public class MainView implements Frameable {
         modelsListView.addEventListener(e -> {
             switch (e.getStatus()) {
                 case ADDED:
-                    modelSet.add(e.getModel());
+                    onModelAdded(e.getModel());
+                    break;
                 case SHOWED:
                     onModelAppeared(e.getModel());
                     break;
                 case DELETED:
-                    modelSet.remove(e.getModel());
+                    onModelDeleted(e.getModel());
+                    break;
                 case HID:
                     onModelDisappeared(e.getModel());
                     break;
@@ -125,12 +127,22 @@ public class MainView implements Frameable {
         rootPanel.add(viewsPanel);
     }
 
-    private void onModelAppeared(Model model) {
+    private void onModelAdded(Model model) {
+        modelSet.add(model);
         chartView.addModel(model);
     }
 
-    private void onModelDisappeared(Model model) {
+    private void onModelDeleted(Model model) {
+        modelSet.remove(model);
         chartView.removeModel(model);
+    }
+
+    private void onModelAppeared(Model model) {
+        chartView.appierModel(model);
+    }
+
+    private void onModelDisappeared(Model model) {
+        chartView.hideModel(model);
     }
 
     private void traceSelectionChanged(TraceDescription traceDescription) {
