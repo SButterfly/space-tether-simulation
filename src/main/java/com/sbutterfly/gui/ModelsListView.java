@@ -14,7 +14,10 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by Sergei on 14.02.2015.
@@ -26,10 +29,10 @@ public class ModelsListView extends JGridBagPanel {
 
     private JGridBagPanel listPanel;
 
-    private ArrayList<Item> list = new ArrayList<>();
-    private int itemsCount = 0;
+    private int rowCount = 0;
     private JButton deleteAllButton;
     private EventHandler<ModelEvent> eventHandler = new EventHandler<>();
+    private Map<Model, Item> modelItemMap = new HashMap<>();
 
     public ModelsListView() {
         createGUI();
@@ -69,24 +72,24 @@ public class ModelsListView extends JGridBagPanel {
         JButton deleteButton = new JImageButton(DELETE_IMAGE);
         deleteButton.addActionListener(e -> remove(model));
 
-        int row = list.size();
-        listPanel.add(label, getConstraint(0, row + 1));
-        listPanel.add(checkBox, getConstraint(1, row + 1).fill(GridBagConstraints.CENTER));
-        listPanel.add(deleteButton, getConstraint(2, row + 1).fill(GridBagConstraints.NONE));
+        listPanel.add(label, getConstraint(0, rowCount + 1));
+        listPanel.add(checkBox, getConstraint(1, rowCount + 1).fill(GridBagConstraints.CENTER));
+        listPanel.add(deleteButton, getConstraint(2, rowCount + 1).fill(GridBagConstraints.NONE));
         listPanel.updateUI();
 
         Item item = new Item();
         item.button = deleteButton;
         item.label = label;
         item.checkBox = checkBox;
-        item.model = model;
-        list.add(item);
+        modelItemMap.put(model, item);
 
-        itemsCount++;
+        rowCount++;
         updateDeleteAllButtonState();
 
         ModelEvent modelEvent = new ModelEvent(model, Status.ADDED);
         eventHandler.invoke(modelEvent);
+
+        this.updateUI();
     }
 
     public void addEventListener(EventListener<ModelEvent> listener) {
@@ -104,37 +107,39 @@ public class ModelsListView extends JGridBagPanel {
     }
 
     private void updateDeleteAllButtonState() {
-        deleteAllButton.setEnabled(itemsCount != 0);
+        deleteAllButton.setEnabled(!modelItemMap.isEmpty());
     }
 
     public boolean remove(Model model) {
-        Item item = list.stream().filter(i -> i.model == model).findFirst().orElse(null);
+        Item item = modelItemMap.get(model);
         if (item == null) {
             return false;
         }
 
+        modelItemMap.remove(model);
         listPanel.remove(item.button);
         listPanel.remove(item.checkBox);
         listPanel.remove(item.label);
-        itemsCount--;
+        listPanel.updateUI();
         updateDeleteAllButtonState();
 
-        ModelEvent modelEvent = new ModelEvent(item.model, Status.DELETED);
+        ModelEvent modelEvent = new ModelEvent(model, Status.DELETED);
         eventHandler.invoke(modelEvent);
         return true;
     }
 
     public void clear() {
-        for (Item item : list) {
-            remove(item.model);
+        List<Model> modelList = modelItemMap.keySet().stream().collect(Collectors.toList());
+        for (Model model : modelList) {
+            remove(model);
         }
+        rowCount = 0;
     }
 
     private class Item {
         JLabel label;
         JCheckBox checkBox;
         JButton button;
-        Model model;
     }
 
     public enum Status {

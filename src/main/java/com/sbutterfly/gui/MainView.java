@@ -52,6 +52,7 @@ public class MainView implements Frameable {
 
     public MainView() {
         createGUI();
+        createNewModel(modelSet.createModel());
     }
 
     private void createGUI() {
@@ -63,6 +64,7 @@ public class MainView implements Frameable {
             switch (e.getState()) {
                 case CREATE:
                     onModelCreated(e.getModel());
+                    createNewModel(modelSet.createModel());
                     break;
                 case EDIT:
                     // HACK quick way to update model
@@ -82,10 +84,12 @@ public class MainView implements Frameable {
         modelsListView.addEventListener(e -> {
             switch (e.getStatus()) {
                 case ADDED:
+                    modelSet.add(e.getModel());
                 case SHOWED:
                     onModelAppeared(e.getModel());
                     break;
                 case DELETED:
+                    modelSet.remove(e.getModel());
                 case HID:
                     onModelDisappeared(e.getModel());
                     break;
@@ -160,7 +164,7 @@ public class MainView implements Frameable {
     }
 
     public void onModelCreated(Model model) {
-        String name = "Система 1" + integerIterator.next();
+        String name = "Система " + integerIterator.next();
         Color color = colorIterator.next();
         model.setName(name);
         model.setColor(color);
