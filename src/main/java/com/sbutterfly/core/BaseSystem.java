@@ -18,68 +18,7 @@ import java.util.StringTokenizer;
 @Deprecated
 public abstract class BaseSystem {
 
-    public Customable getCustomable(int index) {
-        if (index != 0) throw new NumberFormatException("Index is out of diapason");
-        return new Customable() {
-            @Override
-            public double customize(TimeVector vector) {
-                return vector.getTime();
-            }
-        };
-    }
-
-    public Vector getEps(ODEMethod method, double time, double h) {
-        Differential differential = new Differential(getFunction(),
-            getStartParamsVector(),
-            time,
-            (int) (time / h),
-            method);
-        TimeVector lastH = null;
-        for (TimeVector vector : differential) {
-            lastH = vector;
-            if (lastH.isAllNaN())
-                break;
-        }
-        differential = new Differential(getFunction(),
-            getStartParamsVector(),
-            time,
-            (int) (time * 2 / h),
-            method);
-        TimeVector lastH2 = null;
-        for (TimeVector vector : differential) {
-            lastH2 = vector;
-            if (lastH2.isAllNaN())
-                break;
-        }
-
-        double[] result = new double[lastH.size()];
-        int _2p = 1 << method.getP();
-        for (int i = 0, n = result.length; i < n; i++) {
-            result[i] = Math.abs((lastH2.get(i) - lastH.get(i)) * _2p / (_2p - 1));
-        }
-        return new Vector(result);
-    }
-
-    public boolean hasValues() {
-        return vectors != null;
-    }
-
-    public DifferentialResult values() {
-        return values(true);
-    }
-
-    public DifferentialResult values(boolean useCache) {
-        if (vectors == null || !useCache) {
-            Differential differential = new Differential(getFunction(), getStartParamsVector(), 0.0,
-                    getODETime(), getNumberOfIterations(), getMethod());
-            vectors = differential.different();
-        }
-        return vectors;
-    }
-    public double getValue(TimeVector vector, Index index) {
-        Customable customable = index.getCustomable();
-        return customable == null ? vector.get(index.getIndex()) : customable.customize(vector);
-    }
+    // ----------
 
     public String serialize() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -115,23 +54,5 @@ public abstract class BaseSystem {
             double val = Double.parseDouble(tokenizer.nextToken());
             setInitialParameter(j, val);
         }
-    }
-
-    public void clear() {
-        vectors = null;
-    }
-
-    public abstract Function getFunction();
-
-    public double getODETime() {
-        return AppSettings.getODETime();
-    }
-
-    public int getNumberOfIterations() {
-        return (int) (getODETime() / AppSettings.getODEStep());
-    }
-
-    public ODEMethod getMethod() {
-        return AppSettings.getODEMethod();
     }
 }

@@ -3,6 +3,7 @@ package com.sbutterfly.engine;
 import com.sbutterfly.differential.Differential;
 import com.sbutterfly.differential.DifferentialResult;
 import com.sbutterfly.differential.Function;
+import com.sbutterfly.differential.ODEMethod;
 import com.sbutterfly.differential.TimeVector;
 import com.sbutterfly.differential.Vector;
 import com.sbutterfly.engine.trace.Axis;
@@ -16,11 +17,13 @@ import javax.swing.JOptionPane;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Базовый класс, который содержит логику для обработки и хранения дифференциальных данных модели.
+ * Например, колебания маятника, простая система развертывания, система развертывания с обатной связью.
  *
  * @author s-ermakov
  */
@@ -96,12 +99,40 @@ public abstract class Model {
         return differentialResult.getValues();
     }
 
+    public Map<Axis, Double> getEps(ODEMethod method, double time, double h) {
+        Differential differential = new Differential(getFunction(), getStartTimeVector(), time, (int) (time / h),
+                method);
+
+        Differential partDifferential = new Differential(getFunction(), getStartTimeVector(), time, (int) (time * 2 / h),
+                method);
+
+        DifferentialResult normalResult = differential.different();
+        DifferentialResult partResult = partDifferential.different();
+
+        TimeVector lastTimeResult = normalResult.getValues().get(normalResult.getValues().size() - 1);
+        TimeVector lastTimePartResult = normalResult.getValues().get(normalResult.getValues().size() - 1);
+
+        Map<Axis, Double> resultMap = new LinkedHashMap<>();
+        List<Axis> functionAxises = getFunctionAxises();
+
+        int twoInPowerOfP = (int) Math.pow(2, method.getP());
+        for (int i = 0, n = functionAxises.size(); i < n; i++) {
+            Axis functionAxis = functionAxises.get(i);
+            double value = Math.abs((lastTimePartResult.get(i) - lastTimeResult.get(i)) * twoInPowerOfP
+                    / (twoInPowerOfP - 1));
+            resultMap.put(functionAxis, value);
+        }
+        return resultMap;
+    }
+
     /**
      * Возвращает описание модели в ввиде списка групп параметров, необходимых к заданию.
      */
     public abstract List<GroupAxisDescription> getModelDescription();
 
     protected abstract TimeVector getStartTimeVector();
+
+    protected abstract List<Axis> getFunctionAxises();
 
     protected abstract Function getFunction();
 

@@ -1,12 +1,11 @@
 package com.sbutterfly.gui;
 
-import com.sbutterfly.core.BaseSystem;
 import com.sbutterfly.differential.EulerODEMethod;
 import com.sbutterfly.differential.ODEMethod;
 import com.sbutterfly.differential.RungeKuttaODEMethod;
-import com.sbutterfly.differential.Vector;
 import com.sbutterfly.engine.Model;
 import com.sbutterfly.engine.ModelSet;
+import com.sbutterfly.engine.trace.Axis;
 import com.sbutterfly.gui.controls.MultiLineJLabel;
 import com.sbutterfly.gui.controls.MyJTextField;
 import com.sbutterfly.gui.panels.Constraint;
@@ -24,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
+import java.util.Map;
 
 /**
  * Created by Sergei on 01.02.2015.
@@ -121,22 +121,15 @@ public class SettingsView implements Frameable {
         Execution.submit(() -> {
             try {
                 Model model = modelSet.createModel();
-                BaseSystem system = model.getSystem();
-
-                // legacy
-                // TODO rewrite to
-                Vector eps = system.getEps(AppSettings.getODEMethod(), AppSettings.getODETime(),
+                Map<Axis, Double> resultMap = model.getEps(AppSettings.getODEMethod(), AppSettings.getODETime(),
                         AppSettings.getODEStep());
 
                 Execution.submitInMain(() -> {
                     StringBuilder buff = new StringBuilder();
                     buff.append("Погрешность:\n");
                     buff.append("<table>");
-                    for (int i = 0; i < eps.size(); i++) {
-                        buff.append(String.format("<tr><td>%s</td><td></td><td>%s</td></tr>",
-                                system.paramsNames()[i] + ", " + system.paramsExtNames()[i] + ":",
-                                DoubleUtils.toString(eps.get(i))));
-                    }
+                    resultMap.forEach((k, v) -> buff.append(String.format("<tr><td>%s</td><td></td><td>%s</td></tr>",
+                            k.getHumanReadableName(), DoubleUtils.toString(v))));
                     buff.append("</table>");
                     epsLabel.setText(buff.toString());
                     epsButton.setEnabled(true);

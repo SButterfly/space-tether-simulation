@@ -72,6 +72,11 @@ public class RopeModel extends Model {
     }
 
     @Override
+    protected List<Axis> getFunctionAxises() {
+        return START_VALUES;
+    }
+
+    @Override
     protected RopeFunction getFunction() {
         final double m1 = getInitialValue(M1_axis());
         final double m2 = getInitialValue(M2_axis());
