@@ -15,6 +15,9 @@ import com.sbutterfly.services.Execution;
 
 import javax.swing.JOptionPane;
 import java.awt.Color;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -153,6 +156,31 @@ public abstract class Model {
 
             // TODO quickfix
             Execution.submitInMain(() -> JOptionPane.showMessageDialog(null, e.getMessage()));
+        }
+    }
+
+    public void serialize(DataOutputStream stream) throws IOException {
+        int size = initialValues.size();
+        stream.writeInt(size);
+        for (Map.Entry<Axis, Double> entry : initialValues.entrySet()) {
+            String axisName = entry.getKey().getName();
+            String humanableName = entry.getKey().getHumanReadableName();
+
+            stream.writeUTF(axisName);
+            stream.writeUTF(humanableName);
+            stream.writeDouble(entry.getValue());
+        }
+    }
+
+    public void deserialize(DataInputStream stream) throws IOException {
+        int size = stream.readInt();
+        for (int i = 0; i < size; i++) {
+            String axisName = stream.readUTF();
+            String humanName = stream.readUTF();
+            double value = stream.readDouble();
+
+            Axis axis = new Axis(axisName, humanName);
+            initialValues.put(axis, value);
         }
     }
 

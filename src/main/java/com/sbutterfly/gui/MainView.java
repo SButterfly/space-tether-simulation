@@ -8,7 +8,6 @@ import com.sbutterfly.gui.panels.Constraint;
 import com.sbutterfly.gui.panels.JBoxLayout;
 import com.sbutterfly.gui.panels.JGridBagPanel;
 import com.sbutterfly.services.ModelSetFactory;
-import com.sbutterfly.utils.FileAccessor;
 import com.sbutterfly.utils.FileUtils;
 import com.sbutterfly.utils.Log;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -23,7 +22,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Iterator;
 
 /**
@@ -196,10 +200,9 @@ public class MainView implements Frameable {
             }
             Log.debug(this, "Selected: " + file.getName());
 
-            try {
-                String serialized = SystemSerializer.serialize(modelSet);
-                FileAccessor.write(file, serialized);
-            } catch (Exception ex) {
+            try (DataOutputStream dataOutputStream = new DataOutputStream(new FileOutputStream(file))) {
+                SystemSerializer.serialize(modelSet, dataOutputStream);
+            } catch (IOException ex) {
                 Log.error(this, ex);
                 JOptionPane.showMessageDialog(null, "Произошла ошибка при сохраенении файла");
             }
@@ -219,11 +222,11 @@ public class MainView implements Frameable {
 
             File file = fileChooser.getSelectedFile();
             Log.debug(this, "Selected: " + file.getName());
-            try {
-                String text = FileAccessor.read(file);
-                ModelSet models = SystemSerializer.deserialize(text);
-                setModelSet(models);
-            } catch (Exception ex) {
+
+            try (DataInputStream dataInputStream = new DataInputStream(new FileInputStream(file))) {
+                ModelSet set = SystemSerializer.deserialize(dataInputStream);
+                setModelSet(set);
+            } catch (IOException ex) {
                 Log.error(this, ex);
                 JOptionPane.showMessageDialog(null, "Файл поврежден или недопустимого формата");
             }
