@@ -34,8 +34,8 @@ public class TraceSelectionView extends JGridBagPanel {
         JLabel namePanel = new JLabel("График:");
         comboBox = new JComboBox<>();
 
-        add(namePanel, Constraint.create(0, 0).weightX(1).anchor(GridBagConstraints.WEST));
-        add(comboBox, Constraint.create(0, 1, 1, 1).weightX(1).anchor(GridBagConstraints.WEST));
+        add(namePanel, Constraint.create(0, 0).weightX(1).fill(GridBagConstraints.HORIZONTAL).anchor(GridBagConstraints.WEST));
+        add(comboBox, Constraint.create(0, 1, 1, 1).weightX(1).fill(GridBagConstraints.HORIZONTAL).anchor(GridBagConstraints.WEST));
 
         comboBox.addActionListener(a -> {
             TraceDescription traceDescription = traceDescriptionMap.get(comboBox.getSelectedItem());
