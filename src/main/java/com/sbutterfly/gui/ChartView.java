@@ -44,6 +44,16 @@ public class ChartView extends Chart2D {
         modelToTrace.remove(model);
     }
 
+    public void appierModel(Model model) {
+        ITrace2D trace2D = modelToTrace.get(model);
+        trace2D.setVisible(true);
+    }
+
+    public void hideModel(Model model) {
+        ITrace2D trace2D = modelToTrace.get(model);
+        trace2D.setVisible(false);
+    }
+
     public void refresh() {
         super.removeAllTraces();
         modelToTrace.clear();
@@ -61,6 +71,7 @@ public class ChartView extends Chart2D {
     private void addTrace(Model model, TraceDescription traceDescription) {
         Trace trace = model.getTrace(traceDescription);
         ITrace2D viewTrace = new Trace2DSimple();
+        viewTrace.setColor(model.getColor());
         this.addTrace(viewTrace);
         trace.getValues().forEach(v -> viewTrace.addPoint(v.get(0), v.get(1)));
         modelToTrace.put(model, viewTrace);
@@ -79,15 +90,5 @@ public class ChartView extends Chart2D {
         this.getAxisX().setAxisTitle(xAxisTitle);
         this.getAxisY().setAxisTitle(yAxisTitle);
         this.updateUI();
-    }
-
-    public void appierModel(Model model) {
-        ITrace2D trace2D = modelToTrace.get(model);
-        trace2D.setVisible(true);
-    }
-
-    public void hideModel(Model model) {
-        ITrace2D trace2D = modelToTrace.get(model);
-        trace2D.setVisible(false);
     }
 }
