@@ -34,8 +34,8 @@ public abstract class Model {
 
     private final EventHandler<Event> eventHandler = new EventHandler<>();
 
-    private String name;
-    private Color color;
+    private String name = "Безымянный";
+    private Color color = Color.black;
 
     private Map<Axis, Double> initialValues = new HashMap<>();
     private DifferentialResult differentialResult;
@@ -43,7 +43,7 @@ public abstract class Model {
     private Status status = Status.EMPTY;
 
     public String getName() {
-        return name == null ? "Безымянный" : name;
+        return name;
     }
 
     public void setName(String name) {
@@ -162,6 +162,8 @@ public abstract class Model {
     public void serialize(DataOutputStream stream) throws IOException {
         int size = initialValues.size();
         stream.writeInt(size);
+        stream.writeUTF(name);
+        stream.writeInt(color.getRGB());
         for (Map.Entry<Axis, Double> entry : initialValues.entrySet()) {
             String axisName = entry.getKey().getName();
             String humanableName = entry.getKey().getHumanReadableName();
@@ -174,6 +176,8 @@ public abstract class Model {
 
     public void deserialize(DataInputStream stream) throws IOException {
         int size = stream.readInt();
+        name = stream.readUTF();
+        color = new Color(stream.readInt());
         for (int i = 0; i < size; i++) {
             String axisName = stream.readUTF();
             String humanName = stream.readUTF();

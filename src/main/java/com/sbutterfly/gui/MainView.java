@@ -150,10 +150,14 @@ public class MainView implements Frameable {
     }
 
     public void setModelSet(ModelSet modelSet) {
-        this.modelSet = modelSet;
-
         modelsListView.clear();
         createNewModel(modelSet.createModel());
+        for (Model model : modelSet) {
+            modelsListView.add(model);
+        }
+        // TODO HACK
+        // присваивание происходит в конце, так как иначе в modelSet будут дублирующиеся значения
+        this.modelSet = modelSet;
     }
 
     public void createNewModel(Model model) {
