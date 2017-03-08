@@ -1,8 +1,12 @@
 package com.sbutterfly.gui.controls;
 
-import javax.swing.*;
+import com.sbutterfly.gui.helpers.EventListener;
+
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
-import java.awt.*;
+import java.awt.Dimension;
 
 /**
  * Created by Sergei on 15.02.2015.
@@ -34,8 +38,28 @@ public class MyJTextField extends JTextField {
         init();
     }
 
-    private void init(){
+    private void init() {
         setMinimumSize(new Dimension(50, 20));
         setPreferredSize(getMinimumSize());
+    }
+
+    // TODO quick fix
+    public void addTextChangedListener(EventListener<String> textChangedListener) {
+        getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                textChangedListener.onSubmit(getText());
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                textChangedListener.onSubmit(getText());
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                textChangedListener.onSubmit(getText());
+            }
+        });
     }
 }

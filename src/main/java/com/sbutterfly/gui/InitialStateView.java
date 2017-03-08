@@ -15,7 +15,6 @@ import com.sbutterfly.utils.Log;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
 import java.util.HashMap;
 import java.util.List;
@@ -98,8 +97,8 @@ public class InitialStateView extends JGridBagPanel {
         JLabel label = new JLabel(axis.getHumanReadableName() + ":");
         add(label, getConstraint(0, lastRow, 1, 1));
 
-        JTextField textField = new MyJTextField(value);
-        textField.addActionListener(a -> params.put(axis, textField.getText()));
+        MyJTextField textField = new MyJTextField(value);
+        textField.addTextChangedListener(a -> params.put(axis, textField.getText()));
         add(textField, getConstraint(1, lastRow, 1, 1));
 
         lastRow++;
