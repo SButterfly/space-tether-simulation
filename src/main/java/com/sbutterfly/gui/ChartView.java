@@ -1,5 +1,6 @@
 package com.sbutterfly.gui;
 
+import com.sbutterfly.differential.Vector;
 import com.sbutterfly.engine.Model;
 import com.sbutterfly.engine.trace.Trace;
 import com.sbutterfly.engine.trace.TraceDescription;
@@ -73,7 +74,19 @@ public class ChartView extends Chart2D {
         ITrace2D viewTrace = new Trace2DSimple();
         viewTrace.setColor(model.getColor());
         this.addTrace(viewTrace);
-        trace.getValues().forEach(v -> viewTrace.addPoint(v.get(0), v.get(1)));
+
+        // нет смысла печатать все точки
+        // достаточно взять несколько, чтобы быстрее прогружался график
+        int width = this.getWidth();
+        int height = this.getHeight();
+        int points = 5 * Math.max(width, height); // с коэффициентом 5 лучше линии
+
+        List<Vector> values = trace.getValues();
+
+        int step = Math.max(values.size() / points, 1);
+        for (int i = 0; i < values.size(); i += step) {
+            viewTrace.addPoint(values.get(i).get(0), values.get(i).get(1));
+        }
         modelToTrace.put(model, viewTrace);
     }
 
