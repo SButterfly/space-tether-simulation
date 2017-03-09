@@ -12,7 +12,10 @@ import com.sbutterfly.utils.Log;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +25,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Sergei on 14.02.2015.
  */
+@SuppressWarnings("magicnumber")
 public class ModelsListView extends JGridBagPanel {
 
     private static final URL DELETE_IMAGE = ModelsListView.class
@@ -33,6 +37,7 @@ public class ModelsListView extends JGridBagPanel {
     private JButton deleteAllButton;
     private EventHandler<ModelEvent> eventHandler = new EventHandler<>();
     private Map<Model, Item> modelItemMap = new HashMap<>();
+    private Model selectedModel;
 
     public ModelsListView() {
         createGUI();
@@ -60,8 +65,31 @@ public class ModelsListView extends JGridBagPanel {
     }
 
     public void add(Model model) {
+        if (selectedModel != null) {
+            select(selectedModel, false);
+            selectedModel = null;
+        }
+
         JLabel label = new JLabel(model.getName());
         label.setForeground(model.getColor());
+        label.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (selectedModel != null) {
+                    select(selectedModel, false);
+                }
+
+                selectedModel = modelItemMap.entrySet().stream()
+                        .filter(entry -> entry.getValue().label == label)
+                        .map(Map.Entry::getKey)
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("Failed to find model by label " + label.getText()));
+
+                select(selectedModel, true);
+                eventHandler.invoke(new ModelEvent(model, Status.SELECTED));
+            }
+        });
+
         JCheckBox checkBox = new JCheckBox("", true);
         checkBox.addChangeListener(e -> {
             Status status = checkBox.isSelected() ? Status.SHOWED : Status.HID;
@@ -111,6 +139,11 @@ public class ModelsListView extends JGridBagPanel {
     }
 
     public boolean remove(Model model) {
+        if (selectedModel != null) {
+            select(selectedModel, false);
+            selectedModel = null;
+        }
+
         Item item = modelItemMap.get(model);
         if (item == null) {
             return false;
@@ -136,6 +169,31 @@ public class ModelsListView extends JGridBagPanel {
         rowCount = 0;
     }
 
+    public Model getSelectedModel() {
+        return selectedModel;
+    }
+
+    public void select(Model model) {
+        desselect();
+        select(model, true);
+    }
+
+    public void desselect() {
+        select(selectedModel, false);
+        selectedModel = null;
+    }
+
+    private void select(Model model, boolean select) {
+        Item item = modelItemMap.get(model);
+        // dirty code
+        if (item != null) {
+            item.label.setForeground(select ? Color.RED : model.getColor());
+            item.label.updateUI();
+        } else {
+            throw new RuntimeException("Model don't exit: " + model.getName());
+        }
+    }
+
     private class Item {
         JLabel label;
         JCheckBox checkBox;
@@ -146,7 +204,8 @@ public class ModelsListView extends JGridBagPanel {
         ADDED,
         DELETED,
         SHOWED,
-        HID
+        HID,
+        SELECTED
     }
 
     public static class ModelEvent {

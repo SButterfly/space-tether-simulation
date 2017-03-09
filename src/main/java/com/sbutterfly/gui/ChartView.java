@@ -44,7 +44,7 @@ public class ChartView extends Chart2D {
         modelToTrace.remove(model);
     }
 
-    public void appierModel(Model model) {
+    public void appearModel(Model model) {
         ITrace2D trace2D = modelToTrace.get(model);
         trace2D.setVisible(true);
     }

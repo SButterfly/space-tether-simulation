@@ -64,13 +64,18 @@ public class MainView implements Frameable {
         initialStateView.addSubmitListener(e -> {
             switch (e.getState()) {
                 case CREATE:
-                    onModelCreated(e.getModel());
                     createNewModel(modelSet.createModel());
+                    onModelCreated(e.getModel());
                     break;
                 case EDIT:
+                    createNewModel(modelSet.createModel());
                     // HACK quick way to update model
-                    onModelDisappeared(e.getModel());
-                    onModelAppeared(e.getModel());
+                    onModelDeleted(e.getModel());
+                    onModelAdded(e.getModel());
+                    break;
+                case CANCEL:
+                    createNewModel(modelSet.createModel());
+                    modelsListView.desselect();
                     break;
                 default:
                     throw new RuntimeException("Don't know state: " + e.getState());
@@ -95,6 +100,9 @@ public class MainView implements Frameable {
                     break;
                 case HID:
                     onModelDisappeared(e.getModel());
+                    break;
+                case SELECTED:
+                    onModelSelected(e.getModel());
                     break;
                 default:
                     throw new RuntimeException("Don't know status: " + e.getStatus());
@@ -138,11 +146,15 @@ public class MainView implements Frameable {
     }
 
     private void onModelAppeared(Model model) {
-        chartView.appierModel(model);
+        chartView.appearModel(model);
     }
 
     private void onModelDisappeared(Model model) {
         chartView.hideModel(model);
+    }
+
+    private void onModelSelected(Model model) {
+        initialStateView.setModel(model, true);
     }
 
     private void traceSelectionChanged(TraceDescription traceDescription) {
@@ -161,7 +173,7 @@ public class MainView implements Frameable {
     }
 
     public void createNewModel(Model model) {
-        initialStateView.setModel(model, InitialStateView.State.CREATE);
+        initialStateView.setModel(model, false);
 
         viewsPanel.add(initialStateView, getConstraint(0, 0, 1, 1));
         viewsPanel.updateUI();
@@ -262,7 +274,8 @@ public class MainView implements Frameable {
     }
 
     private class ColorIterator implements Iterator<Color> {
-        private final Color[] colors = new Color[]{Color.BLUE, Color.RED, Color.CYAN, Color.GREEN, Color.DARK_GRAY};
+        private final Color[] colors = new Color[]{Color.BLUE, Color.DARK_GRAY, Color.MAGENTA, Color.YELLOW,
+                Color.DARK_GRAY};
 
         private int index;
 

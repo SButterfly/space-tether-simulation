@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Sergei on 02.02.2015.
  */
+@SuppressWarnings("magicnumber")
 public class InitialStateView extends JGridBagPanel {
 
     private final EventHandler<Event> eventHandler = new EventHandler<>();
@@ -32,7 +33,7 @@ public class InitialStateView extends JGridBagPanel {
     private final Map<Axis, String> params = new HashMap<>();
 
     private Model model;
-    private State state;
+    private boolean edit;
 
     private int lastRow = 0;
 
@@ -43,13 +44,13 @@ public class InitialStateView extends JGridBagPanel {
         return model;
     }
 
-    public State getState() {
-        return state;
+    public boolean isEdit() {
+        return edit;
     }
 
-    public void setModel(Model model, State state) {
+    public void setModel(Model model, boolean edit) {
         this.model = model;
-        this.state = state;
+        this.edit = edit;
         clear();
         createGUI();
     }
@@ -65,16 +66,26 @@ public class InitialStateView extends JGridBagPanel {
 
         add(new EmptyPanel(), getConstraint(0, lastRow++, 1, 1).gridWidth(2));
 
-        if (state == State.CREATE) {
+        if (edit) {
+            JGridBagPanel jGridBagPanel = new JGridBagPanel();
+            JButton saveButton = new JButton("Сохранить");
+            JButton cancelButton = new JButton("Отменить");
+            jGridBagPanel.add(saveButton, Constraint.create(0, 0));
+            jGridBagPanel.add(cancelButton, Constraint.create(1, 0));
+            add(jGridBagPanel, getConstraint(0, lastRow, 2, 1)
+                    .anchor(GridBagConstraints.EAST));
+            saveButton.addActionListener(l -> submitChanges(State.EDIT));
+            cancelButton.addActionListener(l -> {
+                Event event = new Event(model, State.CANCEL);
+                eventHandler.invoke(event);
+            });
+        } else {
             JButton submitButton = new JButton();
             submitButton.setText("Добавить");
             add(submitButton, getConstraint(0, lastRow, 2, 1)
                     .fill(GridBagConstraints.NONE)
                     .anchor(GridBagConstraints.EAST));
-            submitButton.addActionListener(l -> submitChanges());
-        } else {
-            // TODO
-            throw new UnsupportedOperationException("Unsupported state");
+            submitButton.addActionListener(l -> submitChanges(State.CREATE));
         }
 
         Log.debug(this, "GUI updated");
@@ -104,7 +115,7 @@ public class InitialStateView extends JGridBagPanel {
         lastRow++;
     }
 
-    private void submitChanges() {
+    private void submitChanges(State state) {
         try {
             Map<Axis, Double> map = params.entrySet().stream()
                     .collect(Collectors.toMap(Map.Entry::getKey, e -> DoubleUtils.nonNegativeParse(e.getValue())));
@@ -136,7 +147,8 @@ public class InitialStateView extends JGridBagPanel {
 
     public enum State {
         CREATE,
-        EDIT
+        EDIT,
+        CANCEL
     }
 
     public static class Event {
