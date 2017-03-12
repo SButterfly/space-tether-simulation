@@ -1,4 +1,4 @@
-package com.sbutterfly.core.callbackrope;
+package com.sbutterfly.core.tether;
 
 import com.sbutterfly.engine.GroupAxisDescription;
 import com.sbutterfly.engine.trace.Axis;
@@ -10,7 +10,7 @@ import java.util.List;
  * @author s-ermakov
  */
 @SuppressWarnings({"checkstyle:membername", "checkstyle:methodname", "checkstyle:parametername"})
-class RopeTraceService {
+class TetherTraceService {
 
     private static final Axis M_1_AXIS = new Axis("m1", "m1, кг");
     private static final Axis M_2_AXIS = new Axis("m2", "m2, кг");
@@ -44,7 +44,7 @@ class RopeTraceService {
     private static final List<GroupAxisDescription> GROUP_AXIS_DESCRIPTIONS = Arrays.asList(
             ROPE_GROUP, SYSTEM_GROUP, START_PARAMS_GROUP);
 
-    private RopeTraceService() {
+    private TetherTraceService() {
     }
 
     public static Axis M1_axis() {

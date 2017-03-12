@@ -1,6 +1,6 @@
 package com.sbutterfly.services;
 
-import com.sbutterfly.core.callbackrope.RopeModelSet;
+import com.sbutterfly.core.tether.TetherModelSet;
 import com.sbutterfly.engine.ModelSet;
 
 /**
@@ -11,6 +11,6 @@ public class ModelSetFactory {
     }
 
     public static ModelSet createNewModelSet() {
-        return new RopeModelSet();
+        return new TetherModelSet();
     }
 }
