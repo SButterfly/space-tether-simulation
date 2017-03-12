@@ -1,4 +1,4 @@
-package com.sbutterfly.gui_name.helpers;
+package com.sbutterfly.gui.helpers;
 
 import java.util.LinkedList;
 import java.util.List;

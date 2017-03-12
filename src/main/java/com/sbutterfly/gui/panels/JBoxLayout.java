@@ -1,4 +1,4 @@
-package com.sbutterfly.gui_name.panels;
+package com.sbutterfly.gui.panels;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;

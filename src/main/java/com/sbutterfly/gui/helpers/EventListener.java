@@ -1,4 +1,4 @@
-package com.sbutterfly.gui_name.helpers;
+package com.sbutterfly.gui.helpers;
 
 public interface EventListener<T> {
     void onSubmit(T e);

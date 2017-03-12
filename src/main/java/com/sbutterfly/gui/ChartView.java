@@ -1,4 +1,4 @@
-package com.sbutterfly.gui_name;
+package com.sbutterfly.gui;
 
 import com.sbutterfly.concurrency.CallbackFuture;
 import com.sbutterfly.differential.Vector;
@@ -6,8 +6,8 @@ import com.sbutterfly.engine.Model;
 import com.sbutterfly.engine.ModelResult;
 import com.sbutterfly.engine.trace.Trace;
 import com.sbutterfly.engine.trace.TraceDescription;
-import com.sbutterfly.gui_name.helpers.EventHandler;
-import com.sbutterfly.gui_name.helpers.EventListener;
+import com.sbutterfly.gui.helpers.EventHandler;
+import com.sbutterfly.gui.helpers.EventListener;
 import com.sbutterfly.utils.Log;
 import info.monitorenter.gui.chart.Chart2D;
 import info.monitorenter.gui.chart.IAxis;

@@ -1,12 +1,12 @@
-package com.sbutterfly.gui_name;
+package com.sbutterfly.gui;
 
 import com.sbutterfly.engine.Model;
-import com.sbutterfly.gui_name.controls.EmptyPanel;
-import com.sbutterfly.gui_name.controls.JImageButton;
-import com.sbutterfly.gui_name.helpers.EventHandler;
-import com.sbutterfly.gui_name.helpers.EventListener;
-import com.sbutterfly.gui_name.panels.Constraint;
-import com.sbutterfly.gui_name.panels.JGridBagPanel;
+import com.sbutterfly.gui.controls.EmptyPanel;
+import com.sbutterfly.gui.controls.JImageButton;
+import com.sbutterfly.gui.helpers.EventHandler;
+import com.sbutterfly.gui.helpers.EventListener;
+import com.sbutterfly.gui.panels.Constraint;
+import com.sbutterfly.gui.panels.JGridBagPanel;
 import com.sbutterfly.utils.Log;
 
 import javax.swing.JButton;

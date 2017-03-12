@@ -1,6 +1,6 @@
-package com.sbutterfly.gui_name.controls;
+package com.sbutterfly.gui.controls;
 
-import com.sbutterfly.gui_name.helpers.EventListener;
+import com.sbutterfly.gui.helpers.EventListener;
 
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;

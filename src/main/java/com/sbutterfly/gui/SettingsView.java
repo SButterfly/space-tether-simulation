@@ -1,4 +1,4 @@
-package com.sbutterfly.gui_name;
+package com.sbutterfly.gui;
 
 import com.sbutterfly.differential.EulerODEMethod;
 import com.sbutterfly.differential.ODEMethod;
@@ -6,10 +6,10 @@ import com.sbutterfly.differential.RungeKuttaODEMethod;
 import com.sbutterfly.engine.Model;
 import com.sbutterfly.engine.ModelSet;
 import com.sbutterfly.engine.trace.Axis;
-import com.sbutterfly.gui_name.controls.MultiLineJLabel;
-import com.sbutterfly.gui_name.controls.MyJTextField;
-import com.sbutterfly.gui_name.panels.Constraint;
-import com.sbutterfly.gui_name.panels.JGridBagPanel;
+import com.sbutterfly.gui.controls.MultiLineJLabel;
+import com.sbutterfly.gui.controls.MyJTextField;
+import com.sbutterfly.gui.panels.Constraint;
+import com.sbutterfly.gui.panels.JGridBagPanel;
 import com.sbutterfly.services.AppSettings;
 import com.sbutterfly.services.Execution;
 import com.sbutterfly.utils.DoubleUtils;
