@@ -2,8 +2,10 @@ package com.sbutterfly.gui;
 
 import com.sbutterfly.differential.Vector;
 import com.sbutterfly.engine.Model;
+import com.sbutterfly.engine.ModelResult;
 import com.sbutterfly.engine.trace.Trace;
 import com.sbutterfly.engine.trace.TraceDescription;
+import com.sbutterfly.gui.helpers.EventHandler;
 import info.monitorenter.gui.chart.Chart2D;
 import info.monitorenter.gui.chart.IAxis;
 import info.monitorenter.gui.chart.ITrace2D;
@@ -20,6 +22,8 @@ import java.util.Map;
  */
 @SuppressWarnings("magicnumber")
 public class ChartView extends Chart2D {
+
+    private final EventHandler<Status> statusEventHandler = new EventHandler<>();
 
     private final List<Model> models = new LinkedList<>();
     private final Map<Model, ITrace2D> modelToTrace = new HashMap<>();
@@ -70,13 +74,22 @@ public class ChartView extends Chart2D {
     }
 
     private void addTrace(Model model, TraceDescription traceDescription) {
-        Trace trace = model.getTrace(traceDescription);
+        ModelResult modelResult = model.getModelResult();
+        doTrace(model, modelResult, traceDescription);
+    }
+
+    private void doTrace(Model model, ModelResult modelResult, TraceDescription traceDescription) {
+        Trace trace = modelResult.getTrace(traceDescription);
         ITrace2D viewTrace = new Trace2DSimple();
         viewTrace.setColor(model.getColor());
         this.addTrace(viewTrace);
 
         // нет смысла печатать все точки
         // достаточно взять несколько, чтобы быстрее прогружался график
+
+        // TODO
+        // такая выборка опасная
+        // так как точки могут быть неравномерными
         int width = this.getWidth();
         int height = this.getHeight();
         int points = 5 * Math.max(width, height); // с коэффициентом 5 лучше линии
@@ -103,5 +116,10 @@ public class ChartView extends Chart2D {
         this.getAxisX().setAxisTitle(xAxisTitle);
         this.getAxisY().setAxisTitle(yAxisTitle);
         this.updateUI();
+    }
+
+    public enum Status {
+        IDLE,
+        BUSY
     }
 }

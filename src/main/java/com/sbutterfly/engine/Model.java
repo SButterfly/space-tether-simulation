@@ -5,24 +5,21 @@ import com.sbutterfly.differential.DifferentialResult;
 import com.sbutterfly.differential.Function;
 import com.sbutterfly.differential.ODEMethod;
 import com.sbutterfly.differential.TimeVector;
-import com.sbutterfly.differential.Vector;
 import com.sbutterfly.engine.trace.Axis;
-import com.sbutterfly.engine.trace.Trace;
-import com.sbutterfly.engine.trace.TraceDescription;
-import com.sbutterfly.gui.helpers.EventHandler;
 import com.sbutterfly.services.AppSettings;
-import com.sbutterfly.services.Execution;
 
-import javax.swing.JOptionPane;
 import java.awt.Color;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Базовый класс, который содержит логику для обработки и хранения дифференциальных данных модели.
@@ -32,15 +29,13 @@ import java.util.Map;
  */
 public abstract class Model {
 
-    private final EventHandler<Event> eventHandler = new EventHandler<>();
+    private static final ExecutorService MODEL_EXECUTOR_SERVICE = Executors.newCachedThreadPool();
 
     private String name = "Безымянный";
     private Color color = Color.black;
 
     private Map<Axis, Double> initialValues = new HashMap<>();
-    private DifferentialResult differentialResult;
-
-    private Status status = Status.EMPTY;
+    private Future<? extends ModelResult> futureResult;
 
     public String getName() {
         return name;
@@ -58,8 +53,11 @@ public abstract class Model {
         this.color = color;
     }
 
-    public Status getStatus() {
-        return status;
+    /**
+     * Возвращает все начальные значения.
+     */
+    public Map<Axis, Double> getInitialValues() {
+        return initialValues;
     }
 
     /**
@@ -76,44 +74,26 @@ public abstract class Model {
         initialValues.put(axis, value);
     }
 
-    public Trace getTrace(TraceDescription traceDescription) {
-        Axis xAxis = traceDescription.getXAxis();
-        Axis yAxis = traceDescription.getYAxis();
-
-        List<TimeVector> values = getValues();
-        List<Vector> result = new ArrayList<>(values.size());
-
-        for (TimeVector vector : values) {
-            double xValue = getValue(vector, xAxis);
-            double yValue = getValue(vector, yAxis);
-            result.add(new Vector(xValue, yValue));
+    public ModelResult getModelResult() {
+        try {
+            return getValuesFuture().get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
         }
-
-        return new Trace(traceDescription, result);
-    }
-
-    public List<TimeVector> getValues() {
-        if (differentialResult == null) {
-            Differential differential = new Differential(getFunction(), getStartTimeVector(), AppSettings.getODETime(),
-                    (int) (AppSettings.getODETime() / AppSettings.getODEStep()), AppSettings.getODEMethod());
-
-            differentialResult = differential.different();
-        }
-        return differentialResult.getValues();
     }
 
     public Map<Axis, Double> getEps(ODEMethod method, double time, double h) {
         Differential differential = new Differential(getFunction(), getStartTimeVector(), time, (int) (time / h),
                 method);
 
-        Differential partDifferential = new Differential(getFunction(), getStartTimeVector(), time, (int) (time * 2 / h),
-                method);
+        Differential partDifferential = new Differential(getFunction(), getStartTimeVector(), time,
+                (int) (time * 2 / h), method);
 
         DifferentialResult normalResult = differential.different();
         DifferentialResult partResult = partDifferential.different();
 
         TimeVector lastTimeResult = normalResult.getValues().get(normalResult.getValues().size() - 1);
-        TimeVector lastTimePartResult = normalResult.getValues().get(normalResult.getValues().size() - 1);
+        TimeVector lastTimePartResult = partResult.getValues().get(partResult.getValues().size() - 1);
 
         Map<Axis, Double> resultMap = new LinkedHashMap<>();
         List<Axis> functionAxises = getFunctionAxises();
@@ -139,24 +119,35 @@ public abstract class Model {
 
     protected abstract Function getFunction();
 
-    protected abstract double getValue(TimeVector timeVector, Axis axis);
+    /**
+     * Метод получающий инициализирующую копию результата интегрирования.
+     */
+    protected abstract ModelResult getInitModelResult();
 
     /**
      * Пересчитывает значения системы.
      */
     public void refresh() {
-        differentialResult = null;
-        setStatus(Status.EMPTY);
-        try {
-            setStatus(Status.IN_PROGRESS);
-            getValues();
-            setStatus(Status.READY);
-        } catch (Exception e) {
-            setStatus(Status.FAILED);
+        futureResult = null;
+        getValuesFuture();
+    }
 
-            // TODO quickfix
-            Execution.submitInMain(() -> JOptionPane.showMessageDialog(null, e.getMessage()));
+    public Future<? extends ModelResult> getValuesFuture() {
+        if (futureResult == null) {
+            futureResult = MODEL_EXECUTOR_SERVICE.submit(() -> {
+                ModelResult modelResult = getInitModelResult();
+                initialValues.forEach(modelResult::setInitialValue);
+
+                Differential differential = new Differential(getFunction(), getStartTimeVector(),
+                        AppSettings.getODETime(), (int) (AppSettings.getODETime() / AppSettings.getODEStep()),
+                        AppSettings.getODEMethod());
+                DifferentialResult differentialResult = differential.different();
+
+                modelResult.setValues(differentialResult.getValues());
+                return modelResult;
+            });
         }
+        return futureResult;
     }
 
     public void serialize(DataOutputStream stream) throws IOException {
@@ -185,46 +176,6 @@ public abstract class Model {
 
             Axis axis = new Axis(axisName, humanName);
             initialValues.put(axis, value);
-        }
-    }
-
-    private void setStatus(Status status) {
-        this.status = status;
-        eventHandler.invoke(new Event(status, this));
-    }
-
-    public enum Status {
-        EMPTY, // значения отсутствуют
-        IN_PROGRESS, // производится расчет
-        READY, // расчет завершен
-        FAILED // расчет упал
-    }
-
-    public class Event {
-        private final Status status;
-        private final Model model;
-
-        private double percent;
-
-        public Event(Status status, Model model) {
-            this.status = status;
-            this.model = model;
-        }
-
-        public Status getStatus() {
-            return status;
-        }
-
-        public Model getModel() {
-            return model;
-        }
-
-        public double getPercent() {
-            return percent;
-        }
-
-        public void setPercent(double percent) {
-            this.percent = percent;
         }
     }
 }

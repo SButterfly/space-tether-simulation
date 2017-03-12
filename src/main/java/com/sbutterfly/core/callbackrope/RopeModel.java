@@ -5,6 +5,7 @@ import com.sbutterfly.differential.TimeVector;
 import com.sbutterfly.differential.Vector;
 import com.sbutterfly.engine.GroupAxisDescription;
 import com.sbutterfly.engine.Model;
+import com.sbutterfly.engine.ModelResult;
 import com.sbutterfly.engine.trace.Axis;
 
 import java.util.Arrays;
@@ -90,33 +91,39 @@ public class RopeModel extends Model {
     }
 
     @Override
-    protected double getValue(TimeVector timeVector, Axis axis) {
-        if (CONSTANT_VALUES.contains(axis)) {
-            // TODO бага, начальное значение может поменяться после срабатывания интегрирования
-            return getInitialValue(axis);
-        }
+    protected ModelResult getInitModelResult() {
+        return new RopeModelResult();
+    }
 
-        if (START_VALUES.contains(axis)) {
-            return timeVector.get(START_VALUES.indexOf(axis));
-        }
+    private class RopeModelResult extends ModelResult {
 
-        if (axis == Time_axis()) {
-            return timeVector.getTime();
-        }
+        @Override
+        public double getValue(TimeVector timeVector, Axis axis) {
+            if (CONSTANT_VALUES.contains(axis)) {
+                return RopeModel.super.getInitialValue(axis);
+            }
 
-        if (axis == X_axis()) {
-            return -Math.sin(timeVector.get(2)) * timeVector.get(0);
-        }
+            if (START_VALUES.contains(axis)) {
+                return timeVector.get(START_VALUES.indexOf(axis));
+            }
 
-        if (axis == Y_axis()) {
-            return -Math.cos(timeVector.get(2)) * timeVector.get(0);
-        }
+            if (axis == Time_axis()) {
+                return timeVector.getTime();
+            }
 
-        if (axis == T_axis()) {
-            // TODO бага, начальное значение может поменяться после срабатывания интегрирования
-            return getFunction().T(timeVector.get(0), timeVector.get(1));
-        }
+            if (axis == X_axis()) {
+                return -Math.sin(timeVector.get(2)) * timeVector.get(0);
+            }
 
-        throw new IllegalArgumentException("Unsupported axis: " + axis);
+            if (axis == Y_axis()) {
+                return -Math.cos(timeVector.get(2)) * timeVector.get(0);
+            }
+
+            if (axis == T_axis()) {
+                return RopeModel.this.getFunction().T(timeVector.get(0), timeVector.get(1));
+            }
+
+            throw new IllegalArgumentException("Unsupported axis: " + axis);
+        }
     }
 }

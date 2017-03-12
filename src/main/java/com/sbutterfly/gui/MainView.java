@@ -257,6 +257,10 @@ public class MainView implements Frameable {
 
             try (DataInputStream dataInputStream = new DataInputStream(new FileInputStream(file))) {
                 ModelSet set = SystemSerializer.deserialize(dataInputStream);
+                // start differing models for speed up
+                for (Model model : set) {
+                    model.refresh();
+                }
                 setModelSet(set);
             } catch (IOException ex) {
                 Log.error(this, ex);
