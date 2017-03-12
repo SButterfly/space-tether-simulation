@@ -2,12 +2,12 @@ package com.sbutterfly.differential;
 
 /**
  * Created by Sergei on 29.01.2015.
- *
+ * <p>
  * Vector, which has one more field for time.
  */
 public class TimeVector extends Vector {
 
-    private final double time;
+    private double time;
 
     public TimeVector(double time, double... values) {
         super(values);
@@ -23,6 +23,10 @@ public class TimeVector extends Vector {
         return time;
     }
 
+    public void setTime(double time) {
+        this.time = time;
+    }
+
     @Override
     public TimeVector clone() {
         return new TimeVector(time, this);
@@ -31,7 +35,7 @@ public class TimeVector extends Vector {
     @Override
     public String toString() {
         return "TimeVector{" +
-                "time=" + time +
-                "} " + super.toString();
+            "time=" + time +
+            "} " + super.toString();
     }
 }

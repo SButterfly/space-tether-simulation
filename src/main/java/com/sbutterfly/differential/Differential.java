@@ -1,137 +1,78 @@
 package com.sbutterfly.differential;
 
-import com.sbutterfly.GUI.AdditionalLineView;
 import com.sbutterfly.utils.Func;
 import com.sbutterfly.utils.Log;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
  * Created by Sergei on 03.11.14.
  */
-public class Differential implements Iterable<TimeVector> {
+public class Differential {
 
     private final ODEMethod method;
     private final Function function;
     private final TimeVector startVector;
-    private final double time;
+    private final double totalTime;
     private final int numberOfIterations;
 
-    public Differential(Function function, TimeVector startVector, double time, int numberOfIterations) {
-        this(function, startVector, time, numberOfIterations, new RungeKuttaODEMethod());
-    }
-
-    public Differential(Function function, TimeVector startVector, double time, int numberOfIterations, ODEMethod method){
+    public Differential(Function function, TimeVector startVector, double totalTime,
+                        int numberOfIterations, ODEMethod method) {
         this.function = function;
         this.startVector = startVector;
-        this.time = time;
+        this.totalTime = totalTime;
         this.numberOfIterations = numberOfIterations;
         this.method = method;
     }
 
-    public ODEMethod getMethod() {
-        return method;
-    }
-    public Function getFunction() {
-        return function;
-    }
-    public TimeVector getStartVector() {
-        return startVector;
-    }
-    public double getTime() {
-        return time;
-    }
-    public int getNumberOfIterations() {
-        return numberOfIterations;
+    public DifferentialResult different() {
+        List<TimeVector> result = makeDifferential();
+        return new DifferentialResult(result);
     }
 
-    public TimeVector[] makeDifferential(){
-        return makeDifferential(this.iterator());
-    }
-
-    public TimeVector[] makeDifferential(Iterator<TimeVector> iterator) {
+    private List<TimeVector> makeDifferential() {
         try (Log.LogTime logTime = Log.recordWorking(this)) {
-            ArrayList<TimeVector> arrayList = new ArrayList<>(numberOfIterations);
-            int i = 0;
-            for (;iterator.hasNext(); i++) {
-                TimeVector vector = iterator.next();
-                if (vector.isAnyNaN()){
+            List<TimeVector> vectors = new ArrayList<>(numberOfIterations);
+            Iterator<TimeVector> iterator = new DifferentialIterator();
+            iterator.forEachRemaining(tv -> {
+                if (tv.isAnyNaN()) {
                     Log.warning(this, "Some param is NaN is null; throw!!");
-                    throw new RuntimeException("Одно или несколько значения стало NaN. Проверьте параметры метода численного интегрирования.");
+                    throw new RuntimeException("Одно или несколько значения стало NaN. " +
+                            "Проверьте параметры метода численного интегрирования.");
                 }
-                arrayList.add(vector);
-            }
-            TimeVector[] array = new TimeVector[i];
-            arrayList.toArray(array);
-            return array;
+                vectors.add(tv);
+            });
+            return vectors;
         }
     }
 
-    public TimeVector[] makeDifferential(Func<Boolean, TimeVector> exitFunc) {
-        return makeDifferential(new DifferentialIterator(exitFunc));
-    }
-
-    @Override
-    public DifferentialIterator iterator() {
-        return new DifferentialIterator();
-    }
-
-    public DifferentialIterator iterator(Func<Boolean, TimeVector> exitFunc) {
-        return new DifferentialIterator(exitFunc);
-    }
-
-    public class DifferentialIterator implements Iterator<TimeVector>, AdditionalLineView.Processable {
+    @SuppressWarnings("magicnumber")
+    public class DifferentialIterator implements Iterator<TimeVector> {
         private Vector last = startVector;
         private double currentTime = startVector.getTime();
-        private double h = time / numberOfIterations;
-
-        private boolean canceled = false;
+        private double h = totalTime / numberOfIterations;
 
         private Func<Boolean, TimeVector> exitFunc;
 
         public DifferentialIterator() {
-            this.exitFunc = arg1 -> arg1.getTime() + 1e-6 >= time;
-        }
-
-        public DifferentialIterator(Func<Boolean, TimeVector> exitFunc) {
-            this();
-            this.exitFunc = arg1 -> exitFunc.invoke(arg1) || arg1.getTime() + 1e-6 >= time;
+            this.exitFunc = tv -> tv.getTime() + 1e-6 >= totalTime;
         }
 
         public boolean hasNext() {
-            return !canceled && !exitFunc.invoke(new TimeVector(currentTime, last));
+            return !exitFunc.invoke(new TimeVector(currentTime, last));
         }
 
         public TimeVector next() throws NoSuchElementException {
-            if (hasNext()){
-                last = method.Next(function, last, h);
+            if (hasNext()) {
+                last = method.next(function, last, h);
                 currentTime += h;
                 return new TimeVector(currentTime, last);
-            }
-            else
+            } else {
                 throw new NoSuchElementException();
-        }
-
-        @Override
-        public double getStatusIndicator() {
-            return currentTime / time;
-        }
-
-        @Override
-        public boolean hasEnded() {
-            return !hasNext() || canceled;
-        }
-
-        @Override
-        public boolean hasCanceled() {
-            return canceled;
-        }
-
-        @Override
-        public void cancel() {
-            canceled = true;
+            }
         }
     }
 }

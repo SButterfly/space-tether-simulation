@@ -19,7 +19,7 @@ public class Stopwatch {
         return new Date(startTime);
     }
 
-    public Date getElapsedTime(){
+    public Date getElapsedTime() {
         return new Date(System.currentTimeMillis() - startTime);
     }
 
