@@ -1,8 +1,8 @@
-package com.sbutterfly.gui;
+package com.sbutterfly.gui_name;
 
-import com.sbutterfly.gui.controls.EmptyPanel;
-import com.sbutterfly.gui.panels.Constraint;
-import com.sbutterfly.gui.panels.JGridBagPanel;
+import com.sbutterfly.gui_name.controls.EmptyPanel;
+import com.sbutterfly.gui_name.panels.Constraint;
+import com.sbutterfly.gui_name.panels.JGridBagPanel;
 import com.sbutterfly.utils.Log;
 
 import javax.swing.BoxLayout;

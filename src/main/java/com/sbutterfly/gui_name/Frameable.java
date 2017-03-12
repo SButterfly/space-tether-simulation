@@ -1,4 +1,4 @@
-package com.sbutterfly.gui;
+package com.sbutterfly.gui_name;
 
 import javax.swing.JFrame;
 

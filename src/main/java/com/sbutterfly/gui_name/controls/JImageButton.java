@@ -1,4 +1,4 @@
-package com.sbutterfly.gui.controls;
+package com.sbutterfly.gui_name.controls;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;

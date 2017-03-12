@@ -1,12 +1,12 @@
-package com.sbutterfly.gui;
+package com.sbutterfly.gui_name;
 
 import com.sbutterfly.core.SystemSerializer;
 import com.sbutterfly.engine.Model;
 import com.sbutterfly.engine.ModelSet;
 import com.sbutterfly.engine.trace.TraceDescription;
-import com.sbutterfly.gui.panels.Constraint;
-import com.sbutterfly.gui.panels.JBoxLayout;
-import com.sbutterfly.gui.panels.JGridBagPanel;
+import com.sbutterfly.gui_name.panels.Constraint;
+import com.sbutterfly.gui_name.panels.JBoxLayout;
+import com.sbutterfly.gui_name.panels.JGridBagPanel;
 import com.sbutterfly.services.ModelSetFactory;
 import com.sbutterfly.utils.FileUtils;
 import com.sbutterfly.utils.Log;

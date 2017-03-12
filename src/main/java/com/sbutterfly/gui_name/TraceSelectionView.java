@@ -1,10 +1,10 @@
-package com.sbutterfly.gui;
+package com.sbutterfly.gui_name;
 
 import com.sbutterfly.engine.trace.TraceDescription;
-import com.sbutterfly.gui.helpers.EventHandler;
-import com.sbutterfly.gui.helpers.EventListener;
-import com.sbutterfly.gui.panels.Constraint;
-import com.sbutterfly.gui.panels.JGridBagPanel;
+import com.sbutterfly.gui_name.helpers.EventHandler;
+import com.sbutterfly.gui_name.helpers.EventListener;
+import com.sbutterfly.gui_name.panels.Constraint;
+import com.sbutterfly.gui_name.panels.JGridBagPanel;
 import com.sbutterfly.utils.Log;
 
 import javax.swing.JComboBox;

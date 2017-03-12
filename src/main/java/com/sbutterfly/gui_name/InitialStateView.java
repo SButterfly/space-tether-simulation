@@ -1,14 +1,14 @@
-package com.sbutterfly.gui;
+package com.sbutterfly.gui_name;
 
 import com.sbutterfly.engine.GroupAxisDescription;
 import com.sbutterfly.engine.Model;
 import com.sbutterfly.engine.trace.Axis;
-import com.sbutterfly.gui.controls.EmptyPanel;
-import com.sbutterfly.gui.controls.MyJTextField;
-import com.sbutterfly.gui.helpers.EventHandler;
-import com.sbutterfly.gui.helpers.EventListener;
-import com.sbutterfly.gui.panels.Constraint;
-import com.sbutterfly.gui.panels.JGridBagPanel;
+import com.sbutterfly.gui_name.controls.EmptyPanel;
+import com.sbutterfly.gui_name.controls.MyJTextField;
+import com.sbutterfly.gui_name.helpers.EventHandler;
+import com.sbutterfly.gui_name.helpers.EventListener;
+import com.sbutterfly.gui_name.panels.Constraint;
+import com.sbutterfly.gui_name.panels.JGridBagPanel;
 import com.sbutterfly.utils.DoubleUtils;
 import com.sbutterfly.utils.Log;
 
