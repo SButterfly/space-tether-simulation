@@ -1,14 +1,14 @@
 package com.sbutterfly.gui;
 
+import com.sbutterfly.gui.controls.EmptyPanel;
 import com.sbutterfly.gui.panels.Constraint;
 import com.sbutterfly.gui.panels.JGridBagPanel;
 import com.sbutterfly.utils.Log;
 
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JProgressBar;
-import javax.swing.SwingUtilities;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
+import javax.swing.JPanel;
 
 /**
  * Created by Sergei on 31.01.2015.
@@ -16,56 +16,43 @@ import java.awt.GridBagConstraints;
 @SuppressWarnings("magicnumber")
 public class AdditionalLineView extends JGridBagPanel {
 
-    private JLabel label;
-    private JProgressBar progressBar;
+    private JPanel loadingPanel;
 
     public AdditionalLineView() {
         createGUI();
+        idle();
     }
 
     private void createGUI() {
-        setMaximumSize(new Dimension(Integer.MAX_VALUE, 20));
-
-        label = new JLabel();
-
-        progressBar = new JProgressBar();
-        progressBar.setMaximum(100);
-        progressBar.setMinimum(0);
-        progressBar.setPreferredSize(new Dimension(200, 20));
-        progressBar.setMaximumSize(new Dimension(200, 20));
-
-        add(label, Constraint.create(0, 0).weightX(1).fill(GridBagConstraints.HORIZONTAL)
-                .anchor(GridBagConstraints.WEST).insets(3, 5));
-        add(progressBar, Constraint.create(1, 0).insets(3, 5));
-
-        setStatusIndicator(0);
-
+        loadingPanel = loadingPanel();
+        add(loadingPanel, Constraint.create(0, 0));
         Log.debug(this, "GUI was created");
     }
 
-    public String getText() {
-        return label.getText();
-    }
-
-    public void setText(String value) {
-        label.setText(value);
-    }
-
-    public void setStatusIndicator(double value) {
-        SwingUtilities.invokeLater(() -> {
-            int val = (int) Math.round(value * 100);
-            progressBar.setValue(val);
-            progressBar.setStringPainted(val != 0);
-        });
-    }
-
     public void busy() {
-        progressBar.setValue(100);
-        progressBar.setStringPainted(true);
+        loadingPanel.setVisible(true);
     }
 
     public void idle() {
-        progressBar.setValue(100);
-        progressBar.setStringPainted(false);
+        loadingPanel.setVisible(false);
+    }
+
+    private JPanel loadingPanel() {
+        JPanel panel = new JPanel();
+        BoxLayout layoutMgr = new BoxLayout(panel, BoxLayout.LINE_AXIS);
+        panel.setLayout(layoutMgr);
+
+        ClassLoader cldr = this.getClass().getClassLoader();
+        java.net.URL imageURL = cldr.getResource("spinner.gif");
+        ImageIcon imageIcon = new ImageIcon(imageURL);
+        JLabel iconLabel = new JLabel();
+        iconLabel.setIcon(imageIcon);
+        imageIcon.setImageObserver(iconLabel);
+
+        JLabel label = new JLabel("Загрузка...");
+        panel.add(iconLabel);
+        panel.add(new EmptyPanel(5, 5));
+        panel.add(label);
+        return panel;
     }
 }

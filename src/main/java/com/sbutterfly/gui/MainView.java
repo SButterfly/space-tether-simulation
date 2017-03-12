@@ -121,20 +121,20 @@ public class MainView implements Frameable {
         chartView.addStatusListener(status -> {
             switch (status) {
                 case IDLE:
-                    additionalLineView.busy();
+                    additionalLineView.idle();
                     break;
                 case BUSY:
-                    additionalLineView.idle();
+                    additionalLineView.busy();
                     break;
                 default:
                     throw new RuntimeException("Don't know status: " + status);
             }
         });
 
-        viewsPanel.add(chartView, getConstraint(1, 0, 1, 3).weightX(1).weightY(1));
+        viewsPanel.add(chartView, getConstraint(1, 0, 1, 2).weightX(1).weightY(1));
 
         additionalLineView = new AdditionalLineView();
-        viewsPanel.add(additionalLineView, getConstraint(0, 3, 3, 1));
+        viewsPanel.add(additionalLineView, getConstraint(1, 2, 1, 1));
 
         settingsView = new SettingsView();
         settingsView.setModelSet(modelSet);
@@ -286,8 +286,8 @@ public class MainView implements Frameable {
     }
 
     private class ColorIterator implements Iterator<Color> {
-        private final Color[] colors = new Color[]{Color.BLUE, Color.DARK_GRAY, Color.MAGENTA, Color.YELLOW,
-                Color.DARK_GRAY};
+        private final Color[] colors = new Color[]{Color.BLUE, Color.DARK_GRAY, Color.MAGENTA, Color.GREEN,
+                Color.CYAN};
 
         private int index;
 

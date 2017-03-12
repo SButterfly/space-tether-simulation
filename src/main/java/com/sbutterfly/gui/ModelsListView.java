@@ -41,6 +41,7 @@ public class ModelsListView extends JGridBagPanel {
 
     public ModelsListView() {
         createGUI();
+        updateDeleteAllButtonState();
     }
 
     private void createGUI() {
