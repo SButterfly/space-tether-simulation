@@ -1,5 +1,7 @@
 package com.sbutterfly.engine;
 
+import com.sbutterfly.concurrency.CallbackFuture;
+import com.sbutterfly.concurrency.ExecutionUtils;
 import com.sbutterfly.differential.Differential;
 import com.sbutterfly.differential.DifferentialResult;
 import com.sbutterfly.differential.Function;
@@ -16,10 +18,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * Базовый класс, который содержит логику для обработки и хранения дифференциальных данных модели.
@@ -35,7 +35,7 @@ public abstract class Model {
     private Color color = Color.black;
 
     private Map<Axis, Double> initialValues = new HashMap<>();
-    private Future<? extends ModelResult> futureResult;
+    private CallbackFuture<? extends ModelResult> futureResult;
 
     public String getName() {
         return name;
@@ -74,14 +74,6 @@ public abstract class Model {
         initialValues.put(axis, value);
     }
 
-    public ModelResult getModelResult() {
-        try {
-            return getValuesFuture().get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public Map<Axis, Double> getEps(ODEMethod method, double time, double h) {
         Differential differential = new Differential(getFunction(), getStartTimeVector(), time, (int) (time / h),
                 method);
@@ -109,7 +101,7 @@ public abstract class Model {
     }
 
     /**
-     * Возвращает описание модели в ввиде списка групп параметров, необходимых к заданию.
+     * Возвращает описание модели в виде списка групп параметров, необходимых к заданию.
      */
     public abstract List<GroupAxisDescription> getModelDescription();
 
@@ -132,9 +124,9 @@ public abstract class Model {
         getValuesFuture();
     }
 
-    public Future<? extends ModelResult> getValuesFuture() {
+    public CallbackFuture<? extends ModelResult> getValuesFuture() {
         if (futureResult == null) {
-            futureResult = MODEL_EXECUTOR_SERVICE.submit(() -> {
+            futureResult = ExecutionUtils.submit(MODEL_EXECUTOR_SERVICE, () -> {
                 ModelResult modelResult = getInitModelResult();
                 initialValues.forEach(modelResult::setInitialValue);
 

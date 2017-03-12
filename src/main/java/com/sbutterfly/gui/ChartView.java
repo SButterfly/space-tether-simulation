@@ -1,16 +1,21 @@
 package com.sbutterfly.gui;
 
+import com.sbutterfly.concurrency.CallbackFuture;
 import com.sbutterfly.differential.Vector;
 import com.sbutterfly.engine.Model;
 import com.sbutterfly.engine.ModelResult;
 import com.sbutterfly.engine.trace.Trace;
 import com.sbutterfly.engine.trace.TraceDescription;
 import com.sbutterfly.gui.helpers.EventHandler;
+import com.sbutterfly.gui.helpers.EventListener;
+import com.sbutterfly.utils.Log;
 import info.monitorenter.gui.chart.Chart2D;
 import info.monitorenter.gui.chart.IAxis;
 import info.monitorenter.gui.chart.ITrace2D;
 import info.monitorenter.gui.chart.traces.Trace2DSimple;
 
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import java.awt.Font;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -29,6 +34,8 @@ public class ChartView extends Chart2D {
     private final Map<Model, ITrace2D> modelToTrace = new HashMap<>();
     private TraceDescription currentTraceDescription;
 
+    private int processingModels = 0;
+
     public ChartView() {
         setPaintLabels(false);
         refresh();
@@ -43,10 +50,7 @@ public class ChartView extends Chart2D {
 
     public void removeModel(Model model) {
         models.remove(model);
-        ITrace2D trace2D = modelToTrace.get(model);
-        this.removeTrace(trace2D);
-
-        modelToTrace.remove(model);
+        removeTrace(model);
     }
 
     public void appearModel(Model model) {
@@ -73,12 +77,44 @@ public class ChartView extends Chart2D {
         refresh();
     }
 
+    private void removeTrace(Model model) {
+        Log.debug(this, "remove trace " + model.getName());
+        CallbackFuture<? extends ModelResult> future = model.getValuesFuture();
+
+        // set null to avoid painting
+        future.setOnSuccess(null);
+        future.setOnFail(null);
+
+        doUntrace(model);
+    }
+
     private void addTrace(Model model, TraceDescription traceDescription) {
-        ModelResult modelResult = model.getModelResult();
-        doTrace(model, modelResult, traceDescription);
+        Log.debug(this, "Add trace " + model.getName());
+        CallbackFuture<? extends ModelResult> future = model.getValuesFuture();
+        increaseProcessingModels();
+        future.setOnSuccess(modelResult -> SwingUtilities.invokeLater(() -> {
+            doTrace(model, modelResult, traceDescription);
+        }));
+        future.setOnFail(exception -> SwingUtilities.invokeLater(() -> {
+            decreaseProcessingModels();
+            Log.error(this, exception);
+            JOptionPane.showMessageDialog(null, "Произошла ошибка: " + exception.getMessage());
+        }));
+    }
+
+    private void doUntrace(Model model) {
+        Log.debug(this, "do untrace " + model.getName());
+        ITrace2D trace2D = modelToTrace.get(model);
+        if (trace2D != null) {
+            this.removeTrace(trace2D);
+
+            modelToTrace.remove(model);
+            decreaseProcessingModels();
+        }
     }
 
     private void doTrace(Model model, ModelResult modelResult, TraceDescription traceDescription) {
+        Log.debug(this, "do trace " + model.getName());
         Trace trace = modelResult.getTrace(traceDescription);
         ITrace2D viewTrace = new Trace2DSimple();
         viewTrace.setColor(model.getColor());
@@ -101,6 +137,7 @@ public class ChartView extends Chart2D {
             viewTrace.addPoint(values.get(i).get(0), values.get(i).get(1));
         }
         modelToTrace.put(model, viewTrace);
+        decreaseProcessingModels();
     }
 
     private void setAxisDescription(TraceDescription traceDescription) {
@@ -116,6 +153,29 @@ public class ChartView extends Chart2D {
         this.getAxisX().setAxisTitle(xAxisTitle);
         this.getAxisY().setAxisTitle(yAxisTitle);
         this.updateUI();
+    }
+
+    public void addStatusListener(EventListener<Status> eventListener) {
+        statusEventHandler.add(eventListener);
+    }
+
+    public void removeStatesHandler(EventListener<Status> eventListener) {
+        statusEventHandler.remove(eventListener);
+    }
+
+    private void increaseProcessingModels() {
+        processingModels++;
+        if (processingModels == 1) {
+            statusEventHandler.invoke(Status.BUSY);
+        }
+    }
+
+    private void decreaseProcessingModels() {
+        processingModels--;
+        assert processingModels >= 0;
+        if (processingModels == 0) {
+            statusEventHandler.invoke(Status.IDLE);
+        }
     }
 
     public enum Status {

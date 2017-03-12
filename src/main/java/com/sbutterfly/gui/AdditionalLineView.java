@@ -58,4 +58,14 @@ public class AdditionalLineView extends JGridBagPanel {
             progressBar.setStringPainted(val != 0);
         });
     }
+
+    public void busy() {
+        progressBar.setValue(100);
+        progressBar.setStringPainted(true);
+    }
+
+    public void idle() {
+        progressBar.setValue(100);
+        progressBar.setStringPainted(false);
+    }
 }

@@ -118,6 +118,18 @@ public class MainView implements Frameable {
         chartView = new ChartView();
         chartView.setPreferredSize(new Dimension(700, 500));
         chartView.setMinimumSize(chartView.getPreferredSize());
+        chartView.addStatusListener(status -> {
+            switch (status) {
+                case IDLE:
+                    additionalLineView.busy();
+                    break;
+                case BUSY:
+                    additionalLineView.idle();
+                    break;
+                default:
+                    throw new RuntimeException("Don't know status: " + status);
+            }
+        });
 
         viewsPanel.add(chartView, getConstraint(1, 0, 1, 3).weightX(1).weightY(1));
 
@@ -257,10 +269,6 @@ public class MainView implements Frameable {
 
             try (DataInputStream dataInputStream = new DataInputStream(new FileInputStream(file))) {
                 ModelSet set = SystemSerializer.deserialize(dataInputStream);
-                // start differing models for speed up
-                for (Model model : set) {
-                    model.refresh();
-                }
                 setModelSet(set);
             } catch (IOException ex) {
                 Log.error(this, ex);
