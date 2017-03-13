@@ -8,7 +8,7 @@ public class RungeKuttaODEMethod implements ODEMethod {
     private Function function;
 
     @Override
-    public synchronized Vector next(Function function, Vector x, final double h) {
+    public Vector next(Function function, Vector x, final double h) {
 
         this.function = function;
         final double h6 = h / 6d;

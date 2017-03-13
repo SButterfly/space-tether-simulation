@@ -95,16 +95,13 @@ public class Log {
 
     public static class LogTime implements AutoCloseable {
 
-        private static final Object LOCK = new Object();
-        private static int Id = 0;
+        private static int globalId = 0;
         private String tag;
         private Stopwatch stopwatch;
         private int id = -1;
 
         {
-            synchronized (LOCK) {
-                id = Id++;
-            }
+            id = globalId++;
         }
 
         public LogTime(String tag) {

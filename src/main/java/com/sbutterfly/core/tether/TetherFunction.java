@@ -11,6 +11,8 @@ import static java.lang.Math.sin;
  *
  * Created by Sergei on 26.02.2015
  */
+@SuppressWarnings({"checkstyle:membername", "checkstyle:methodname", "checkstyle:parametername",
+        "checkstyle:magicnumber"})
 public class TetherFunction implements Function {
 
     private final double m1;
@@ -82,7 +84,7 @@ public class TetherFunction implements Function {
     }
 
     @Override
-    public synchronized Vector diff(Vector x) {
+    public Vector diff(Vector x) {
         if (x.size() != getDimension()) {
             throw new RuntimeException("Размер вектора должен быть равен " + getDimension());
         }
