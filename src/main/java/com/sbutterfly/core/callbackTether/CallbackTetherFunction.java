@@ -65,6 +65,15 @@ public class CallbackTetherFunction implements Function {
     // угловая скорость
     private final double Om = Vop / Rop;
 
+    // КООРДИНАТЫ
+    // центр системы
+    private final double xc = Rop;
+    private final double yc = 0.0;
+
+    // ПРОЕКЦИИ СКОРОСТЕЙ
+    private final double Vxc = 0.0;
+    private final double Vyc = Vop;
+
     public CallbackTetherFunction(double m1, double m2, double m3,
                                   double KL, double KV,
                                   double a, double b, double cc,
@@ -78,6 +87,95 @@ public class CallbackTetherFunction implements Function {
         this.b = b;
         this.cc = cc;
         this.Lk = Lk;
+    }
+
+    /**
+     *  -m2
+     * ------- * L * cos(tetta) + xc
+     * m1 + m2
+     */
+    public double getX1(double L, double tetta) {
+        return (-m2/(m1 + m2)) * L * cos(tetta) + xc;
+    }
+
+    /**
+     *    m1
+     * ------- * L * cos(tetta) + xc
+     * m1 + m2
+     */
+    public double getX2(double L, double tetta) {
+        return (m1/(m1 + m2)) * L * cos(tetta) + xc;
+    }
+
+    /**
+     *  -m2
+     * ------- * L * sin(tetta) + yc
+     * m1 + m2
+     */
+    public double getY1(double L, double tetta) {
+        return (-m2/(m1 + m2)) * L * sin(tetta) + yc;
+    }
+
+    /**
+     *    m1
+     * ------- * L * sin(tetta) + yc
+     * m1 + m2
+     */
+    public double getY2(double L, double tetta) {
+        return (m1/(m1 + m2)) * L * sin(tetta) + yc;
+    }
+
+    // Проекции скорости отделения
+
+    /**
+     * -
+     */
+    public double getVxr(double Lt, double tetta_t) {
+        return -Lt * cos(tetta_t);
+    }
+
+    /**
+     * -Lt * cos(tetta_t)
+     * Проекции скорости отделения
+     */
+    public double getVyr(double Lt, double tetta_t) {
+        return -Lt * sin(tetta_t);
+    }
+
+    /**
+     *   -m2
+     * ------- * Lt * cos(tetta_t) + Vxc
+     * m1 + m2
+     */
+    public double getVX1(double Lt, double tetta_t) {
+        return (-m2/(m1 + m2)) * Lt * cos(tetta_t) + Vxc;
+    }
+
+    /**
+     *   m1
+     * ------- * Lt * cos(tetta_t) + Vxc
+     * m1 + m2
+     */
+    public double getVX2(double Lt, double tetta_t) {
+        return (m1/(m1 + m2)) * Lt * cos(tetta_t) + Vxc;
+    }
+
+    /**
+     *   -m2
+     * ------- * Lt * sin(tetta_t) + Vxc
+     * m1 + m2
+     */
+    public double getVY1(double Lt, double tetta_t) {
+        return (-m2/(m1 + m2)) * Lt * sin(tetta_t) + Vyc;
+    }
+
+    /**
+     *   m1
+     * ------- * Lt * sin(tetta_t) + Vxc
+     * m1 + m2
+     */
+    public double getVY2(double Lt, double tetta_t) {
+        return (m1/(m1 + m2)) * Lt * sin(tetta_t) + Vyc;
     }
 
     /**

@@ -72,10 +72,16 @@ public class TetherModel extends Model {
 
     @Override
     protected ModelResult getInitModelResult() {
-        return new RopeModelResult();
+        return new RopeModelResult(getFunction());
     }
 
     private class RopeModelResult extends ModelResult {
+
+        private final TetherFunction function;
+
+        RopeModelResult(TetherFunction function) {
+            this.function = function;
+        }
 
         @Override
         public double getValue(TimeVector timeVector, Axis axis) {
@@ -100,7 +106,7 @@ public class TetherModel extends Model {
             }
 
             if (axis == TetherTraceService.T_axis()) {
-                return TetherModel.this.getFunction().T(timeVector.get(0), timeVector.get(1));
+                return function.T(timeVector.get(0), timeVector.get(1));
             }
 
             throw new IllegalArgumentException("Unsupported axis: " + axis);
