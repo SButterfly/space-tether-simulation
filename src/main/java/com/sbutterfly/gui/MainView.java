@@ -4,6 +4,7 @@ import com.sbutterfly.core.SystemSerializer;
 import com.sbutterfly.engine.Model;
 import com.sbutterfly.engine.ModelSet;
 import com.sbutterfly.engine.trace.TraceDescription;
+import com.sbutterfly.gui.controls.EmptyPanel;
 import com.sbutterfly.gui.panels.Constraint;
 import com.sbutterfly.gui.panels.JBoxLayout;
 import com.sbutterfly.gui.panels.JGridBagPanel;
@@ -110,11 +111,6 @@ public class MainView implements Frameable {
         });
         viewsPanel.add(modelsListView, getConstraint(0, 1, 1, 1).weightY(1));
 
-        traceSelectionView = new TraceSelectionView();
-        traceSelectionView.setTraceDescriptions(modelSet.getModelTraces());
-        traceSelectionView.addEventListener(td -> traceSelectionChanged(td.getTraceDescription()));
-        viewsPanel.add(traceSelectionView, getConstraint(0, 2, 1, 1));
-
         chartView = new ChartView();
         chartView.setPreferredSize(new Dimension(700, 500));
         chartView.setMinimumSize(chartView.getPreferredSize());
@@ -133,8 +129,18 @@ public class MainView implements Frameable {
 
         viewsPanel.add(chartView, getConstraint(1, 0, 1, 2).weightX(1).weightY(1));
 
+        traceSelectionView = new TraceSelectionView();
+        traceSelectionView.setTraceDescriptions(modelSet.getModelTraces());
+        traceSelectionView.addEventListener(td -> traceSelectionChanged(td.getTraceDescription()));
+
         additionalLineView = new AdditionalLineView();
-        viewsPanel.add(additionalLineView, getConstraint(1, 2, 1, 1));
+
+        JGridBagPanel bottomLine = new JGridBagPanel();
+        bottomLine.add(traceSelectionView, getConstraint(0, 0, 1, 1));
+        bottomLine.add(new EmptyPanel(), getConstraint(1, 0, 1, 1).weightX(1));
+        bottomLine.add(additionalLineView, getConstraint(2, 0, 1, 1));
+
+        viewsPanel.add(bottomLine, getConstraint(0, 2, 2, 1));
 
         settingsView = new SettingsView();
         settingsView.setModelSet(modelSet);
