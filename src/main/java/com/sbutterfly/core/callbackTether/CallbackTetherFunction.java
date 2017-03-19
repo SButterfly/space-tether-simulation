@@ -180,7 +180,7 @@ public class CallbackTetherFunction implements Function {
      * -------------------
      * (sqrt(x^2 + y^2))^3
      */
-    private double Gx(double x, double y, double m) {
+    public double Gx(double x, double y, double m) {
         return (-K * x * m) / (cub(length(x, y)));
     }
 
@@ -189,7 +189,7 @@ public class CallbackTetherFunction implements Function {
      * -------------------
      * (sqrt(x^2 + y^2))^3
      */
-    private double Gy(double x, double y, double m) {
+    public double Gy(double x, double y, double m) {
         return (-K * y * m) / (cub(length(x, y)));
     }
 
@@ -200,7 +200,7 @@ public class CallbackTetherFunction implements Function {
      *
      * 0, otherwise
      */
-    private double T(double x1, double y1, double x2, double y2, double L) {
+    public double T(double x1, double y1, double x2, double y2, double L) {
         double kof = length(x1 - x2, y1 - y2) - L;
         if (kof >= 0) {
             return c * kof / L;
@@ -214,7 +214,7 @@ public class CallbackTetherFunction implements Function {
      * T(x1, y1, x2, y2, L) * --------------------------
      *                         length(x1 - x2, y1 - y2)
      */
-    private double Txy(double x1, double y1, double x2, double y2, double L) {
+    public double Txy(double x1, double y1, double x2, double y2, double L) {
         return T(x1, y1, x2, y2, L) * (x1 - x2) / length(x1 - x2, y1 - y2);
     }
 
@@ -223,14 +223,14 @@ public class CallbackTetherFunction implements Function {
      * T(x1, y1, x2, y2, L) * --------------------------
      *                         length(x1 - x2, y1 - y2)
      */
-    private double Tyx(double x1, double y1, double x2, double y2, double L) {
+    public double Tyx(double x1, double y1, double x2, double y2, double L) {
         return T(x1, y1, x2, y2, L) * (y1 - y2) / length(x1 - x2, y1 - y2);
     }
 
     /**
      * Система развертывания с обратной связью.
      */
-    private double Fc(double L, double Lt, double Lp, double Ltp) {
+    public double Fc(double L, double Lt, double Lp, double Ltp) {
         double fc = doFc(L, Lt, Lp, Ltp);
 //        return Math.max(fc, Fcmin);
         return fc;
@@ -239,7 +239,7 @@ public class CallbackTetherFunction implements Function {
     /**
      * Fcn(Lp, Ltp) + KL*(L - Lp) + KV*(Lt - Ltp)
      */
-    private double doFc(double L, double Lt, double Lp, double Ltp) {
+    public double doFc(double L, double Lt, double Lp, double Ltp) {
         return Fcn(Lp, Ltp) + KL * (L - Lp) + KV * (Lt - Ltp);
     }
 
@@ -250,7 +250,7 @@ public class CallbackTetherFunction implements Function {
      * ------- * sigma^2 * ( a*(Lp - Lk) + b * ------ + cc * Lk )
      * m1 + m2                                  sigma
      */
-    private double Fcn(double Lp, double Ltp) {
+    public double Fcn(double Lp, double Ltp) {
         return (m1 * m2 / (m1 + m2)) * Om * Om * (a * (Lp - Lk) + b * (Ltp / Om) + cc * Lk);
     }
 
@@ -261,7 +261,7 @@ public class CallbackTetherFunction implements Function {
      * Lp * ( (tetta_t_p + sigma)^2 - sigma^2 * (1 - 3 * cos(tetta_p)^2) - Fcn(Lp, Ltp) * ---------
      *                                                                                      m1*m2
      */
-    private double L_tt_p(double Lp, double Ltp, double tetta_p, double tetta_t_p) {
+    public double L_tt_p(double Lp, double Ltp, double tetta_p, double tetta_t_p) {
         double first = Lp * (pow(tetta_t_p + Om) - Om * Om * (1 - 3 * pow(cos(tetta_p))));
         double second = Fcn(Lp, Ltp) * ((m1 + m2) / (m1 * m2));
         return first - second;
@@ -272,7 +272,7 @@ public class CallbackTetherFunction implements Function {
      * -2 * ---- * (tetta_t_p + sigma) - --- * sigma^2 * sin(2*tetta_p)
      *       Lp                           2
      */
-    private double tetta_tt_p(double Lp, double Ltp, double tetta_p, double tetta_t_p) {
+    public double tetta_tt_p(double Lp, double Ltp, double tetta_p, double tetta_t_p) {
         double first = -2 * (Ltp / Lp) * (tetta_t_p + Om);
         double second = 1.5 * Om * Om * sin(2 * tetta_p);
         return first - second;

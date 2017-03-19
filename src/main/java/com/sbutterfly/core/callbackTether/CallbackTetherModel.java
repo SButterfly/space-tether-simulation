@@ -10,12 +10,14 @@ import com.sbutterfly.utils.Func;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.sbutterfly.core.callbackTether.CallbackTetherTraceService.Power_transition_process_axis;
+import static com.sbutterfly.core.callbackTether.CallbackTetherTraceService.Speed_transition_process_axis;
 import static java.lang.Math.abs;
 
 /**
  * @author s-ermakov
  */
-@SuppressWarnings("magicnumber")
+@SuppressWarnings("checkstyle:magicnumber")
 public class CallbackTetherModel extends Model {
 
     private static final List<Axis> CONSTANT_VALUES = Arrays.asList(
@@ -176,7 +178,6 @@ public class CallbackTetherModel extends Model {
             if (axis == CallbackTetherTraceService.Point_length_axis()) {
                 double x1 = getValue(timeVector, CallbackTetherTraceService.X1_axis());
                 double x2 = getValue(timeVector, CallbackTetherTraceService.X2_axis());
-
                 double y1 = getValue(timeVector, CallbackTetherTraceService.Y1_axis());
                 double y2 = getValue(timeVector, CallbackTetherTraceService.Y2_axis());
 
@@ -193,6 +194,47 @@ public class CallbackTetherModel extends Model {
                 double pointLength = getValue(timeVector, CallbackTetherTraceService.Point_length_axis());
                 double L = getValue(timeVector, CallbackTetherTraceService.L_axis());
                 return pointLength - L;
+            }
+
+            if (axis == CallbackTetherTraceService.F_power_axis()) {
+                double L = getValue(timeVector, CallbackTetherTraceService.L_axis());
+                double Lt = getValue(timeVector, CallbackTetherTraceService.V_axis());
+                double Lp = getValue(timeVector, CallbackTetherTraceService.Lp_axis());
+                double Ltp = getValue(timeVector, CallbackTetherTraceService.V_p_axis());
+
+                return callbackTetherFunction.Fc(L, Lt, Lp, Ltp);
+            }
+
+            if (axis == CallbackTetherTraceService.Fp_power_axis()) {
+                double Lp = getValue(timeVector, CallbackTetherTraceService.Lp_axis());
+                double Ltp = getValue(timeVector, CallbackTetherTraceService.V_p_axis());
+
+                return callbackTetherFunction.Fcn(Lp, Ltp);
+            }
+
+            if (axis == CallbackTetherTraceService.T_axis()) {
+                double x1 = getValue(timeVector, CallbackTetherTraceService.X1_axis());
+                double x2 = getValue(timeVector, CallbackTetherTraceService.X2_axis());
+                double y1 = getValue(timeVector, CallbackTetherTraceService.Y1_axis());
+                double y2 = getValue(timeVector, CallbackTetherTraceService.Y2_axis());
+
+                double L = getValue(timeVector, CallbackTetherTraceService.L_axis());
+
+                return callbackTetherFunction.T(x1, y1, x2, y2, L);
+            }
+
+            if (axis == Speed_transition_process_axis()) {
+                double Lt = getValue(timeVector, CallbackTetherTraceService.V_axis());
+                double Ltp = getValue(timeVector, CallbackTetherTraceService.V_p_axis());
+
+                return Lt - Ltp;
+            }
+
+            if (axis == Power_transition_process_axis()) {
+                double f = getValue(timeVector, CallbackTetherTraceService.F_power_axis());
+                double fp = getValue(timeVector, CallbackTetherTraceService.Fp_power_axis());
+
+                return f - fp;
             }
 
             if (axis == CallbackTetherTraceService.X_axis()) {

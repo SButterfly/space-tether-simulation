@@ -30,20 +30,15 @@ public class CallbackTetherModelSet extends ModelSet {
                 new TraceDescription(Time_axis(), Tetta_p_axis()),
                 new TraceDescription(Time_axis(), Tettat_p_axis()),
 
+                new TraceDescription(Time_axis(), F_power_axis(), "Управляющая сила"),
+                new TraceDescription(Time_axis(), T_axis(), "Силая натяжения"),
+                new TraceDescription(Time_axis(), Fp_power_axis(), "Номинальная сила"),
+
                 new TraceDescription(Time_axis(), Line_transition_process_axis(), "Переходный процесс по длине"),
                 new TraceDescription(Time_axis(), Tether_deformation_axis(), "Деформация троса"),
-                new TraceDescription(Time_axis(), Tether_elongation_axis(), "Удлинение троса")
+                new TraceDescription(Time_axis(), Tether_elongation_axis(), "Удлинение троса"),
 
-                // add удлинение в метрах
-
-
-
-//                new TraceDescription(Time_axis(), Speed_transition_process_axis(), "Переходный процесс по скорости"),
-//                new TraceDescription(Time_axis(), F_axis()),
-//                new TraceDescription(Time_axis(), T_axis()),
-
-//                new TraceDescription(Y1_axis(), X1_axis(), "Траектория малого КА относительно вертикали"),
-//                new TraceDescription(X1_axis(), Y1_axis())
+                new TraceDescription(Time_axis(), Speed_transition_process_axis(), "Переходный процесс по скорости")
         );
     }
 }

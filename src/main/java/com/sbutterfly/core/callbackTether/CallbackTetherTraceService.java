@@ -54,12 +54,21 @@ class CallbackTetherTraceService {
     private static final Axis VX2_AXIS = new Axis("vx2", "vx2, м/с");
     private static final Axis VY2_AXIS = new Axis("vy2", "vy2, м/с");
 
-    private static final Axis L_TP_AXIS = new Axis("tp", "line tp");
+    private static final Axis L_TP_AXIS = new Axis("tp", "line tp, м");
+
+    private static final Axis SPEED_TP_AXIS = new Axis("speed", "speed, м/с");
+
     private static final Axis TETHER_DEFORMATION_AXIS = new Axis("td", "td");
 
     private static final Axis POINT_LENGTH_AXIS = new Axis("point length", "Points length, м");
 
     private static final Axis TETHER_ELONGATION_AXIS = new Axis("tether alongation", "tether alongation, м");
+
+    private static final Axis F_POWER_AXIS = new Axis("F", "F, Н");
+
+    private static final Axis FP_POWER_AXIS = new Axis("fp", "fp, Н");
+
+    private static final Axis POWER_TP_AXIS = new Axis("pp", "pp, H");
 
     private static final GroupAxisDescription ROPE_GROUP = new GroupAxisDescription("Параметры тросовой системы",
             Arrays.asList(M_1_AXIS, M_2_AXIS, M_3_AXIS, LK_AXIS));
@@ -207,16 +216,32 @@ class CallbackTetherTraceService {
         return L_TP_AXIS;
     }
 
+    public static Axis Speed_transition_process_axis() {
+        return SPEED_TP_AXIS;
+    }
+
+    public static Axis Power_transition_process_axis() {
+        return POWER_TP_AXIS;
+    }
+
     public static Axis Tether_deformation_axis() {
         return TETHER_DEFORMATION_AXIS;
+    }
+
+    public static Axis Tether_elongation_axis() {
+        return TETHER_ELONGATION_AXIS;
     }
 
     public static Axis Point_length_axis() {
         return POINT_LENGTH_AXIS;
     }
 
-    public static Axis Tether_elongation_axis() {
-        return TETHER_ELONGATION_AXIS;
+    public static Axis F_power_axis() {
+        return F_POWER_AXIS;
+    }
+
+    public static Axis Fp_power_axis() {
+        return FP_POWER_AXIS;
     }
 
     public static List<GroupAxisDescription> getGroupAxisDescriptions() {
