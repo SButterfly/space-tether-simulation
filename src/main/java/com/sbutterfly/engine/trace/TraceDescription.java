@@ -8,10 +8,16 @@ package com.sbutterfly.engine.trace;
 public class TraceDescription {
     private final Axis xAxis;
     private final Axis yAxis;
+    private final String name;
 
     public TraceDescription(Axis xAxis, Axis yAxis) {
+        this(xAxis, yAxis, null);
+    }
+
+    public TraceDescription(Axis xAxis, Axis yAxis, String name) {
         this.xAxis = xAxis;
         this.yAxis = yAxis;
+        this.name = name;
     }
 
     public Axis getXAxis() {
@@ -23,7 +29,9 @@ public class TraceDescription {
     }
 
     public String getName() {
-        return getYAxis().getHumanReadableName() + " / " + getXAxis().getHumanReadableName();
+        return name == null || name.isEmpty()
+                ? getYAxis().getHumanReadableName() + " / " + getXAxis().getHumanReadableName()
+                : name;
     }
 
     @Override

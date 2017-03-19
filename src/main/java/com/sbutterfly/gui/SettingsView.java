@@ -121,8 +121,7 @@ public class SettingsView implements Frameable {
         Execution.submit(() -> {
             try {
                 Model model = modelSet.createModel();
-                Map<Axis, Double> resultMap = model.getEps(AppSettings.getODEMethod(), AppSettings.getODETime(),
-                        AppSettings.getODEStep());
+                Map<Axis, Double> resultMap = model.getEps();
 
                 Execution.submitInMain(() -> {
                     StringBuilder buff = new StringBuilder();

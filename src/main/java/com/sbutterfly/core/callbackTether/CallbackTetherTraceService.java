@@ -31,6 +31,9 @@ class CallbackTetherTraceService {
 
     private static final Axis L_AXIS = new Axis("L", "L, м");
     private static final Axis V_AXIS = new Axis("V", "V, м/с");
+    private static final Axis L_P_AXIS = new Axis("Lp", "Lp, м");
+    private static final Axis V_P_AXIS = new Axis("Vp", "Vp, м/с");
+
     private static final Axis TETTA_AXIS = new Axis("θ", "θ, рад");
     private static final Axis TETTA_T_AXIS = new Axis("θ˙", "θ˙, рад/с");
     private static final Axis BETTA_AXIS = new Axis("β", "β, рад");
@@ -50,6 +53,13 @@ class CallbackTetherTraceService {
     private static final Axis Y2_AXIS = new Axis("y2", "y2, м");
     private static final Axis VX2_AXIS = new Axis("vx2", "vx2, м/с");
     private static final Axis VY2_AXIS = new Axis("vy2", "vy2, м/с");
+
+    private static final Axis L_TP_AXIS = new Axis("tp", "line tp");
+    private static final Axis TETHER_DEFORMATION_AXIS = new Axis("td", "td");
+
+    private static final Axis POINT_LENGTH_AXIS = new Axis("point length", "Points length, м");
+
+    private static final Axis TETHER_ELONGATION_AXIS = new Axis("tether alongation", "tether alongation, м");
 
     private static final GroupAxisDescription ROPE_GROUP = new GroupAxisDescription("Параметры тросовой системы",
             Arrays.asList(M_1_AXIS, M_2_AXIS, M_3_AXIS, LK_AXIS));
@@ -121,11 +131,19 @@ class CallbackTetherTraceService {
         return V_AXIS;
     }
 
-    public static Axis Tetta_axis() {
+    public static Axis Lp_axis() {
+        return L_P_AXIS;
+    }
+
+    public static Axis V_p_axis() {
+        return V_P_AXIS;
+    }
+
+    public static Axis Tetta_p_axis() {
         return TETTA_AXIS;
     }
 
-    public static Axis Tetta_t_axis() {
+    public static Axis Tettat_p_axis() {
         return TETTA_T_AXIS;
     }
 
@@ -183,6 +201,22 @@ class CallbackTetherTraceService {
 
     public static Axis VY2_axis() {
         return VY2_AXIS;
+    }
+
+    public static Axis Line_transition_process_axis() {
+        return L_TP_AXIS;
+    }
+
+    public static Axis Tether_deformation_axis() {
+        return TETHER_DEFORMATION_AXIS;
+    }
+
+    public static Axis Point_length_axis() {
+        return POINT_LENGTH_AXIS;
+    }
+
+    public static Axis Tether_elongation_axis() {
+        return TETHER_ELONGATION_AXIS;
     }
 
     public static List<GroupAxisDescription> getGroupAxisDescriptions() {

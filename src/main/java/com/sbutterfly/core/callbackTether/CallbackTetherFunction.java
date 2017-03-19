@@ -1,7 +1,9 @@
 package com.sbutterfly.core.callbackTether;
 
 import com.sbutterfly.differential.Function;
+import com.sbutterfly.differential.TimeVector;
 import com.sbutterfly.differential.Vector;
+import com.sbutterfly.utils.Func;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
@@ -47,13 +49,13 @@ public class CallbackTetherFunction implements Function {
     private final double c = Eung * SS;
 
     // Гравитационный параметры Земли (м)
-    private final double K = 3.986 * cub(1000);
+    private final double K = 398600 * cub(1000);
 
     // Высота орбиты (м)
     private final double H = 3 * 100_000;
 
     // Средний радиус Земли (м)
-    private final double R3 = 6.371 * 1000_000;
+    private final double R3 = 6371.02 * 1000;
 
     // Радиус орбиты
     private final double Rop = R3 + H;
@@ -73,6 +75,9 @@ public class CallbackTetherFunction implements Function {
     // ПРОЕКЦИИ СКОРОСТЕЙ
     private final double Vxc = 0.0;
     private final double Vyc = Vop;
+
+    // Минимальная сила Fcmin
+    private final double Fcmin = 0.01;
 
     public CallbackTetherFunction(double m1, double m2, double m3,
                                   double KL, double KV,
@@ -128,21 +133,6 @@ public class CallbackTetherFunction implements Function {
     // Проекции скорости отделения
 
     /**
-     * -
-     */
-    public double getVxr(double Lt, double tetta_t) {
-        return -Lt * cos(tetta_t);
-    }
-
-    /**
-     * -Lt * cos(tetta_t)
-     * Проекции скорости отделения
-     */
-    public double getVyr(double Lt, double tetta_t) {
-        return -Lt * sin(tetta_t);
-    }
-
-    /**
      *   -m2
      * ------- * Lt * cos(tetta_t) + Vxc
      * m1 + m2
@@ -181,7 +171,7 @@ public class CallbackTetherFunction implements Function {
     /**
      * sqrt(x^2 + y^2)
      */
-    private double length(double x, double y) {
+    public double length(double x, double y) {
         return sqrt(x * x + y * y);
     }
 
@@ -215,7 +205,7 @@ public class CallbackTetherFunction implements Function {
         if (kof >= 0) {
             return c * kof / L;
         } else {
-            return 0;
+            return 0.0;
         }
     }
 
@@ -241,7 +231,9 @@ public class CallbackTetherFunction implements Function {
      * Система развертывания с обратной связью.
      */
     private double Fc(double L, double Lt, double Lp, double Ltp) {
-        return doFc(L, Lt, Lp, Ltp);
+        double fc = doFc(L, Lt, Lp, Ltp);
+//        return Math.max(fc, Fcmin);
+        return fc;
     }
 
     /**
@@ -255,11 +247,11 @@ public class CallbackTetherFunction implements Function {
      * Номинальная программа развертывания (бакалавриат).
      *
      *  m1*m2                                    Ltp
-     * ------- * sigma^2 * ( a*(Lp - Lk) + b * ------ * cc * Lk )
+     * ------- * sigma^2 * ( a*(Lp - Lk) + b * ------ + cc * Lk )
      * m1 + m2                                  sigma
      */
     private double Fcn(double Lp, double Ltp) {
-        return (m1 * m2 / (m1 * m2)) * Om * Om * (a * (Lp - Lk) + b * (Ltp / Om) * cc * Lk);
+        return (m1 * m2 / (m1 + m2)) * Om * Om * (a * (Lp - Lk) + b * (Ltp / Om) + cc * Lk);
     }
 
     // Уравнения развертывания
@@ -270,7 +262,7 @@ public class CallbackTetherFunction implements Function {
      *                                                                                      m1*m2
      */
     private double L_tt_p(double Lp, double Ltp, double tetta_p, double tetta_t_p) {
-        double first = Lp * (pow(tetta_t_p * Om) - Om * Om * (1 - 3 * pow(cos(tetta_p))));
+        double first = Lp * (pow(tetta_t_p + Om) - Om * Om * (1 - 3 * pow(cos(tetta_p))));
         double second = Fcn(Lp, Ltp) * ((m1 + m2) / (m1 * m2));
         return first - second;
     }
@@ -310,10 +302,10 @@ public class CallbackTetherFunction implements Function {
         // suffix _p stands for programming
 
         double tetta_p = vector.get(10);
-        double tetta_t_p = vector.get(11);
+        double tettat_p = vector.get(11);
 
-        double L0_p = vector.get(12);
-        double L_t_0_p = vector.get(13);
+        double L_p = vector.get(12);
+        double Lt_p = vector.get(13);
 
         Vector result = new Vector(getDimension());
         result.set(0, Vx1);
@@ -329,13 +321,13 @@ public class CallbackTetherFunction implements Function {
         result.set(7, (Gy(x2, y2, m2) - Tyx(x1, y1, x2, y2, L)) / m2);
 
         result.set(8, Lt);
-        result.set(9, (T(x1, y1, x2, y2, L) - Fc(L, Lt, L0_p, L_t_0_p)) / m3);
+        result.set(9, (T(x1, y1, x2, y2, L) - Fc(L, Lt, L_p, Lt_p)) / m3);
 
-        result.set(10, tetta_t_p);
-        result.set(11, tetta_tt_p(L0_p, L_t_0_p, tetta_p, tetta_t_p));
+        result.set(10, tettat_p);
+        result.set(11, tetta_tt_p(L_p, Lt_p, tetta_p, tettat_p));
 
-        result.set(12, L_t_0_p);
-        result.set(13, L_tt_p(L0_p, L_t_0_p, tetta_p, tetta_t_p));
+        result.set(12, Lt_p);
+        result.set(13, L_tt_p(L_p, Lt_p, tetta_p, tettat_p));
 
         return result;
     }
@@ -351,5 +343,12 @@ public class CallbackTetherFunction implements Function {
 
     private double cub(double value) {
         return value * value * value;
+    }
+
+    public Func<Boolean, TimeVector> getExitFunction() {
+        return timeVector -> {
+            double l = timeVector.get(12);
+            return l >= Lk - 5;
+        };
     }
 }

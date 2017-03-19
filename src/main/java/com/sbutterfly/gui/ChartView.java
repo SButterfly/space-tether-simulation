@@ -128,14 +128,18 @@ public class ChartView extends Chart2D {
         // так как точки могут быть неравномерными
         int width = this.getWidth();
         int height = this.getHeight();
-        int points = 5 * Math.max(width, height); // с коэффициентом 5 лучше линии
+        int points = 3 * Math.max(width, height); // с коэффициентом 3 лучше линии
 
         List<Vector> values = trace.getValues();
 
         int step = Math.max(values.size() / points, 1);
-        for (int i = 0; i < values.size(); i += step) {
+        int length = values.size();
+        // except last step
+        for (int i = 0; i < length - 1; i += step) {
             viewTrace.addPoint(values.get(i).get(0), values.get(i).get(1));
         }
+        // last step to print
+        viewTrace.addPoint(values.get(length - 1).get(0), values.get(length - 1).get(1));
         modelToTrace.put(model, viewTrace);
         decreaseProcessingModels();
     }

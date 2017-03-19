@@ -5,9 +5,12 @@ import com.sbutterfly.engine.GroupAxisDescription;
 import com.sbutterfly.engine.Model;
 import com.sbutterfly.engine.ModelResult;
 import com.sbutterfly.engine.trace.Axis;
+import com.sbutterfly.utils.Func;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static java.lang.Math.abs;
 
 /**
  * @author s-ermakov
@@ -37,24 +40,24 @@ public class CallbackTetherModel extends Model {
 
             CallbackTetherTraceService.L_axis(),
             CallbackTetherTraceService.V_axis(),
-            CallbackTetherTraceService.Tetta_axis(),
-            CallbackTetherTraceService.Tetta_t_axis(),
-            CallbackTetherTraceService.L_axis(),
-            CallbackTetherTraceService.V_axis()
+            CallbackTetherTraceService.Tetta_p_axis(),
+            CallbackTetherTraceService.Tettat_p_axis(),
+            CallbackTetherTraceService.Lp_axis(),
+            CallbackTetherTraceService.V_p_axis()
     );
 
     public CallbackTetherModel() {
         setInitialValue(CallbackTetherTraceService.L_axis(), 1);
         setInitialValue(CallbackTetherTraceService.V_axis(), 2.5);
-        setInitialValue(CallbackTetherTraceService.Tetta_axis(), 0.0);
+        setInitialValue(CallbackTetherTraceService.Tetta_p_axis(), 0.0);
 
-        setInitialValue(CallbackTetherTraceService.M1_axis(), 40);
-        setInitialValue(CallbackTetherTraceService.M2_axis(), 20);
+        setInitialValue(CallbackTetherTraceService.M1_axis(), 20);
+        setInitialValue(CallbackTetherTraceService.M2_axis(), 6000);
         setInitialValue(CallbackTetherTraceService.M3_axis(), 0.2);
 
-        setInitialValue(CallbackTetherTraceService.A_axis(), 4);
-        setInitialValue(CallbackTetherTraceService.B_axis(), 5);
-        setInitialValue(CallbackTetherTraceService.C_axis(), 5);
+        setInitialValue(CallbackTetherTraceService.A_axis(), 4.6);
+        setInitialValue(CallbackTetherTraceService.B_axis(), 3.5);
+        setInitialValue(CallbackTetherTraceService.C_axis(), 3);
 
         setInitialValue(CallbackTetherTraceService.Lk_axis(), 3000);
         setInitialValue(CallbackTetherTraceService.KL_axis(), 1);
@@ -73,8 +76,8 @@ public class CallbackTetherModel extends Model {
         double L = getInitialValue(CallbackTetherTraceService.L_axis());
         double V = getInitialValue(CallbackTetherTraceService.V_axis());
 
-        double tetta = getInitialValue(CallbackTetherTraceService.Tetta_axis());
-        double tetta_t = getInitialValue(CallbackTetherTraceService.Tetta_t_axis());
+        double tetta = getInitialValue(CallbackTetherTraceService.Tetta_p_axis());
+        double tetta_t = getInitialValue(CallbackTetherTraceService.Tettat_p_axis());
 
         double x1 = function.getX1(L, tetta);
         double y1 = function.getY1(L, tetta);
@@ -87,6 +90,12 @@ public class CallbackTetherModel extends Model {
 
         double Vx2 = function.getVX2(V, tetta_t);
         double Vy2 = function.getVY2(V, tetta_t);
+
+        // Проверяем, что полученные координаты образуют верные значения
+        double length = function.length(x1 - x2, y1 - y2);
+        assert abs(length - L) <= 1e-9;
+        double speed = function.length(x1 - x2, y1 - y2);
+        assert abs(speed - V) <= 1e-9;
 
         double t = getInitialValue(CallbackTetherTraceService.Time_axis());
 
@@ -123,6 +132,14 @@ public class CallbackTetherModel extends Model {
     }
 
     @Override
+    public Func<Boolean, TimeVector> getExitFunction() {
+        CallbackTetherFunction callbackTetherFunction = getFunction();
+        Func<Boolean, TimeVector> lengthFunction = callbackTetherFunction.getExitFunction();
+        Func<Boolean, TimeVector> timeFunction = super.getExitFunction();
+        return timeVector -> lengthFunction.invoke(timeVector) || timeFunction.invoke(timeVector);
+    }
+
+    @Override
     protected ModelResult getInitModelResult() {
         return new RopeModelResult(getFunction());
     }
@@ -147,6 +164,35 @@ public class CallbackTetherModel extends Model {
 
             if (axis == CallbackTetherTraceService.Time_axis()) {
                 return timeVector.getTime();
+            }
+
+            if (axis == CallbackTetherTraceService.Line_transition_process_axis()) {
+                double L = getValue(timeVector, CallbackTetherTraceService.L_axis());
+                double Lp = getValue(timeVector, CallbackTetherTraceService.Lp_axis());
+
+                return L - Lp;
+            }
+
+            if (axis == CallbackTetherTraceService.Point_length_axis()) {
+                double x1 = getValue(timeVector, CallbackTetherTraceService.X1_axis());
+                double x2 = getValue(timeVector, CallbackTetherTraceService.X2_axis());
+
+                double y1 = getValue(timeVector, CallbackTetherTraceService.Y1_axis());
+                double y2 = getValue(timeVector, CallbackTetherTraceService.Y2_axis());
+
+                return callbackTetherFunction.length(x1 - x2, y1 - y2);
+            }
+
+            if (axis == CallbackTetherTraceService.Tether_deformation_axis()) {
+                double pointLength = getValue(timeVector, CallbackTetherTraceService.Point_length_axis());
+                double L = getValue(timeVector, CallbackTetherTraceService.L_axis());
+                return pointLength / L;
+            }
+
+            if (axis == CallbackTetherTraceService.Tether_elongation_axis()) {
+                double pointLength = getValue(timeVector, CallbackTetherTraceService.Point_length_axis());
+                double L = getValue(timeVector, CallbackTetherTraceService.L_axis());
+                return pointLength - L;
             }
 
             if (axis == CallbackTetherTraceService.X_axis()) {

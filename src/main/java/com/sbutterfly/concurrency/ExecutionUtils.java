@@ -9,6 +9,9 @@ import java.util.concurrent.Future;
  */
 public class ExecutionUtils {
 
+    private ExecutionUtils() {
+    }
+
     public static  <V> CallbackFuture<V> submit(ExecutorService executorService, Callable<V> callable) {
         CallbackCallable<V> callbackCallable = new CallbackCallable<>(callable);
         Future<V> future = executorService.submit(callbackCallable);

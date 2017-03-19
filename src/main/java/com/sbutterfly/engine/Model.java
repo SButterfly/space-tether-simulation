@@ -5,10 +5,10 @@ import com.sbutterfly.concurrency.ExecutionUtils;
 import com.sbutterfly.differential.Differential;
 import com.sbutterfly.differential.DifferentialResult;
 import com.sbutterfly.differential.Function;
-import com.sbutterfly.differential.ODEMethod;
 import com.sbutterfly.differential.TimeVector;
 import com.sbutterfly.engine.trace.Axis;
 import com.sbutterfly.services.AppSettings;
+import com.sbutterfly.utils.Func;
 
 import java.awt.Color;
 import java.io.DataInputStream;
@@ -29,7 +29,7 @@ import java.util.concurrent.Executors;
  */
 public abstract class Model {
 
-    private static final ExecutorService MODEL_EXECUTOR_SERVICE = Executors.newCachedThreadPool();
+    private static final ExecutorService MODEL_EXECUTOR_SERVICE = Executors.newFixedThreadPool(4);
 
     private String name = "Безымянный";
     private Color color = Color.black;
@@ -74,12 +74,12 @@ public abstract class Model {
         initialValues.put(axis, value);
     }
 
-    public Map<Axis, Double> getEps(ODEMethod method, double time, double h) {
-        Differential differential = new Differential(getFunction(), getStartTimeVector(), time, (int) (time / h),
-                method);
+    public Map<Axis, Double> getEps() {
+        Differential differential = new Differential(getFunction(), getStartTimeVector(), AppSettings.getODEStep(),
+                AppSettings.getODEMethod(), getExitFunction());
 
-        Differential partDifferential = new Differential(getFunction(), getStartTimeVector(), time,
-                (int) (time * 2 / h), method);
+        Differential partDifferential = new Differential(getFunction(), getStartTimeVector(), AppSettings.getODEStep(),
+                AppSettings.getODEMethod(), getExitFunction());
 
         DifferentialResult normalResult = differential.different();
         DifferentialResult partResult = partDifferential.different();
@@ -90,7 +90,7 @@ public abstract class Model {
         Map<Axis, Double> resultMap = new LinkedHashMap<>();
         List<Axis> functionAxises = getFunctionAxises();
 
-        int twoInPowerOfP = (int) Math.pow(2, method.getP());
+        int twoInPowerOfP = (int) Math.pow(2, AppSettings.getODEMethod().getP());
         for (int i = 0, n = functionAxises.size(); i < n; i++) {
             Axis functionAxis = functionAxises.get(i);
             double value = Math.abs((lastTimePartResult.get(i) - lastTimeResult.get(i)) * twoInPowerOfP
@@ -131,8 +131,8 @@ public abstract class Model {
                 initialValues.forEach(modelResult::setInitialValue);
 
                 Differential differential = new Differential(getFunction(), getStartTimeVector(),
-                        AppSettings.getODETime(), (int) (AppSettings.getODETime() / AppSettings.getODEStep()),
-                        AppSettings.getODEMethod());
+                        AppSettings.getODEStep(), AppSettings.getODEMethod(),
+                        getExitFunction());
                 DifferentialResult differentialResult = differential.different();
 
                 modelResult.setValues(differentialResult.getValues());
@@ -169,5 +169,10 @@ public abstract class Model {
             Axis axis = new Axis(axisName, humanName);
             initialValues.put(axis, value);
         }
+    }
+
+    @SuppressWarnings("checkstyle:magicnumber")
+    public Func<Boolean, TimeVector> getExitFunction() {
+        return timeVector -> timeVector.getTime() + 1e-6 >= AppSettings.getODETime();
     }
 }

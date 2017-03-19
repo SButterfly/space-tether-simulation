@@ -16,16 +16,16 @@ public class Differential {
     private final ODEMethod method;
     private final Function function;
     private final TimeVector startVector;
-    private final double totalTime;
-    private final int numberOfIterations;
+    private final double h;
+    private final Func<Boolean, TimeVector> exitFunc;
 
-    public Differential(Function function, TimeVector startVector, double totalTime,
-                        int numberOfIterations, ODEMethod method) {
+    public Differential(Function function, TimeVector startVector, double h,
+                        ODEMethod method, Func<Boolean, TimeVector> exitFunc) {
         this.function = function;
         this.startVector = startVector;
-        this.totalTime = totalTime;
-        this.numberOfIterations = numberOfIterations;
+        this.h = h;
         this.method = method;
+        this.exitFunc = exitFunc;
     }
 
     public DifferentialResult different() {
@@ -35,8 +35,8 @@ public class Differential {
 
     private List<TimeVector> makeDifferential() {
         try (Log.LogTime logTime = Log.recordWorking(this)) {
-            List<TimeVector> vectors = new ArrayList<>(numberOfIterations);
-            Iterator<TimeVector> iterator = new DifferentialIterator();
+            List<TimeVector> vectors = new ArrayList<>();
+            Iterator<TimeVector> iterator = new DifferentialIterator(exitFunc);
             iterator.forEachRemaining(tv -> {
                 if (tv.isAnyNaN()) {
                     Log.warning(this, "Some param is NaN is null; throw!!");
@@ -53,12 +53,11 @@ public class Differential {
     public class DifferentialIterator implements Iterator<TimeVector> {
         private Vector last = startVector;
         private double currentTime = startVector.getTime();
-        private double h = totalTime / numberOfIterations;
 
         private Func<Boolean, TimeVector> exitFunc;
 
-        public DifferentialIterator() {
-            this.exitFunc = tv -> tv.getTime() + 1e-6 >= totalTime;
+        public DifferentialIterator(Func<Boolean, TimeVector> exitFunc) {
+            this.exitFunc = exitFunc;
         }
 
         public boolean hasNext() {
