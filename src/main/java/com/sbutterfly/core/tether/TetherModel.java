@@ -43,10 +43,11 @@ public class TetherModel extends Model {
     }
 
     protected TimeVector getStartTimeVector() {
-        Vector valuesVector = new Vector(START_VALUES.size());
+        double[] values = new double[START_VALUES.size()];
         for (int i = 0; i < START_VALUES.size(); i++) {
-            valuesVector.set(i, getInitialValue(START_VALUES.get(i)));
+            values[i] = getInitialValue(START_VALUES.get(i));
         }
+        Vector valuesVector = new Vector(values);
 
         double t = getInitialValue(TetherTraceService.Time_axis());
         return new TimeVector(t, valuesVector);

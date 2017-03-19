@@ -307,29 +307,24 @@ public class CallbackTetherFunction implements Function {
         double L_p = vector.get(12);
         double Lt_p = vector.get(13);
 
-        Vector result = new Vector(getDimension());
-        result.set(0, Vx1);
-        result.set(1, Vy1);
+        double[] result = new double[getDimension()];
 
-        result.set(2, (Gx(x1, y1, m1) - Txy(x1, y1, x2, y2, L)) / m1);
-        result.set(3, (Gy(x1, y1, m1) - Tyx(x1, y1, x2, y2, L)) / m1);
+        result[0] = Vx1;
+        result[1] = Vy1;
+        result[2] = (Gx(x1, y1, m1) - Txy(x1, y1, x2, y2, L)) / m1;
+        result[3] = (Gy(x1, y1, m1) - Tyx(x1, y1, x2, y2, L)) / m1;
+        result[4] = Vx2;
+        result[5] = Vy2;
+        result[6] = (Gx(x2, y2, m2) - Txy(x1, y1, x2, y2, L)) / m2;
+        result[7] = (Gy(x2, y2, m2) - Tyx(x1, y1, x2, y2, L)) / m2;
+        result[8] = Lt;
+        result[9] = (T(x1, y1, x2, y2, L) - Fc(L, Lt, L_p, Lt_p)) / m3;
+        result[10] = tettat_p;
+        result[11] = tetta_tt_p(L_p, Lt_p, tetta_p, tettat_p);
+        result[12] = Lt_p;
+        result[13] = L_tt_p(L_p, Lt_p, tetta_p, tettat_p);
 
-        result.set(4, Vx2);
-        result.set(5, Vy2);
-
-        result.set(6, (Gx(x2, y2, m2) - Txy(x1, y1, x2, y2, L)) / m2);
-        result.set(7, (Gy(x2, y2, m2) - Tyx(x1, y1, x2, y2, L)) / m2);
-
-        result.set(8, Lt);
-        result.set(9, (T(x1, y1, x2, y2, L) - Fc(L, Lt, L_p, Lt_p)) / m3);
-
-        result.set(10, tettat_p);
-        result.set(11, tetta_tt_p(L_p, Lt_p, tetta_p, tettat_p));
-
-        result.set(12, Lt_p);
-        result.set(13, L_tt_p(L_p, Lt_p, tetta_p, tettat_p));
-
-        return result;
+        return new Vector(result);
     }
 
     @Override

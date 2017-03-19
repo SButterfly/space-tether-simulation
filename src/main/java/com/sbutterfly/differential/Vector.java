@@ -11,16 +11,16 @@ public class Vector implements Iterable<Double> {
 
     private final double[] values;
 
-    public Vector(int length) {
-        values = new double[length];
-    }
-
     public Vector(double... values) {
         this.values = values;
     }
 
-    public Vector(Vector vector) {
-        this.values = vector.values.clone();
+    protected Vector(int length) {
+        values = new double[length];
+    }
+
+    protected Vector(Vector vector) {
+        this.values = vector.values;
     }
 
     public int size() {
@@ -31,22 +31,9 @@ public class Vector implements Iterable<Double> {
         return values[index];
     }
 
-    public void set(int index, double value) {
-        values[index] = value;
-    }
-
-    public boolean isAllNaN() {
-        for (double a : values) {
-            if (!Double.isNaN(a)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public boolean isAnyNaN() {
-        for (double a : values) {
-            if (Double.isNaN(a)) {
+        for (int i = 0; i < values.length; i++) {
+            if (Double.isNaN(values[i])) {
                 return true;
             }
         }
@@ -91,9 +78,9 @@ public class Vector implements Iterable<Double> {
 
         Vector result = new Vector(v[0].size());
 
-        for (Vector x : v) {
-            for (int i = 0, n = x.size(); i < n; i++) {
-                result.values[i] += x.values[i];
+        for (int i = 0; i < v.length; i++) {
+            for (int j = 0, n = v[i].size(); j < n; j++) {
+                result.values[j] += v[i].values[j];
             }
         }
         return result;

@@ -51,8 +51,7 @@ public class Differential {
 
     @SuppressWarnings("magicnumber")
     public class DifferentialIterator implements Iterator<TimeVector> {
-        private Vector last = startVector;
-        private double currentTime = startVector.getTime();
+        private TimeVector last = startVector;
 
         private Func<Boolean, TimeVector> exitFunc;
 
@@ -61,17 +60,22 @@ public class Differential {
         }
 
         public boolean hasNext() {
-            return !exitFunc.invoke(new TimeVector(currentTime, last));
+            return !exitFunc.invoke(last);
         }
 
         public TimeVector next() throws NoSuchElementException {
             if (hasNext()) {
-                last = method.next(function, last, h);
-                currentTime += h;
-                return new TimeVector(currentTime, last);
+                TimeVector current = last;
+                last = nextValue(current);
+                return last;
             } else {
                 throw new NoSuchElementException();
             }
+        }
+
+        private TimeVector nextValue(TimeVector currentVector) {
+            Vector vector = method.next(function, currentVector, h);
+            return new TimeVector(currentVector.getTime() + h, vector);
         }
     }
 }
