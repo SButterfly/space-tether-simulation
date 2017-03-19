@@ -8,15 +8,24 @@ import com.sbutterfly.engine.trace.Trace;
 import com.sbutterfly.engine.trace.TraceDescription;
 import com.sbutterfly.gui.helpers.EventHandler;
 import com.sbutterfly.gui.helpers.EventListener;
+import com.sbutterfly.gui.panels.Constraint;
+import com.sbutterfly.gui.panels.JGridBagPanel;
+import com.sbutterfly.utils.DoubleUtils;
 import com.sbutterfly.utils.Log;
 import info.monitorenter.gui.chart.Chart2D;
 import info.monitorenter.gui.chart.IAxis;
 import info.monitorenter.gui.chart.ITrace2D;
 import info.monitorenter.gui.chart.traces.Trace2DSimple;
 
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,18 +35,32 @@ import java.util.Map;
  * @author s-ermakov
  */
 @SuppressWarnings("magicnumber")
-public class ChartView extends Chart2D {
+public class ChartView extends JGridBagPanel {
 
     private final EventHandler<Status> statusEventHandler = new EventHandler<>();
 
     private final List<Model> models = new LinkedList<>();
     private final Map<Model, ITrace2D> modelToTrace = new HashMap<>();
+    private final Map<Model, AxisInformation> modelToInformation = new HashMap<>();
     private TraceDescription currentTraceDescription;
+    private volatile int processingModels = 0;
 
-    private int processingModels = 0;
+    private final Chart2D chart2D;
+    private final JLabel informationLabel;
 
     public ChartView() {
-        setPaintLabels(false);
+        chart2D = new Chart2D();
+        chart2D.setPaintLabels(false);
+
+        informationLabel = new JLabel();
+        informationLabel.setBackground(new Color(0, 0, 0, 50));
+        informationLabel.setOpaque(true);
+        Border paddingBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+        informationLabel.setBorder(BorderFactory.createCompoundBorder(null, paddingBorder));
+
+        add(informationLabel, Constraint.create(0, 0).anchor(GridBagConstraints.NORTHEAST).insets(5));
+        add(chart2D, Constraint.create(0, 0).fill(GridBagConstraints.BOTH).weightX(1).weightY(1));
+
         refresh();
     }
 
@@ -64,8 +87,10 @@ public class ChartView extends Chart2D {
     }
 
     public void refresh() {
-        super.removeAllTraces();
+        chart2D.removeAllTraces();
+        updateAxisInformation(null);
         modelToTrace.clear();
+        modelToInformation.clear();
         setAxisDescription(currentTraceDescription);
         if (currentTraceDescription != null) {
             models.forEach(m -> addTrace(m, currentTraceDescription));
@@ -94,11 +119,12 @@ public class ChartView extends Chart2D {
         increaseProcessingModels();
         future.setOnSuccess(modelResult -> SwingUtilities.invokeLater(() -> {
             doTrace(model, modelResult, traceDescription);
+            decreaseProcessingModels();
         }));
         future.setOnFail(exception -> SwingUtilities.invokeLater(() -> {
-            decreaseProcessingModels();
             Log.error(this, exception);
             JOptionPane.showMessageDialog(null, "Произошла ошибка: " + exception.getMessage());
+            decreaseProcessingModels();
         }));
     }
 
@@ -106,23 +132,33 @@ public class ChartView extends Chart2D {
         Log.debug(this, "do untrace " + model.getName());
         ITrace2D trace2D = modelToTrace.get(model);
         if (trace2D != null) {
-            this.removeTrace(trace2D);
-
             modelToTrace.remove(model);
-            decreaseProcessingModels();
+            modelToInformation.remove(model);
+            chart2D.removeTrace(trace2D);
+            updateAxisInformation(combineAxisInformation(modelToInformation.values()));
         }
     }
 
     private void doTrace(Model model, ModelResult modelResult, TraceDescription traceDescription) {
         Log.debug(this, "do trace " + model.getName());
         Trace trace = modelResult.getTrace(traceDescription);
+
+        List<Vector> values = trace.getValues();
+        if (values.isEmpty()) {
+            throw new IllegalArgumentException("Can't add trace with empty values");
+        }
+
         ITrace2D viewTrace = new Trace2DSimple();
         viewTrace.setColor(model.getColor());
-        this.addTrace(viewTrace);
+        chart2D.addTrace(viewTrace);
+
+        double max = Double.MIN_VALUE;
+        double min = Double.MAX_VALUE;
+        double first = 0;
+        double last = 0;
 
         // нет смысла печатать все точки
         // достаточно взять несколько, чтобы быстрее прогружался график
-
         // TODO
         // такая выборка опасная
         // так как точки могут быть неравномерными
@@ -130,18 +166,25 @@ public class ChartView extends Chart2D {
         int height = this.getHeight();
         int points = 3 * Math.max(width, height); // с коэффициентом 3 лучше линии
 
-        List<Vector> values = trace.getValues();
-
         int step = Math.max(values.size() / points, 1);
         int length = values.size();
-        // except last step
-        for (int i = 0; i < length - 1; i += step) {
-            viewTrace.addPoint(values.get(i).get(0), values.get(i).get(1));
+
+        for (int i = 0; i < length; i++) {
+            Vector vector = values.get(i);
+
+            if (i % step == 0) {
+                viewTrace.addPoint(vector.get(0), vector.get(1));
+            }
+
+            max = Math.max(max, vector.get(1));
+            min = Math.min(min, vector.get(1));
         }
-        // last step to print
-        viewTrace.addPoint(values.get(length - 1).get(0), values.get(length - 1).get(1));
+
+        first = values.get(0).get(1);
+        last = values.get(length - 1).get(1);
         modelToTrace.put(model, viewTrace);
-        decreaseProcessingModels();
+        modelToInformation.put(model, new AxisInformation(max, min, first, last));
+        updateAxisInformation(combineAxisInformation(modelToInformation.values()));
     }
 
     private void setAxisDescription(TraceDescription traceDescription) {
@@ -154,9 +197,9 @@ public class ChartView extends Chart2D {
         xAxisTitle.setTitleFont(new Font(null, Font.PLAIN, 15));
         yAxisTitle.setTitleFont(new Font(null, Font.PLAIN, 15));
 
-        this.getAxisX().setAxisTitle(xAxisTitle);
-        this.getAxisY().setAxisTitle(yAxisTitle);
-        this.updateUI();
+        chart2D.getAxisX().setAxisTitle(xAxisTitle);
+        chart2D.getAxisY().setAxisTitle(yAxisTitle);
+        chart2D.updateUI();
     }
 
     public void addStatusListener(EventListener<Status> eventListener) {
@@ -167,14 +210,14 @@ public class ChartView extends Chart2D {
         statusEventHandler.remove(eventListener);
     }
 
-    private void increaseProcessingModels() {
+    private synchronized void increaseProcessingModels() {
         processingModels++;
         if (processingModels == 1) {
             statusEventHandler.invoke(Status.BUSY);
         }
     }
 
-    private void decreaseProcessingModels() {
+    private synchronized void decreaseProcessingModels() {
         processingModels--;
         assert processingModels >= 0;
         if (processingModels == 0) {
@@ -182,8 +225,64 @@ public class ChartView extends Chart2D {
         }
     }
 
+    private AxisInformation combineAxisInformation(Collection<AxisInformation> axisInformations) {
+        AxisInformation result = null;
+        for (AxisInformation axisInformation : axisInformations) {
+            result = result == null ? axisInformation : AxisInformation.merge(axisInformation, result);
+        }
+        return result;
+    }
+
+    private void updateAxisInformation(AxisInformation axisInformation) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (axisInformation != null) {
+            Double max = axisInformation.max;
+            Double min = axisInformation.min;
+            Double first = axisInformation.first;
+            Double last = axisInformation.last;
+
+            stringBuilder.append("<html>");
+            if (max != null) {
+                stringBuilder.append("Максимум: ").append(DoubleUtils.toString(max)).append("<br>");
+            }
+            if (min != null) {
+                stringBuilder.append("Минимум: ").append(DoubleUtils.toString(min)).append("<br>");
+            }
+            if (first != null) {
+                stringBuilder.append("Начальное: ").append(DoubleUtils.toString(first)).append("<br>");
+            }
+            if (last != null) {
+                stringBuilder.append("Конечное: ").append(DoubleUtils.toString(last)).append("<br>");
+            }
+            stringBuilder.append("</html>");
+        }
+
+        informationLabel.setText(stringBuilder.toString());
+        this.updateUI();
+    }
+
     public enum Status {
         IDLE,
         BUSY
+    }
+
+    private static class AxisInformation {
+        private final Double max;
+        private final Double min;
+        private final Double first;
+        private final Double last;
+
+        AxisInformation(Double max, Double min, Double first, Double last) {
+            this.max = max;
+            this.min = min;
+            this.first = first;
+            this.last = last;
+        }
+
+        static AxisInformation merge(AxisInformation axisInformation1, AxisInformation axisInformation2) {
+            return new AxisInformation(Math.max(axisInformation1.max, axisInformation2.max),
+                    Math.min(axisInformation1.min, axisInformation2.min),
+                    null, null);
+        }
     }
 }
