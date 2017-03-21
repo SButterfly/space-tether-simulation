@@ -15,10 +15,6 @@ public class Vector implements Iterable<Double> {
         this.values = values;
     }
 
-    protected Vector(int length) {
-        values = new double[length];
-    }
-
     protected Vector(Vector vector) {
         this.values = vector.values;
     }
@@ -38,76 +34,6 @@ public class Vector implements Iterable<Double> {
             }
         }
         return false;
-    }
-
-    public static Vector sum(Vector x, Vector y) {
-        if (x.size() != y.size()) {
-            throw new ArrayIndexOutOfBoundsException("Вектора должны быть одной длины");
-        }
-
-        Vector result = new Vector(x.size());
-
-        for (int i = 0, n = x.size(); i < n; i++) {
-            result.values[i] = x.values[i] + y.values[i];
-        }
-
-        return result;
-    }
-
-    public static Vector sum(double x, Vector y) {
-        return sum(y, x);
-    }
-
-    public static Vector sum(Vector x, double y) {
-        Vector result = new Vector(x.size());
-
-        for (int i = 0, n = x.size(); i < n; i++) {
-            result.values[i] = x.values[i] + y;
-        }
-
-        return result;
-    }
-
-    public static Vector sum(Vector... v) {
-        if (v.length == 0) {
-            throw new IllegalArgumentException("Пустой массив");
-        }
-        if (v.length == 1) {
-            return new Vector(v[0]);
-        }
-
-        Vector result = new Vector(v[0].size());
-
-        for (int i = 0; i < v.length; i++) {
-            for (int j = 0, n = v[i].size(); j < n; j++) {
-                result.values[j] += v[i].values[j];
-            }
-        }
-        return result;
-    }
-
-    public static Vector mul(double y, Vector x) {
-        Vector result = new Vector(x.size());
-
-        for (int i = 0, n = x.size(); i < n; i++) {
-            result.values[i] = x.values[i] * y;
-        }
-
-        return result;
-    }
-
-    public static Vector mul(Vector x, double y) {
-        return mul(y, x);
-    }
-
-    public static Vector mulThenSum(Vector x, double mul, Vector sum) {
-        Vector result = new Vector(x.size());
-
-        for (int i = 0, n = x.size(); i < n; i++) {
-            result.values[i] = x.values[i] * mul + sum.values[i];
-        }
-
-        return result;
     }
 
     @Override
@@ -135,5 +61,9 @@ public class Vector implements Iterable<Double> {
                 }
             }
         };
+    }
+
+    public double[] toArray() {
+        return values.clone();
     }
 }

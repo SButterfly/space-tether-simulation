@@ -13,3 +13,4 @@ dependencies {
 }
 
 mainClassName = "com.sbutterfly.Main"
+applicationDefaultJvmArgs = ["-Xmx4048M"]

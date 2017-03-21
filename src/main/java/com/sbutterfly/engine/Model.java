@@ -29,7 +29,7 @@ import java.util.concurrent.Executors;
  */
 public abstract class Model {
 
-    private static final ExecutorService MODEL_EXECUTOR_SERVICE = Executors.newFixedThreadPool(4);
+    private static final ExecutorService MODEL_EXECUTOR_SERVICE = Executors.newFixedThreadPool(2);
 
     private String name = "Безымянный";
     private Color color = Color.black;
@@ -173,6 +173,7 @@ public abstract class Model {
 
     @SuppressWarnings("checkstyle:magicnumber")
     public Func<Boolean, TimeVector> getExitFunction() {
-        return timeVector -> timeVector.getTime() + 1e-6 >= AppSettings.getODETime();
+        final double time = AppSettings.getODETime();
+        return timeVector -> timeVector.getTime() + 1e-6 >= time;
     }
 }

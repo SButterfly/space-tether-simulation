@@ -27,8 +27,8 @@ public class CallbackTetherModelSet extends ModelSet {
                 new TraceDescription(Time_axis(), Lp_axis()),
                 new TraceDescription(Time_axis(), V_p_axis()),
 
-                new TraceDescription(Time_axis(), Tetta_p_axis()),
-                new TraceDescription(Time_axis(), Tettat_p_axis()),
+                new TraceDescription(Time_axis(), Tetta_degress_axis()),
+                new TraceDescription(Time_axis(), Tetta_t_degress_axis()),
 
                 new TraceDescription(Time_axis(), F_power_axis(), "Управляющая сила"),
                 new TraceDescription(Time_axis(), T_axis(), "Силая натяжения"),

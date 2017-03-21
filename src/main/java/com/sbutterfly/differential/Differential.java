@@ -67,7 +67,7 @@ public class Differential {
             if (hasNext()) {
                 TimeVector current = last;
                 last = nextValue(current);
-                return last;
+                return current;
             } else {
                 throw new NoSuchElementException();
             }

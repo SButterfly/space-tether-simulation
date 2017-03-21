@@ -33,7 +33,6 @@ public class CallbackTetherFunction implements Function {
     // параметры развертывания
     private final double a;
     private final double b;
-    private final double cc;
 
     // конечная длина троса
     private final double Lk;
@@ -79,9 +78,36 @@ public class CallbackTetherFunction implements Function {
     // Минимальная сила Fcmin
     private final double Fcmin = 0.01;
 
+    // Впомогательные величины
+
+    private final double Om2 = Om*Om;
+
+    private final double _3Lk;
+
+    // m1 + m2
+    // -------
+    //  m1*m2
+    private final double M1plusM2;
+
+    //  m1*m2
+    // -------
+    // m1 + m2
+    private final double M1multM2;
+
+    // (-m2/(m1 + m2))
+    private final double minusM2;
+
+    // (m1/(m1 + m2))
+    private final double plusM1;
+
+    // m1 + m2
+    // ------- * Om*Om
+    //  m1*m2
+    private final double M1multM2_Om2;
+
     public CallbackTetherFunction(double m1, double m2, double m3,
                                   double KL, double KV,
-                                  double a, double b, double cc,
+                                  double a, double b,
                                   double Lk) {
         this.m1 = m1;
         this.m2 = m2;
@@ -90,8 +116,13 @@ public class CallbackTetherFunction implements Function {
         this.KV = KV;
         this.a = a;
         this.b = b;
-        this.cc = cc;
         this.Lk = Lk;
+        this.M1plusM2 = (m1 + m2)/(m1*m2);
+        this.M1multM2 = (m1*m2)/(m1+m2);
+        this.minusM2 = (-m2)/(m1+m2);
+        this.plusM1 = (m1)/(m1+m2);
+        this.M1multM2_Om2 = M1multM2*Om2;
+        this._3Lk = 3 * Lk;
     }
 
     /**
@@ -100,7 +131,7 @@ public class CallbackTetherFunction implements Function {
      * m1 + m2
      */
     public double getX1(double L, double tetta) {
-        return (-m2/(m1 + m2)) * L * cos(tetta) + xc;
+        return minusM2 * L * cos(tetta) + xc;
     }
 
     /**
@@ -109,7 +140,7 @@ public class CallbackTetherFunction implements Function {
      * m1 + m2
      */
     public double getX2(double L, double tetta) {
-        return (m1/(m1 + m2)) * L * cos(tetta) + xc;
+        return plusM1 * L * cos(tetta) + xc;
     }
 
     /**
@@ -118,7 +149,7 @@ public class CallbackTetherFunction implements Function {
      * m1 + m2
      */
     public double getY1(double L, double tetta) {
-        return (-m2/(m1 + m2)) * L * sin(tetta) + yc;
+        return minusM2 * L * sin(tetta) + yc;
     }
 
     /**
@@ -127,7 +158,7 @@ public class CallbackTetherFunction implements Function {
      * m1 + m2
      */
     public double getY2(double L, double tetta) {
-        return (m1/(m1 + m2)) * L * sin(tetta) + yc;
+        return plusM1 * L * sin(tetta) + yc;
     }
 
     // Проекции скорости отделения
@@ -138,7 +169,7 @@ public class CallbackTetherFunction implements Function {
      * m1 + m2
      */
     public double getVX1(double Lt, double tetta_t) {
-        return (-m2/(m1 + m2)) * Lt * cos(tetta_t) + Vxc;
+        return minusM2 * Lt * cos(tetta_t) + Vxc;
     }
 
     /**
@@ -147,7 +178,7 @@ public class CallbackTetherFunction implements Function {
      * m1 + m2
      */
     public double getVX2(double Lt, double tetta_t) {
-        return (m1/(m1 + m2)) * Lt * cos(tetta_t) + Vxc;
+        return plusM1 * Lt * cos(tetta_t) + Vxc;
     }
 
     /**
@@ -156,7 +187,7 @@ public class CallbackTetherFunction implements Function {
      * m1 + m2
      */
     public double getVY1(double Lt, double tetta_t) {
-        return (-m2/(m1 + m2)) * Lt * sin(tetta_t) + Vyc;
+        return minusM2 * Lt * sin(tetta_t) + Vyc;
     }
 
     /**
@@ -165,7 +196,7 @@ public class CallbackTetherFunction implements Function {
      * m1 + m2
      */
     public double getVY2(double Lt, double tetta_t) {
-        return (m1/(m1 + m2)) * Lt * sin(tetta_t) + Vyc;
+        return plusM1 * Lt * sin(tetta_t) + Vyc;
     }
 
     /**
@@ -251,7 +282,7 @@ public class CallbackTetherFunction implements Function {
      * m1 + m2                                  sigma
      */
     public double Fcn(double Lp, double Ltp) {
-        return (m1 * m2 / (m1 + m2)) * Om * Om * (a * (Lp - Lk) + b * (Ltp / Om) + cc * Lk);
+        return M1multM2_Om2 * (a * (Lp - Lk) + b * (Ltp / Om) + _3Lk);
     }
 
     // Уравнения развертывания
@@ -262,8 +293,8 @@ public class CallbackTetherFunction implements Function {
      *                                                                                      m1*m2
      */
     public double L_tt_p(double Lp, double Ltp, double tetta_p, double tetta_t_p) {
-        double first = Lp * (pow(tetta_t_p + Om) - Om * Om * (1 - 3 * pow(cos(tetta_p))));
-        double second = Fcn(Lp, Ltp) * ((m1 + m2) / (m1 * m2));
+        double first = Lp * (pow(tetta_t_p + Om) - Om2 * (1 - 3 * pow(cos(tetta_p))));
+        double second = Fcn(Lp, Ltp) * M1plusM2;
         return first - second;
     }
 
@@ -274,8 +305,8 @@ public class CallbackTetherFunction implements Function {
      */
     public double tetta_tt_p(double Lp, double Ltp, double tetta_p, double tetta_t_p) {
         double first = -2 * (Ltp / Lp) * (tetta_t_p + Om);
-        double second = 1.5 * Om * Om * sin(2 * tetta_p);
-        return first - second;
+        double second = - 1.5 * Om2 * sin(2 * tetta_p);
+        return first + second;
     }
 
     @Override
@@ -297,15 +328,15 @@ public class CallbackTetherFunction implements Function {
         double Vy2 = vector.get(7);
 
         double L = vector.get(8);
-        double Lt = vector.get(9);
+        double L_t = vector.get(9);
 
         // suffix _p stands for programming
 
         double tetta_p = vector.get(10);
-        double tettat_p = vector.get(11);
+        double tetta_t_p = vector.get(11);
 
         double L_p = vector.get(12);
-        double Lt_p = vector.get(13);
+        double L_t_p = vector.get(13);
 
         double[] result = new double[getDimension()];
 
@@ -317,12 +348,12 @@ public class CallbackTetherFunction implements Function {
         result[5] = Vy2;
         result[6] = (Gx(x2, y2, m2) - Txy(x1, y1, x2, y2, L)) / m2;
         result[7] = (Gy(x2, y2, m2) - Tyx(x1, y1, x2, y2, L)) / m2;
-        result[8] = Lt;
-        result[9] = (T(x1, y1, x2, y2, L) - Fc(L, Lt, L_p, Lt_p)) / m3;
-        result[10] = tettat_p;
-        result[11] = tetta_tt_p(L_p, Lt_p, tetta_p, tettat_p);
-        result[12] = Lt_p;
-        result[13] = L_tt_p(L_p, Lt_p, tetta_p, tettat_p);
+        result[8] = L_t;
+        result[9] = (T(x1, y1, x2, y2, L) - Fc(L, L_t, L_p, L_t_p)) / m3;
+        result[10] = tetta_t_p;
+        result[11] = tetta_tt_p(L_p, L_t_p, tetta_p, tetta_t_p);
+        result[12] = L_t_p;
+        result[13] = L_tt_p(L_p, L_t_p, tetta_p, tetta_t_p);
 
         return new Vector(result);
     }

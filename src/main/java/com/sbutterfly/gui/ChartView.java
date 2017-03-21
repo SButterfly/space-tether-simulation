@@ -258,7 +258,7 @@ public class ChartView extends JGridBagPanel {
         }
 
         informationLabel.setText(stringBuilder.toString());
-        this.updateUI();
+        informationLabel.updateUI();
     }
 
     public enum Status {

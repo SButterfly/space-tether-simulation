@@ -4,6 +4,7 @@ import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Sergei on 31.01.2015.
@@ -95,16 +96,13 @@ public class Log {
 
     public static class LogTime implements AutoCloseable {
 
-        private static int globalId = 0;
+        private static final AtomicInteger ATOMIC_INTEGER = new AtomicInteger(0);
         private String tag;
         private Stopwatch stopwatch;
         private int id = -1;
 
-        {
-            id = globalId++;
-        }
-
         public LogTime(String tag) {
+            id = ATOMIC_INTEGER.getAndIncrement();
             stopwatch = new Stopwatch();
             this.tag = tag;
             debug(this.tag, "Start timing! Id: " + id);

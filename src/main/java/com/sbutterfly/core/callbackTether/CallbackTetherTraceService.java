@@ -21,8 +21,6 @@ class CallbackTetherTraceService {
 
     private static final Axis A_AXIS = new Axis("a", "a");
     private static final Axis B_AXIS = new Axis("b", "b");
-    private static final Axis C_AXIS = new Axis("c", "c");
-
 
     private static final Axis RO_AXIS = new Axis("ρ", "ρ, кг/м3");
 
@@ -36,6 +34,9 @@ class CallbackTetherTraceService {
 
     private static final Axis TETTA_AXIS = new Axis("θ", "θ, рад");
     private static final Axis TETTA_T_AXIS = new Axis("θ˙", "θ˙, рад/с");
+
+    private static final Axis TETTA_DEGRES_AXIS = new Axis("θградусы", "θ, град");
+    private static final Axis TETTA_T_DEGRES_AXIS = new Axis("θградусы/сек", "θ, град/сек");
     private static final Axis BETTA_AXIS = new Axis("β", "β, рад");
     private static final Axis BETTA_T_AXIS = new Axis("β˙", "β˙, рад/с");
 
@@ -69,21 +70,6 @@ class CallbackTetherTraceService {
     private static final Axis FP_POWER_AXIS = new Axis("fp", "fp, Н");
 
     private static final Axis POWER_TP_AXIS = new Axis("pp", "pp, H");
-
-    private static final GroupAxisDescription ROPE_GROUP = new GroupAxisDescription("Параметры тросовой системы",
-            Arrays.asList(M_1_AXIS, M_2_AXIS, M_3_AXIS, LK_AXIS));
-
-    private static final GroupAxisDescription SYSTEM_GROUP = new GroupAxisDescription("Параметры закона",
-            Arrays.asList(A_AXIS, B_AXIS, C_AXIS));
-
-    private static final GroupAxisDescription CALLBACK_GROUP = new GroupAxisDescription("Коэффициенты обратной связи",
-            Arrays.asList(KL_AXIS, KV_AXIS));
-
-    private static final GroupAxisDescription START_PARAMS_GROUP = new GroupAxisDescription("Начальные параметры",
-            Arrays.asList(L_AXIS, V_AXIS, TETTA_AXIS));
-
-    private static final List<GroupAxisDescription> GROUP_AXIS_DESCRIPTIONS = Arrays.asList(
-            ROPE_GROUP, SYSTEM_GROUP, CALLBACK_GROUP, START_PARAMS_GROUP);
 
     private CallbackTetherTraceService() {
     }
@@ -120,10 +106,6 @@ class CallbackTetherTraceService {
         return B_AXIS;
     }
 
-    public static Axis C_axis() {
-        return C_AXIS;
-    }
-
     public static Axis Lk_axis() {
         return LK_AXIS;
     }
@@ -146,6 +128,14 @@ class CallbackTetherTraceService {
 
     public static Axis V_p_axis() {
         return V_P_AXIS;
+    }
+
+    public static Axis Tetta_degress_axis() {
+        return TETTA_DEGRES_AXIS;
+    }
+
+    public static Axis Tetta_t_degress_axis() {
+        return TETTA_T_DEGRES_AXIS;
     }
 
     public static Axis Tetta_p_axis() {
@@ -242,9 +232,5 @@ class CallbackTetherTraceService {
 
     public static Axis Fp_power_axis() {
         return FP_POWER_AXIS;
-    }
-
-    public static List<GroupAxisDescription> getGroupAxisDescriptions() {
-        return GROUP_AXIS_DESCRIPTIONS;
     }
 }
