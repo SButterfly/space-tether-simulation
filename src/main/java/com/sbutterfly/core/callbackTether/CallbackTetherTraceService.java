@@ -1,16 +1,14 @@
 package com.sbutterfly.core.callbackTether;
 
-import com.sbutterfly.engine.GroupAxisDescription;
 import com.sbutterfly.engine.trace.Axis;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author s-ermakov
  */
 @SuppressWarnings({"checkstyle:membername", "checkstyle:methodname", "checkstyle:parametername"})
 class CallbackTetherTraceService {
+
+    private static final Axis EMPTY_AXIS = new Axis("EMPTY", "");
 
     private static final Axis M_1_AXIS = new Axis("m1", "m1, кг");
     private static final Axis M_2_AXIS = new Axis("m2", "m2, кг");
@@ -35,8 +33,8 @@ class CallbackTetherTraceService {
     private static final Axis TETTA_AXIS = new Axis("θ", "θ, рад");
     private static final Axis TETTA_T_AXIS = new Axis("θ˙", "θ˙, рад/с");
 
-    private static final Axis TETTA_DEGRES_AXIS = new Axis("θградусы", "θ, град");
-    private static final Axis TETTA_T_DEGRES_AXIS = new Axis("θградусы/сек", "θ, град/сек");
+    private static final Axis TETTA_DEGRES_AXIS = new Axis("θградусы", "θ, градусы");
+    private static final Axis TETTA_T_DEGRES_AXIS = new Axis("θградусы/сек", "θ, градусы/сек");
     private static final Axis BETTA_AXIS = new Axis("β", "β, рад");
     private static final Axis BETTA_T_AXIS = new Axis("β˙", "β˙, рад/с");
 
@@ -55,23 +53,30 @@ class CallbackTetherTraceService {
     private static final Axis VX2_AXIS = new Axis("vx2", "vx2, м/с");
     private static final Axis VY2_AXIS = new Axis("vy2", "vy2, м/с");
 
-    private static final Axis L_TP_AXIS = new Axis("tp", "line tp, м");
+    private static final Axis L_TP_AXIS = new Axis("tp", "Переходный процесс по длине, м");
 
-    private static final Axis SPEED_TP_AXIS = new Axis("speed", "speed, м/с");
+    private static final Axis SPEED_TP_AXIS = new Axis("speed",
+            "Переходный процесс по скорости, м/с");
 
-    private static final Axis TETHER_DEFORMATION_AXIS = new Axis("td", "td");
+    private static final Axis TETHER_DEFORMATION_AXIS = new Axis("td", "Деформация троса");
 
-    private static final Axis POINT_LENGTH_AXIS = new Axis("point length", "Points length, м");
+    private static final Axis POINT_LENGTH_AXIS = new Axis("point length",
+            "Расстояние между КА, м");
 
-    private static final Axis TETHER_ELONGATION_AXIS = new Axis("tether alongation", "tether alongation, м");
+    private static final Axis TETHER_ELONGATION_AXIS = new Axis("tether alongation",
+            "Удлинение троса, м");
 
     private static final Axis F_POWER_AXIS = new Axis("F", "F, Н");
 
-    private static final Axis FP_POWER_AXIS = new Axis("fp", "fp, Н");
+    private static final Axis FP_POWER_AXIS = new Axis("fp", "F номинальная, Н");
 
-    private static final Axis POWER_TP_AXIS = new Axis("pp", "pp, H");
+    private static final Axis POWER_TP_AXIS = new Axis("pp", "Переходный процесс по силе, H");
 
     private CallbackTetherTraceService() {
+    }
+
+    public static Axis empty() {
+        return EMPTY_AXIS;
     }
 
     public static Axis M1_axis() {

@@ -282,6 +282,10 @@ public class CallbackTetherModel extends Model {
                 return -Math.cos(timeVector.get(2)) * timeVector.get(0);
             }
 
+            if (axis == CallbackTetherTraceService.empty()) {
+                return 0;
+            }
+
             throw new IllegalArgumentException("Unsupported axis: " + axis);
         }
     }

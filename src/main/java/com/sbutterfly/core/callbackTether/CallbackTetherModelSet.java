@@ -14,6 +14,9 @@ import static com.sbutterfly.core.callbackTether.CallbackTetherTraceService.*;
  */
 public class CallbackTetherModelSet extends ModelSet {
 
+    private static final TraceDescription EMPTY_TRACE_DESCRIPTION = new TraceDescription(empty(), empty(),
+            "----------------");
+
     @Override
     public Model createModel() {
         return new CallbackTetherModel();
@@ -29,15 +32,15 @@ public class CallbackTetherModelSet extends ModelSet {
 
                 new TraceDescription(Time_axis(), Tetta_degress_axis()),
                 new TraceDescription(Time_axis(), Tetta_t_degress_axis()),
-
+                EMPTY_TRACE_DESCRIPTION,
                 new TraceDescription(Time_axis(), F_power_axis(), "Управляющая сила"),
-                new TraceDescription(Time_axis(), T_axis(), "Силая натяжения"),
+                new TraceDescription(Time_axis(), T_axis(), "Сила натяжения"),
                 new TraceDescription(Time_axis(), Fp_power_axis(), "Номинальная сила"),
-
-                new TraceDescription(Time_axis(), Line_transition_process_axis(), "Переходный процесс по длине"),
+                EMPTY_TRACE_DESCRIPTION,
                 new TraceDescription(Time_axis(), Tether_deformation_axis(), "Деформация троса"),
                 new TraceDescription(Time_axis(), Tether_elongation_axis(), "Удлинение троса"),
-
+                EMPTY_TRACE_DESCRIPTION,
+                new TraceDescription(Time_axis(), Line_transition_process_axis(), "Переходный процесс по длине"),
                 new TraceDescription(Time_axis(), Speed_transition_process_axis(), "Переходный процесс по скорости")
         );
     }

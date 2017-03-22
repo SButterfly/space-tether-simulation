@@ -199,7 +199,6 @@ public class ChartView extends JGridBagPanel {
 
         chart2D.getAxisX().setAxisTitle(xAxisTitle);
         chart2D.getAxisY().setAxisTitle(yAxisTitle);
-        chart2D.updateUI();
     }
 
     public void addStatusListener(EventListener<Status> eventListener) {
@@ -257,8 +256,7 @@ public class ChartView extends JGridBagPanel {
             stringBuilder.append("</html>");
         }
 
-        informationLabel.setText(stringBuilder.toString());
-        informationLabel.updateUI();
+        SwingUtilities.invokeLater(() -> informationLabel.setText(stringBuilder.toString()));
     }
 
     public enum Status {
