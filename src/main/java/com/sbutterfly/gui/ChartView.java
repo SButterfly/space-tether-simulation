@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author s-ermakov
@@ -37,6 +38,7 @@ import java.util.Map;
 @SuppressWarnings("magicnumber")
 public class ChartView extends JGridBagPanel {
 
+    private final EventHandler<AxisInformation> axisInformationEventHandler = new EventHandler<>();
     private final EventHandler<Status> statusEventHandler = new EventHandler<>();
 
     private final List<Model> models = new LinkedList<>();
@@ -79,16 +81,18 @@ public class ChartView extends JGridBagPanel {
     public void appearModel(Model model) {
         ITrace2D trace2D = modelToTrace.get(model);
         trace2D.setVisible(true);
+        updateAxisInformation();
     }
 
     public void hideModel(Model model) {
         ITrace2D trace2D = modelToTrace.get(model);
         trace2D.setVisible(false);
+        updateAxisInformation();
     }
 
     public void refresh() {
         chart2D.removeAllTraces();
-        updateAxisInformation(null);
+        updateAxisInformation();
         modelToTrace.clear();
         modelToInformation.clear();
         setAxisDescription(currentTraceDescription);
@@ -135,8 +139,16 @@ public class ChartView extends JGridBagPanel {
             modelToTrace.remove(model);
             modelToInformation.remove(model);
             chart2D.removeTrace(trace2D);
-            updateAxisInformation(combineAxisInformation(modelToInformation.values()));
+            updateAxisInformation();
         }
+    }
+
+    private void updateAxisInformation() {
+        List<AxisInformation> axisInformations = modelToTrace.entrySet().stream()
+                .filter(e -> e.getValue().isVisible())
+                .map(e -> modelToInformation.get(e.getKey()))
+                .collect(Collectors.toList());
+        axisInformationEventHandler.invoke(combineAxisInformation(axisInformations));
     }
 
     private void doTrace(Model model, ModelResult modelResult, TraceDescription traceDescription) {
@@ -184,7 +196,7 @@ public class ChartView extends JGridBagPanel {
         last = values.get(length - 1).get(1);
         modelToTrace.put(model, viewTrace);
         modelToInformation.put(model, new AxisInformation(max, min, first, last));
-        updateAxisInformation(combineAxisInformation(modelToInformation.values()));
+        updateAxisInformation();
     }
 
     private void setAxisDescription(TraceDescription traceDescription) {
@@ -207,6 +219,14 @@ public class ChartView extends JGridBagPanel {
 
     public void removeStatesHandler(EventListener<Status> eventListener) {
         statusEventHandler.remove(eventListener);
+    }
+
+    public void addAxisInformationListener(EventListener<AxisInformation> axisInformationEventListener) {
+        axisInformationEventHandler.add(axisInformationEventListener);
+    }
+
+    public void removeAxisInformationListener(EventListener<AxisInformation> axisInformationEventListener) {
+        axisInformationEventHandler.remove(axisInformationEventListener);
     }
 
     private synchronized void increaseProcessingModels() {
@@ -232,39 +252,12 @@ public class ChartView extends JGridBagPanel {
         return result;
     }
 
-    private void updateAxisInformation(AxisInformation axisInformation) {
-        StringBuilder stringBuilder = new StringBuilder();
-        if (axisInformation != null) {
-            Double max = axisInformation.max;
-            Double min = axisInformation.min;
-            Double first = axisInformation.first;
-            Double last = axisInformation.last;
-
-            stringBuilder.append("<html>");
-            if (max != null) {
-                stringBuilder.append("Максимум: ").append(DoubleUtils.toString(max)).append("<br>");
-            }
-            if (min != null) {
-                stringBuilder.append("Минимум: ").append(DoubleUtils.toString(min)).append("<br>");
-            }
-            if (first != null) {
-                stringBuilder.append("Начальное: ").append(DoubleUtils.toString(first)).append("<br>");
-            }
-            if (last != null) {
-                stringBuilder.append("Конечное: ").append(DoubleUtils.toString(last)).append("<br>");
-            }
-            stringBuilder.append("</html>");
-        }
-
-        SwingUtilities.invokeLater(() -> informationLabel.setText(stringBuilder.toString()));
-    }
-
     public enum Status {
         IDLE,
         BUSY
     }
 
-    private static class AxisInformation {
+    public static class AxisInformation {
         private final Double max;
         private final Double min;
         private final Double first;
@@ -275,6 +268,22 @@ public class ChartView extends JGridBagPanel {
             this.min = min;
             this.first = first;
             this.last = last;
+        }
+
+        public Double getMax() {
+            return max;
+        }
+
+        public Double getMin() {
+            return min;
+        }
+
+        public Double getFirst() {
+            return first;
+        }
+
+        public Double getLast() {
+            return last;
         }
 
         static AxisInformation merge(AxisInformation axisInformation1, AxisInformation axisInformation2) {

@@ -9,12 +9,14 @@ import com.sbutterfly.gui.panels.Constraint;
 import com.sbutterfly.gui.panels.JBoxLayout;
 import com.sbutterfly.gui.panels.JGridBagPanel;
 import com.sbutterfly.services.ModelSetFactory;
+import com.sbutterfly.utils.DoubleUtils;
 import com.sbutterfly.utils.FileUtils;
 import com.sbutterfly.utils.Log;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -44,6 +46,7 @@ public class MainView implements Frameable {
     private ModelsListView modelsListView;
     private TraceSelectionView traceSelectionView;
     private AdditionalLineView additionalLineView;
+    private JLabel informationLabel;
     private ChartView chartView;
     private SettingsView settingsView;
 
@@ -126,6 +129,31 @@ public class MainView implements Frameable {
                     throw new RuntimeException("Don't know status: " + status);
             }
         });
+        chartView.addAxisInformationListener(axisInformation -> {
+            StringBuilder stringBuilder = new StringBuilder();
+            if (axisInformation != null) {
+                Double max = axisInformation.getMax();
+                Double min = axisInformation.getMin();
+                Double first = axisInformation.getFirst();
+                Double last = axisInformation.getLast();
+
+                stringBuilder.append("<html>");
+                if (max != null) {
+                    stringBuilder.append("Максимум: ").append(DoubleUtils.toString(max)).append("<br>");
+                }
+                if (min != null) {
+                    stringBuilder.append("Минимум: ").append(DoubleUtils.toString(min)).append("<br>");
+                }
+                if (first != null) {
+                    stringBuilder.append("Начальное: ").append(DoubleUtils.toString(first)).append("<br>");
+                }
+                if (last != null) {
+                    stringBuilder.append("Конечное: ").append(DoubleUtils.toString(last)).append("<br>");
+                }
+                stringBuilder.append("</html>");
+            }
+            informationLabel.setText(stringBuilder.toString());
+        });
 
         viewsPanel.add(chartView, getConstraint(1, 0, 1, 2).weightX(1).weightY(1));
 
@@ -134,11 +162,13 @@ public class MainView implements Frameable {
         traceSelectionView.addEventListener(td -> traceSelectionChanged(td.getTraceDescription()));
 
         additionalLineView = new AdditionalLineView();
+        informationLabel = new JLabel();
 
         JGridBagPanel bottomLine = new JGridBagPanel();
         bottomLine.add(traceSelectionView, getConstraint(0, 0, 1, 1));
-        bottomLine.add(new EmptyPanel(), getConstraint(1, 0, 1, 1).weightX(1));
-        bottomLine.add(additionalLineView, getConstraint(2, 0, 1, 1));
+        bottomLine.add(informationLabel, getConstraint(1, 0, 1, 1));
+        bottomLine.add(new EmptyPanel(), getConstraint(3, 0, 1, 1).weightX(1));
+        bottomLine.add(additionalLineView, getConstraint(4, 0, 1, 1));
 
         viewsPanel.add(bottomLine, getConstraint(0, 2, 2, 1));
 
