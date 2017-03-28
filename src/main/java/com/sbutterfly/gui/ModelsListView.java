@@ -17,10 +17,10 @@ import java.awt.GridBagConstraints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by Sergei on 14.02.2015.
@@ -163,7 +163,7 @@ public class ModelsListView extends JGridBagPanel {
     }
 
     public void clear() {
-        List<Model> modelList = modelItemMap.keySet().stream().collect(Collectors.toList());
+        List<Model> modelList = new ArrayList<>(modelItemMap.keySet());
         for (Model model : modelList) {
             remove(model);
         }
@@ -193,6 +193,10 @@ public class ModelsListView extends JGridBagPanel {
         } else {
             throw new RuntimeException("Model don't exit: " + model.getName());
         }
+    }
+
+    public void update() {
+        modelItemMap.forEach((k, v) -> v.label.setText(k.getName()));
     }
 
     private class Item {

@@ -43,6 +43,22 @@ public class MyJTextField extends JTextField {
         setPreferredSize(getMinimumSize());
     }
 
+    public void setWidth(int width) {
+        setSize(new Dimension(width, getSize().height));
+    }
+
+    public void setHeight(int height) {
+        setSize(new Dimension(getSize().width, height));
+    }
+
+    public void setMinimalWidth(int minimalWidth) {
+        setMinimumSize(new Dimension(minimalWidth, getMinimumSize().height));
+    }
+
+    public void setMinimalHeight(int minimalHeight) {
+        setMinimumSize(new Dimension(getMinimumSize().width, minimalHeight));
+    }
+
     // TODO quick fix
     public void addTextChangedListener(EventListener<String> textChangedListener) {
         getDocument().addDocumentListener(new DocumentListener() {

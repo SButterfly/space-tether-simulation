@@ -1,5 +1,6 @@
 package com.sbutterfly.gui;
 
+import com.jidesoft.utils.StringUtils;
 import com.sbutterfly.core.SystemSerializer;
 import com.sbutterfly.engine.Model;
 import com.sbutterfly.engine.ModelSet;
@@ -74,6 +75,8 @@ public class MainView implements Frameable {
                 case EDIT:
                     createNewModel(modelSet.createModel());
                     // HACK quick way to update model
+                    modelsListView.update();
+                    modelsListView.desselect();
                     onModelDeleted(e.getModel());
                     onModelAdded(e.getModel());
                     break;
@@ -245,9 +248,13 @@ public class MainView implements Frameable {
     }
 
     public void onModelCreated(Model model) {
-        String name = "Система " + integerIterator.next();
+        String customName = "Система " + integerIterator.next();
         Color color = colorIterator.next();
-        model.setName(name);
+
+        if (model.getName() == null || model.getName().isEmpty()) {
+            model.setName(customName);
+        }
+
         model.setColor(color);
         modelsListView.add(model);
     }

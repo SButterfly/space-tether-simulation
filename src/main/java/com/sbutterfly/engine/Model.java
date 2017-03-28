@@ -31,7 +31,7 @@ public abstract class Model {
 
     private static final ExecutorService MODEL_EXECUTOR_SERVICE = Executors.newFixedThreadPool(2);
 
-    private String name = "Безымянный";
+    private String name;
     private Color color = Color.black;
 
     private Map<Axis, Double> initialValues = new HashMap<>();
