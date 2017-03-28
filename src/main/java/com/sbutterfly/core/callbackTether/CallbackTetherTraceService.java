@@ -33,8 +33,10 @@ class CallbackTetherTraceService {
     private static final Axis TETTA_AXIS = new Axis("θ", "θ, рад");
     private static final Axis TETTA_T_AXIS = new Axis("θ˙", "θ˙, рад/с");
 
-    private static final Axis TETTA_DEGRES_AXIS = new Axis("θградусы", "θ, градусы");
-    private static final Axis TETTA_T_DEGRES_AXIS = new Axis("θградусы/сек", "θ, градусы/сек");
+    private static final Axis TETTA_DEGREAS_AXIS = new Axis("θград", "θ, град");
+    private static final Axis TETTA_T_DEGREAS_AXIS = new Axis("θtград/сек", "θt, град/сек");
+    private static final Axis TETTA_P_DEGREAS_AXIS = new Axis("θnград", "θn, град");
+    private static final Axis TETTA_T_P_DEGREAS_AXIS = new Axis("θtnград/сек", "θtn, град/сек");
     private static final Axis BETTA_AXIS = new Axis("β", "β, рад");
     private static final Axis BETTA_T_AXIS = new Axis("β˙", "β˙, рад/с");
 
@@ -136,11 +138,19 @@ class CallbackTetherTraceService {
     }
 
     public static Axis Tetta_degress_axis() {
-        return TETTA_DEGRES_AXIS;
+        return TETTA_DEGREAS_AXIS;
     }
 
     public static Axis Tetta_t_degress_axis() {
-        return TETTA_T_DEGRES_AXIS;
+        return TETTA_T_DEGREAS_AXIS;
+    }
+
+    public static Axis Tetta_p_degress_axis() {
+        return TETTA_P_DEGREAS_AXIS;
+    }
+
+    public static Axis Tetta_t_p_degress_axis() {
+        return TETTA_T_P_DEGREAS_AXIS;
     }
 
     public static Axis Tetta_p_axis() {

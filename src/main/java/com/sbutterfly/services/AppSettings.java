@@ -57,7 +57,7 @@ public class AppSettings {
 
     public static double getODETime() {
         Preferences preferences = getPreferences();
-        return preferences.getDouble(ODE_TIME_KEY, 1000);
+        return preferences.getDouble(ODE_TIME_KEY, 7600);
     }
 
     public static void setODETime(double time) {

@@ -144,6 +144,10 @@ public class MainView implements Frameable {
                 if (min != null) {
                     stringBuilder.append("Минимум: ").append(DoubleUtils.toString(min)).append("<br>");
                 }
+                if (max != null && min != null) {
+                    double diff = max - min;
+                    stringBuilder.append("Разница: ").append(DoubleUtils.toString(diff)).append("<br>");
+                }
                 if (first != null) {
                     stringBuilder.append("Начальное: ").append(DoubleUtils.toString(first)).append("<br>");
                 }

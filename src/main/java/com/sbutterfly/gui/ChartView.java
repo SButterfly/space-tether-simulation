@@ -10,19 +10,14 @@ import com.sbutterfly.gui.helpers.EventHandler;
 import com.sbutterfly.gui.helpers.EventListener;
 import com.sbutterfly.gui.panels.Constraint;
 import com.sbutterfly.gui.panels.JGridBagPanel;
-import com.sbutterfly.utils.DoubleUtils;
 import com.sbutterfly.utils.Log;
 import info.monitorenter.gui.chart.Chart2D;
 import info.monitorenter.gui.chart.IAxis;
 import info.monitorenter.gui.chart.ITrace2D;
 import info.monitorenter.gui.chart.traces.Trace2DSimple;
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.util.Collection;
@@ -48,19 +43,10 @@ public class ChartView extends JGridBagPanel {
     private volatile int processingModels = 0;
 
     private final Chart2D chart2D;
-    private final JLabel informationLabel;
 
     public ChartView() {
         chart2D = new Chart2D();
         chart2D.setPaintLabels(false);
-
-        informationLabel = new JLabel();
-        informationLabel.setBackground(new Color(0, 0, 0, 50));
-        informationLabel.setOpaque(true);
-        Border paddingBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
-        informationLabel.setBorder(BorderFactory.createCompoundBorder(null, paddingBorder));
-
-        add(informationLabel, Constraint.create(0, 0).anchor(GridBagConstraints.NORTHEAST).insets(5));
         add(chart2D, Constraint.create(0, 0).fill(GridBagConstraints.BOTH).weightX(1).weightY(1));
 
         refresh();

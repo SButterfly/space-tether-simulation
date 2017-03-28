@@ -71,6 +71,8 @@ public class CallbackTetherFunction implements Function {
     private final double xc = Rop;
     private final double yc = 0.0;
 
+    private final double rc = length(xc, yc);
+
     // ПРОЕКЦИИ СКОРОСТЕЙ
     private final double Vxc = 0.0;
     private final double Vyc = Vop;
@@ -127,20 +129,20 @@ public class CallbackTetherFunction implements Function {
 
     /**
      *  -m2
-     * ------- * L * cos(tetta) + xc
+     * ------- * L * cos(tetta) + rc
      * m1 + m2
      */
     public double getX1(double L, double tetta) {
-        return minusM2 * L * cos(tetta) + xc;
+        return minusM2 * L * cos(tetta) + rc;
     }
 
     /**
      *    m1
-     * ------- * L * cos(tetta) + xc
+     * ------- * L * cos(tetta) + rc
      * m1 + m2
      */
     public double getX2(double L, double tetta) {
-        return plusM1 * L * cos(tetta) + xc;
+        return plusM1 * L * cos(tetta) + rc;
     }
 
     /**
@@ -263,8 +265,7 @@ public class CallbackTetherFunction implements Function {
      */
     public double Fc(double L, double Lt, double Lp, double Ltp) {
         double fc = doFc(L, Lt, Lp, Ltp);
-//        return Math.max(fc, Fcmin);
-        return fc;
+        return Math.max(fc, Fcmin);
     }
 
     /**

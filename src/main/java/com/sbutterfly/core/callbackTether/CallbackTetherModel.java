@@ -5,7 +5,6 @@ import com.sbutterfly.engine.GroupAxisDescription;
 import com.sbutterfly.engine.Model;
 import com.sbutterfly.engine.ModelResult;
 import com.sbutterfly.engine.trace.Axis;
-import com.sbutterfly.utils.Func;
 
 import java.util.Arrays;
 import java.util.List;
@@ -72,22 +71,32 @@ public class CallbackTetherModel extends Model {
 
     private static final GroupAxisDescription START_PARAMS_GROUP = new GroupAxisDescription("Начальные параметры",
             Arrays.asList(
+                    CallbackTetherTraceService.Lp_axis(),
+                    CallbackTetherTraceService.V_p_axis(),
+
                     CallbackTetherTraceService.L_axis(),
                     CallbackTetherTraceService.V_axis(),
-                    CallbackTetherTraceService.Tetta_degress_axis()
+
+                    CallbackTetherTraceService.Tetta_p_degress_axis(),
+                    CallbackTetherTraceService.Tetta_t_p_degress_axis(),
+
+                    CallbackTetherTraceService.Tetta_degress_axis(),
+                    CallbackTetherTraceService.Tetta_t_degress_axis()
             )
     );
 
     public CallbackTetherModel() {
         setInitialValue(CallbackTetherTraceService.L_axis(), 1);
         setInitialValue(CallbackTetherTraceService.V_axis(), 2.5);
+        setInitialValue(CallbackTetherTraceService.Lp_axis(), 1);
+        setInitialValue(CallbackTetherTraceService.V_p_axis(), 2.5);
 
         setInitialValue(CallbackTetherTraceService.M1_axis(), 20);
         setInitialValue(CallbackTetherTraceService.M2_axis(), 6000);
         setInitialValue(CallbackTetherTraceService.M3_axis(), 0.2);
 
-        setInitialValue(CallbackTetherTraceService.A_axis(), 4.6);
-        setInitialValue(CallbackTetherTraceService.B_axis(), 3.5);
+        setInitialValue(CallbackTetherTraceService.A_axis(), 4.7);
+        setInitialValue(CallbackTetherTraceService.B_axis(), 4);
 
         setInitialValue(CallbackTetherTraceService.Lk_axis(), 3000);
         setInitialValue(CallbackTetherTraceService.KL_axis(), 1);
@@ -106,8 +115,14 @@ public class CallbackTetherModel extends Model {
         double L = getInitialValue(CallbackTetherTraceService.L_axis());
         double V = getInitialValue(CallbackTetherTraceService.V_axis());
 
+        double Lp = getInitialValue(CallbackTetherTraceService.Lp_axis());
+        double Vp = getInitialValue(CallbackTetherTraceService.V_p_axis());
+
         double tetta = getInitialValue(CallbackTetherTraceService.Tetta_degress_axis()) * Math.PI / 180d;
         double tetta_t = getInitialValue(CallbackTetherTraceService.Tetta_t_degress_axis()) * Math.PI / 180d;
+
+        double tetta_p = getInitialValue(CallbackTetherTraceService.Tetta_p_degress_axis()) * Math.PI / 180d;
+        double tetta_t_p = getInitialValue(CallbackTetherTraceService.Tetta_t_p_degress_axis()) * Math.PI / 180d;
 
         double x1 = function.getX1(L, tetta);
         double y1 = function.getY1(L, tetta);
@@ -132,7 +147,7 @@ public class CallbackTetherModel extends Model {
         TimeVector startVector = new TimeVector(t,
                 x1, y1, Vx1, Vy1,
                 x2, y2, Vx2, Vy2,
-                L, V, tetta, tetta_t, L, V);
+                L, V, tetta_p, tetta_t_p, Lp, Vp);
 
         return startVector;
     }
@@ -160,13 +175,13 @@ public class CallbackTetherModel extends Model {
         return new CallbackTetherFunction(m1, m2, m3, KL, KV, a, b, lk);
     }
 
-    @Override
-    public Func<Boolean, TimeVector> getExitFunction() {
-        CallbackTetherFunction callbackTetherFunction = getFunction();
-        Func<Boolean, TimeVector> lengthFunction = callbackTetherFunction.getExitFunction();
-        Func<Boolean, TimeVector> timeFunction = super.getExitFunction();
-        return timeVector -> lengthFunction.invoke(timeVector) || timeFunction.invoke(timeVector);
-    }
+//    @Override
+//    public Func<Boolean, TimeVector> getExitFunction() {
+//        CallbackTetherFunction callbackTetherFunction = getFunction();
+//        Func<Boolean, TimeVector> lengthFunction = callbackTetherFunction.getExitFunction();
+//        Func<Boolean, TimeVector> timeFunction = super.getExitFunction();
+//        return timeVector -> lengthFunction.invoke(timeVector) || timeFunction.invoke(timeVector);
+//    }
 
     @Override
     protected ModelResult getInitModelResult() {
