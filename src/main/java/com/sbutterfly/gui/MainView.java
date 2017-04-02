@@ -74,6 +74,7 @@ public class MainView implements Frameable {
                     break;
                 case EDIT:
                     createNewModel(modelSet.createModel());
+                    e.getModel().refresh();
                     // HACK quick way to update model
                     modelsListView.update();
                     modelsListView.desselect();
