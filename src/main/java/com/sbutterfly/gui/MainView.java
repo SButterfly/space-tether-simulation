@@ -1,6 +1,5 @@
 package com.sbutterfly.gui;
 
-import com.jidesoft.utils.StringUtils;
 import com.sbutterfly.core.SystemSerializer;
 import com.sbutterfly.engine.Model;
 import com.sbutterfly.engine.ModelSet;
@@ -74,7 +73,7 @@ public class MainView implements Frameable {
                     break;
                 case EDIT:
                     createNewModel(modelSet.createModel());
-                    e.getModel().refresh();
+                    e.getModel().clear();
                     // HACK quick way to update model
                     modelsListView.update();
                     modelsListView.desselect();

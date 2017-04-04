@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -37,7 +38,7 @@ public class ChartView extends JGridBagPanel {
     private final EventHandler<Status> statusEventHandler = new EventHandler<>();
 
     private final List<Model> models = new LinkedList<>();
-    private final Map<Model, ITrace2D> modelToTrace = new HashMap<>();
+    private final Map<Model, List<ITrace2D>> modelToTrace = new HashMap<>();
     private final Map<Model, AxisInformation> modelToInformation = new HashMap<>();
     private TraceDescription currentTraceDescription;
     private volatile int processingModels = 0;
@@ -65,14 +66,14 @@ public class ChartView extends JGridBagPanel {
     }
 
     public void appearModel(Model model) {
-        ITrace2D trace2D = modelToTrace.get(model);
-        trace2D.setVisible(true);
+        List<ITrace2D> traces = modelToTrace.get(model);
+        traces.forEach(t -> t.setVisible(true));
         updateAxisInformation();
     }
 
     public void hideModel(Model model) {
-        ITrace2D trace2D = modelToTrace.get(model);
-        trace2D.setVisible(false);
+        List<ITrace2D> traces = modelToTrace.get(model);
+        traces.forEach(t -> t.setVisible(false));
         updateAxisInformation();
     }
 
@@ -120,18 +121,18 @@ public class ChartView extends JGridBagPanel {
 
     private void doUntrace(Model model) {
         Log.debug(this, "do untrace " + model.getName());
-        ITrace2D trace2D = modelToTrace.get(model);
-        if (trace2D != null) {
+        List<ITrace2D> traces = modelToTrace.get(model);
+        traces.forEach(t -> {
             modelToTrace.remove(model);
             modelToInformation.remove(model);
-            chart2D.removeTrace(trace2D);
+            chart2D.removeTrace(t);
             updateAxisInformation();
-        }
+        });
     }
 
     private void updateAxisInformation() {
         List<AxisInformation> axisInformations = modelToTrace.entrySet().stream()
-                .filter(e -> e.getValue().isVisible())
+                .filter(e -> e.getValue().stream().anyMatch(ITrace2D::isVisible))
                 .map(e -> modelToInformation.get(e.getKey()))
                 .collect(Collectors.toList());
         axisInformationEventHandler.invoke(combineAxisInformation(axisInformations));
@@ -139,55 +140,59 @@ public class ChartView extends JGridBagPanel {
 
     private void doTrace(Model model, ModelResult modelResult, TraceDescription traceDescription) {
         Log.debug(this, "do trace " + model.getName());
-        Trace trace = modelResult.getTrace(traceDescription);
-
-        List<Vector> values = trace.getValues();
-        if (values.isEmpty()) {
-            throw new IllegalArgumentException("Can't add trace with empty values");
-        }
-
-        ITrace2D viewTrace = new Trace2DSimple();
-        viewTrace.setColor(model.getColor());
-        chart2D.addTrace(viewTrace);
+        List<Trace> traces = modelResult.getTrace(traceDescription);
 
         double max = Double.MIN_VALUE;
         double min = Double.MAX_VALUE;
         double first = 0;
         double last = 0;
 
-        // нет смысла печатать все точки
-        // достаточно взять несколько, чтобы быстрее прогружался график
-        // TODO
-        // такая выборка опасная
-        // так как точки могут быть неравномерными
-        int width = this.getWidth();
-        int height = this.getHeight();
-        int points = 3 * Math.max(width, height); // с коэффициентом 3 лучше линии
-
-        int step = Math.max(values.size() / points, 1);
-        int length = values.size();
-
-        for (int i = 0; i < length; i++) {
-            Vector vector = values.get(i);
-
-            if (i % step == 0) {
-                viewTrace.addPoint(vector.get(0), vector.get(1));
+        for (Trace trace : traces) {
+            List<Vector> values = trace.getValues();
+            if (values.isEmpty()) {
+                throw new IllegalArgumentException("Can't add trace with empty values");
             }
 
-            max = Math.max(max, vector.get(1));
-            min = Math.min(min, vector.get(1));
-        }
+            ITrace2D viewTrace = new Trace2DSimple();
+            viewTrace.setColor(model.getColor());
+            chart2D.addTrace(viewTrace);
 
-        first = values.get(0).get(1);
-        last = values.get(length - 1).get(1);
-        modelToTrace.put(model, viewTrace);
+            // нет смысла печатать все точки
+            // достаточно взять несколько, чтобы быстрее прогружался график
+            // TODO
+            // такая выборка опасная
+            // так как точки могут быть неравномерными
+            int width = this.getWidth();
+            int height = this.getHeight();
+            int points = Math.max(width, height);
+
+            int step = Math.max(values.size() / points, 1);
+            int length = values.size();
+
+            for (int i = 0; i < length; i++) {
+                Vector vector = values.get(i);
+
+                if (i % step == 0) {
+                    viewTrace.addPoint(vector.get(0), vector.get(1));
+                }
+
+                max = Math.max(max, vector.get(1));
+                min = Math.min(min, vector.get(1));
+            }
+
+            first = values.get(0).get(1);
+            last = values.get(length - 1).get(1);
+
+            List<ITrace2D> trace2DS = modelToTrace.computeIfAbsent(model, key -> new ArrayList<>());
+            trace2DS.add(viewTrace);
+        }
         modelToInformation.put(model, new AxisInformation(max, min, first, last));
         updateAxisInformation();
     }
 
     private void setAxisDescription(TraceDescription traceDescription) {
-        String xAxisStr = traceDescription != null ? traceDescription.getXAxis().getHumanReadableName() : "";
-        String yAxisStr = traceDescription != null ? traceDescription.getYAxis().getHumanReadableName() : "";
+        String xAxisStr = traceDescription != null ? traceDescription.getXAxisName() : "";
+        String yAxisStr = traceDescription != null ? traceDescription.getYAxisName() : "";
 
         IAxis.AxisTitle xAxisTitle = new IAxis.AxisTitle(xAxisStr);
         IAxis.AxisTitle yAxisTitle = new IAxis.AxisTitle(yAxisStr);

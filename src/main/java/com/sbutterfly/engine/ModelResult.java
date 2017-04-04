@@ -5,8 +5,10 @@ import com.sbutterfly.differential.Vector;
 import com.sbutterfly.engine.trace.Axis;
 import com.sbutterfly.engine.trace.Trace;
 import com.sbutterfly.engine.trace.TraceDescription;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,23 +44,29 @@ public abstract class ModelResult {
         this.values = values;
     }
 
-    public Trace getTrace(TraceDescription traceDescription) {
+    public List<Trace> getTrace(TraceDescription traceDescription) {
         if (this.values == null) {
             throw new IllegalStateException("values don't set");
         }
 
-        Axis xAxis = traceDescription.getXAxis();
-        Axis yAxis = traceDescription.getYAxis();
+        Collection<Pair<Axis, Axis>> pairs = traceDescription.getAxises();
 
-        List<Vector> result = new ArrayList<>(values.size());
+        List<Trace> traces = new ArrayList<>(pairs.size());
 
-        for (TimeVector vector : values) {
-            double xValue = getValue(vector, xAxis);
-            double yValue = getValue(vector, yAxis);
-            result.add(new Vector(xValue, yValue));
+        for (Pair<Axis, Axis> axis : pairs) {
+            Axis xAxis = axis.getKey();
+            Axis yAxis = axis.getValue();
+            List<Vector> result = new ArrayList<>(values.size());
+
+            for (TimeVector vector : values) {
+                double xValue = getValue(vector, xAxis);
+                double yValue = getValue(vector, yAxis);
+                result.add(new Vector(xValue, yValue));
+            }
+            traces.add(new Trace(traceDescription, result));
         }
 
-        return new Trace(traceDescription, result);
+        return traces;
     }
 
     public abstract double getValue(TimeVector vector, Axis axis);

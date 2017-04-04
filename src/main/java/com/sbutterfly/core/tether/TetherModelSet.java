@@ -2,6 +2,7 @@ package com.sbutterfly.core.tether;
 
 import com.sbutterfly.engine.Model;
 import com.sbutterfly.engine.ModelSet;
+import com.sbutterfly.engine.trace.SingleTraceDescription;
 import com.sbutterfly.engine.trace.TraceDescription;
 
 import java.util.Arrays;
@@ -20,8 +21,8 @@ public class TetherModelSet extends ModelSet {
     @Override
     public List<TraceDescription> getModelTraces() {
         return Arrays.asList(
-                new TraceDescription(TetherTraceService.Time_axis(), TetherTraceService.L_axis()),
-                new TraceDescription(TetherTraceService.Time_axis(), TetherTraceService.V_axis())
+                new SingleTraceDescription(TetherTraceService.Time_axis(), TetherTraceService.L_axis()),
+                new SingleTraceDescription(TetherTraceService.Time_axis(), TetherTraceService.V_axis())
         );
     }
 }

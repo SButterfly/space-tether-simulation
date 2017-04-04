@@ -10,10 +10,10 @@ import com.sbutterfly.utils.Log;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author s-ermakov
@@ -54,7 +54,7 @@ public class TraceSelectionView extends JGridBagPanel {
     }
 
     public List<TraceDescription> getTraceDescriptions() {
-        return traceDescriptionMap.values().stream().collect(Collectors.toList());
+        return new ArrayList<>(traceDescriptionMap.values());
     }
 
     public void addEventListener(EventListener<Event> listener) {

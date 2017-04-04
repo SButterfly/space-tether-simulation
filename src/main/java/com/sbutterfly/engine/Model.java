@@ -117,11 +117,10 @@ public abstract class Model {
     protected abstract ModelResult getInitModelResult();
 
     /**
-     * Пересчитывает значения системы.
+     * Очищает значения системы.
      */
-    public void refresh() {
+    public void clear() {
         futureResult = null;
-        getValuesFuture();
     }
 
     public CallbackFuture<? extends ModelResult> getValuesFuture() {
