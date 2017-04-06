@@ -47,11 +47,15 @@ class CallbackTetherTraceService {
 
     private static final Axis X1_AXIS = new Axis("x1", "x1, м");
     private static final Axis Y1_AXIS = new Axis("y1", "y1, м");
+    private static final Axis X1_LOCAL_AXIS = new Axis("x1_local", "x1_local, м");
+    private static final Axis Y1_LOCAL_AXIS = new Axis("y1_local", "y1_local, м");
     private static final Axis VX1_AXIS = new Axis("vx1", "vx1, м/с");
     private static final Axis VY1_AXIS = new Axis("vy1", "vy1, м/с");
 
     private static final Axis X2_AXIS = new Axis("x2", "x2, м");
     private static final Axis Y2_AXIS = new Axis("y2", "y2, м");
+    private static final Axis X2_LOCAL_AXIS = new Axis("x2_local", "x2_local, м");
+    private static final Axis Y2_LOCAL_AXIS = new Axis("y2_local", "y2_local, м");
     private static final Axis VX2_AXIS = new Axis("vx2", "vx2, м/с");
     private static final Axis VY2_AXIS = new Axis("vy2", "vy2, м/с");
 
@@ -193,6 +197,14 @@ class CallbackTetherTraceService {
         return Y1_AXIS;
     }
 
+    public static Axis X1_local_axis() {
+        return X1_LOCAL_AXIS;
+    }
+
+    public static Axis Y1_local_axis() {
+        return Y1_LOCAL_AXIS;
+    }
+
     public static Axis VX1_axis() {
         return VX1_AXIS;
     }
@@ -207,6 +219,14 @@ class CallbackTetherTraceService {
 
     public static Axis Y2_axis() {
         return Y2_AXIS;
+    }
+
+    public static Axis X2_local_axis() {
+        return X2_LOCAL_AXIS;
+    }
+
+    public static Axis Y2_local_axis() {
+        return Y2_LOCAL_AXIS;
     }
 
     public static Axis VX2_axis() {

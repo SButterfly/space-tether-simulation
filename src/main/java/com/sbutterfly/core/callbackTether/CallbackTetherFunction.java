@@ -202,6 +202,81 @@ public class CallbackTetherFunction implements Function {
     }
 
     /**
+     *    1
+     * -------- * (m1 * x1 + m2 * x2)
+     * m1 + m2
+     */
+    public double getXC(double x1, double x2) {
+        return (m1 * x1 + m2 * x2) / (m1 + m2);
+    }
+
+    /**
+     *    1
+     * -------- * (m1 * y1 + m2 * y2)
+     * m1 + m2
+     */
+    public double getYC(double y1, double y2) {
+        return (m1 * y1 + m2 * y2) / (m1 + m2);
+    }
+
+    public double getCos_fi(double x1, double x2, double y1, double y2) {
+        double xc = getXC(x1, x2);
+        double yc = getYC(y1, y2);
+        double rc = length(xc, yc);
+        return xc / rc;
+    }
+
+    public double getSin_fi(double x1, double x2, double y1, double y2) {
+        double xc = getXC(x1, x2);
+        double yc = getYC(y1, y2);
+        double rc = length(xc, yc);
+        return yc / rc;
+    }
+
+    /**
+     * x1 * cos(fi) + y1 * sin(fi)
+     */
+    public double getXN1(double x1, double x2, double y1, double y2) {
+        double cos = getCos_fi(x1, x2, y1, y2);
+        double sin = getSin_fi(x1, x2, y1, y2);
+        return x1 * cos + y1 * sin;
+    }
+
+    /**
+     * x2 * cos(fi) + y2 * sin(fi)
+     */
+    public double getXN2(double x1, double x2, double y1, double y2) {
+        double cos = getCos_fi(x1, x2, y1, y2);
+        double sin = getSin_fi(x1, x2, y1, y2);
+        return x2 * cos + y2 * sin;
+    }
+
+    /**
+     * -x1 * sin(fi) + y1 * cos(fi)
+     */
+    public double getYN1(double x1, double x2, double y1, double y2) {
+        double cos = getCos_fi(x1, x2, y1, y2);
+        double sin = getSin_fi(x1, x2, y1, y2);
+        return -x1 * sin + y1 * cos;
+    }
+
+    /**
+     * -x2 * sin(fi) + y2 * cos(fi)
+     */
+    public double getYN2(double x1, double x2, double y1, double y2) {
+        double cos = getCos_fi(x1, x2, y1, y2);
+        double sin = getSin_fi(x1, x2, y1, y2);
+        return -x2 * sin + y2 * cos;
+    }
+
+    /**
+     * Возвращает радиус Земли.
+     */
+    public double getR3() {
+        return R3;
+    }
+
+    /**
      * sqrt(x^2 + y^2)
      */
     public double length(double x, double y) {
@@ -235,11 +310,8 @@ public class CallbackTetherFunction implements Function {
      */
     public double T(double x1, double y1, double x2, double y2, double L) {
         double kof = length(x1 - x2, y1 - y2) - L;
-        if (kof >= 0) {
-            return c * kof / L;
-        } else {
-            return 0.0;
-        }
+        double max = Math.max(kof, 0.0);
+        return c * max / L;
     }
 
     /**
@@ -347,8 +419,8 @@ public class CallbackTetherFunction implements Function {
         result[3] = (Gy(x1, y1, m1) - Tyx(x1, y1, x2, y2, L)) / m1;
         result[4] = Vx2;
         result[5] = Vy2;
-        result[6] = (Gx(x2, y2, m2) - Txy(x1, y1, x2, y2, L)) / m2;
-        result[7] = (Gy(x2, y2, m2) - Tyx(x1, y1, x2, y2, L)) / m2;
+        result[6] = (Gx(x2, y2, m2) + Txy(x1, y1, x2, y2, L)) / m2;
+        result[7] = (Gy(x2, y2, m2) + Tyx(x1, y1, x2, y2, L)) / m2;
         result[8] = L_t;
         result[9] = (T(x1, y1, x2, y2, L) - Fc(L, L_t, L_p, L_t_p)) / m3;
         result[10] = tetta_t_p;
