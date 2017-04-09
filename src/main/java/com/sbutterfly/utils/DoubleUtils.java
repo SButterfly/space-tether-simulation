@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
  */
 public class DoubleUtils {
 
-    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.###");
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.#####");
 
     private DoubleUtils() {
     }

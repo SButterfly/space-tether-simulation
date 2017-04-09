@@ -269,6 +269,25 @@ public class CallbackTetherFunction implements Function {
         return -x2 * sin + y2 * cos;
     }
 
+//    /**
+//     *      xc^2 + yc^2 - x1*xc-y1*yc
+//     * K = --------------------------
+//     *      x1*yc - y1*xc
+//     *
+//     * return arcsin(K/sqrt(1 + K^2))
+//     */
+//    public double getTetta(double x1, double x2, double y1, double y2) {
+//        double xc = getXC(x1, x2);
+//        double yc = getYC(y1, y2);
+//
+//        double first = pow(xc) + pow(yc) - (x1*xc  + y1*yc);
+//        double second = x1*yc - y1*xc;
+//
+//        double k = first/second;
+//
+//        return Math.asin(k/sqrt(1 + pow(k)));
+//    }
+
     /**
      * Возвращает радиус Земли.
      */
@@ -436,7 +455,7 @@ public class CallbackTetherFunction implements Function {
         return 14;
     }
 
-    private double pow(final double value) {
+    private double pow(double value) {
         return value * value;
     }
 

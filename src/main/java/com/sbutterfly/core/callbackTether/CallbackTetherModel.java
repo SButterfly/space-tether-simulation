@@ -11,6 +11,7 @@ import java.util.List;
 
 import static com.sbutterfly.core.callbackTether.CallbackTetherTraceService.Power_transition_process_axis;
 import static com.sbutterfly.core.callbackTether.CallbackTetherTraceService.Speed_transition_process_axis;
+import static com.sbutterfly.core.callbackTether.CallbackTetherTraceService.Tetta_transition_process_axis;
 import static java.lang.Math.abs;
 
 /**
@@ -40,8 +41,8 @@ public class CallbackTetherModel extends Model {
 
             CallbackTetherTraceService.L_axis(),
             CallbackTetherTraceService.V_axis(),
-            CallbackTetherTraceService.Tetta_p_axis(),
-            CallbackTetherTraceService.Tettat_p_axis(),
+            CallbackTetherTraceService.Tetta_p_rad_axis(),
+            CallbackTetherTraceService.Tetta_t_p_rad_axis(),
             CallbackTetherTraceService.Lp_axis(),
             CallbackTetherTraceService.V_p_axis()
     );
@@ -198,6 +199,10 @@ public class CallbackTetherModel extends Model {
 
         @Override
         public double getValue(TimeVector timeVector, Axis axis) {
+            if (axis == CallbackTetherTraceService.Time_axis()) {
+                return timeVector.getTime();
+            }
+
             if (CONSTANT_VALUES.contains(axis)) {
                 return CallbackTetherModel.super.getInitialValue(axis);
             }
@@ -206,25 +211,25 @@ public class CallbackTetherModel extends Model {
                 return timeVector.get(START_VALUES.indexOf(axis));
             }
 
-            if (axis == CallbackTetherTraceService.X1_local_axis()) {
+            if (axis == CallbackTetherTraceService.X1_orbit_axis()) {
                 double x1 = getValue(timeVector, CallbackTetherTraceService.X1_axis());
                 double y1 = getValue(timeVector, CallbackTetherTraceService.Y1_axis());
                 double x2 = getValue(timeVector, CallbackTetherTraceService.X2_axis());
                 double y2 = getValue(timeVector, CallbackTetherTraceService.Y2_axis());
 
-                return callbackTetherFunction.getXN1(x1, x2, y1, y2) - callbackTetherFunction.getR3();
+                return callbackTetherFunction.getXN1(x1, x2, y1, y2);
             }
 
-            if (axis == CallbackTetherTraceService.X2_local_axis()) {
+            if (axis == CallbackTetherTraceService.X2_orbit_axis()) {
                 double x1 = getValue(timeVector, CallbackTetherTraceService.X1_axis());
                 double y1 = getValue(timeVector, CallbackTetherTraceService.Y1_axis());
                 double x2 = getValue(timeVector, CallbackTetherTraceService.X2_axis());
                 double y2 = getValue(timeVector, CallbackTetherTraceService.Y2_axis());
 
-                return callbackTetherFunction.getXN2(x1, x2, y1, y2) - callbackTetherFunction.getR3();
+                return callbackTetherFunction.getXN2(x1, x2, y1, y2);
             }
 
-            if (axis == CallbackTetherTraceService.Y1_local_axis()) {
+            if (axis == CallbackTetherTraceService.Y1_orbit_axis()) {
                 double x1 = getValue(timeVector, CallbackTetherTraceService.X1_axis());
                 double y1 = getValue(timeVector, CallbackTetherTraceService.Y1_axis());
                 double x2 = getValue(timeVector, CallbackTetherTraceService.X2_axis());
@@ -233,7 +238,7 @@ public class CallbackTetherModel extends Model {
                 return callbackTetherFunction.getYN1(x1, x2, y1, y2);
             }
 
-            if (axis == CallbackTetherTraceService.Y2_local_axis()) {
+            if (axis == CallbackTetherTraceService.Y2_orbit_axis()) {
                 double x1 = getValue(timeVector, CallbackTetherTraceService.X1_axis());
                 double y1 = getValue(timeVector, CallbackTetherTraceService.Y1_axis());
                 double x2 = getValue(timeVector, CallbackTetherTraceService.X2_axis());
@@ -242,18 +247,34 @@ public class CallbackTetherModel extends Model {
                 return callbackTetherFunction.getYN2(x1, x2, y1, y2);
             }
 
-            if (axis == CallbackTetherTraceService.Tetta_degress_axis()) {
-                double tettaRad = getValue(timeVector, CallbackTetherTraceService.Tetta_p_axis());
+            if (axis == CallbackTetherTraceService.Tetta_p_degress_axis()) {
+                double tettaRad = getValue(timeVector, CallbackTetherTraceService.Tetta_p_rad_axis());
                 return tettaRad * 180 / Math.PI;
             }
 
-            if (axis == CallbackTetherTraceService.Tetta_t_degress_axis()) {
-                double tettaTRad = getValue(timeVector, CallbackTetherTraceService.Tettat_p_axis());
+            if (axis == CallbackTetherTraceService.Tetta_t_p_degress_axis()) {
+                double tettaTRad = getValue(timeVector, CallbackTetherTraceService.Tetta_t_p_rad_axis());
                 return tettaTRad * 180 / Math.PI;
             }
 
-            if (axis == CallbackTetherTraceService.Time_axis()) {
-                return timeVector.getTime();
+            if (axis == CallbackTetherTraceService.Tetta_rad_axis()) {
+//                double x1 = getValue(timeVector, CallbackTetherTraceService.X1_axis());
+//                double y1 = getValue(timeVector, CallbackTetherTraceService.Y1_axis());
+//                double x2 = getValue(timeVector, CallbackTetherTraceService.X2_axis());
+//                double y2 = getValue(timeVector, CallbackTetherTraceService.Y2_axis());
+
+                double x1_orbit = getValue(timeVector, CallbackTetherTraceService.X1_orbit_axis());
+                double x2_orbit = getValue(timeVector, CallbackTetherTraceService.X2_orbit_axis());
+                double y1_orbit = getValue(timeVector, CallbackTetherTraceService.Y1_orbit_axis());
+                double y2_orbit = getValue(timeVector, CallbackTetherTraceService.Y2_orbit_axis());
+
+                return Math.atan2(y2_orbit - y1_orbit, x2_orbit - x1_orbit);
+
+//                return Math.atan(callbackTetherFunction.getTetta(x1, x2, y1, y2));
+            }
+
+            if (axis == CallbackTetherTraceService.Tetta_degress_axis()) {
+                return Math.toDegrees(getValue(timeVector, CallbackTetherTraceService.Tetta_rad_axis()));
             }
 
             if (axis == CallbackTetherTraceService.Line_transition_process_axis()) {
@@ -318,19 +339,18 @@ public class CallbackTetherModel extends Model {
                 return Lt - Ltp;
             }
 
+            if (axis == Tetta_transition_process_axis()) {
+                double tetta = getValue(timeVector, CallbackTetherTraceService.Tetta_rad_axis());
+                double tetta_p = getValue(timeVector, CallbackTetherTraceService.Tetta_p_rad_axis());
+
+                return Math.toDegrees(tetta - tetta_p);
+            }
+
             if (axis == Power_transition_process_axis()) {
                 double f = getValue(timeVector, CallbackTetherTraceService.F_power_axis());
                 double fp = getValue(timeVector, CallbackTetherTraceService.Fp_power_axis());
 
                 return f - fp;
-            }
-
-            if (axis == CallbackTetherTraceService.X_axis()) {
-                return -Math.sin(timeVector.get(2)) * timeVector.get(0);
-            }
-
-            if (axis == CallbackTetherTraceService.Y_axis()) {
-                return -Math.cos(timeVector.get(2)) * timeVector.get(0);
             }
 
             if (axis == CallbackTetherTraceService.empty()) {

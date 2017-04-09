@@ -15,7 +15,9 @@ import com.sbutterfly.utils.Log;
 import info.monitorenter.gui.chart.Chart2D;
 import info.monitorenter.gui.chart.IAxis;
 import info.monitorenter.gui.chart.ITrace2D;
+import info.monitorenter.gui.chart.ZoomableChart;
 import info.monitorenter.gui.chart.traces.Trace2DSimple;
+import javafx.util.Pair;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -44,10 +46,10 @@ public class ChartView extends JGridBagPanel {
     private TraceDescription currentTraceDescription;
     private volatile int processingModels = 0;
 
-    private final Chart2D chart2D;
+    private final ZoomableChart chart2D;
 
     public ChartView() {
-        chart2D = new Chart2D();
+        chart2D = new ZoomableChart();
         chart2D.setPaintLabels(false);
         add(chart2D, Constraint.create(0, 0).fill(GridBagConstraints.BOTH).weightX(1).weightY(1));
 

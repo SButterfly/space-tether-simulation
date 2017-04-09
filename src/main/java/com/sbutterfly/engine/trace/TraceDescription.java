@@ -13,7 +13,5 @@ public interface TraceDescription {
     String getXAxisName();
     String getYAxisName();
 
-    default String getName() {
-        return getYAxisName() + " / " + getXAxisName();
-    }
+    String getName();
 }

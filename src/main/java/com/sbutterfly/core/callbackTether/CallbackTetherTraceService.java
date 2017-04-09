@@ -30,15 +30,17 @@ class CallbackTetherTraceService {
     private static final Axis L_P_AXIS = new Axis("Lp", "Lp, м");
     private static final Axis V_P_AXIS = new Axis("Vp", "Vp, м/с");
 
-    private static final Axis TETTA_AXIS = new Axis("θ", "θ, рад");
-    private static final Axis TETTA_T_AXIS = new Axis("θ˙", "θ˙, рад/с");
+    private static final Axis TETTA_P_RAD_AXIS = new Axis("θn", "θn, рад");
+    private static final Axis TETTA_T_P_RAD_AXIS = new Axis("θn˙", "θn˙, рад/с");
+
+    private static final Axis TETTA_RAD_AXIS = new Axis("θ", "θ, рад");
+    private static final Axis TETTA_T_RAD_AXIS = new Axis("θ˙", "θ˙, рад/с");
 
     private static final Axis TETTA_DEGREAS_AXIS = new Axis("θград", "θ, град");
-    private static final Axis TETTA_T_DEGREAS_AXIS = new Axis("θtград/сек", "θt, град/сек");
+    private static final Axis TETTA_T_DEGREAS_AXIS = new Axis("θtград/сек", "θ˙, град/сек");
+
     private static final Axis TETTA_P_DEGREAS_AXIS = new Axis("θnград", "θn, град");
-    private static final Axis TETTA_T_P_DEGREAS_AXIS = new Axis("θtnград/сек", "θtn, град/сек");
-    private static final Axis BETTA_AXIS = new Axis("β", "β, рад");
-    private static final Axis BETTA_T_AXIS = new Axis("β˙", "β˙, рад/с");
+    private static final Axis TETTA_T_P_DEGREAS_AXIS = new Axis("θtnград/сек", "θn˙, град/сек");
 
     private static final Axis TIME_AXIS = new Axis("t", "t, c");
     private static final Axis X_AXIS = new Axis("x", "x, м");
@@ -63,6 +65,9 @@ class CallbackTetherTraceService {
 
     private static final Axis SPEED_TP_AXIS = new Axis("speed",
             "Переходный процесс по скорости, м/с");
+
+    private static final Axis TETTA_TP_AXIS = new Axis("tetta_tp",
+            "Переходный процесс по отклонению от вертикали, градусы");
 
     private static final Axis TETHER_DEFORMATION_AXIS = new Axis("td", "Деформация троса");
 
@@ -157,20 +162,20 @@ class CallbackTetherTraceService {
         return TETTA_T_P_DEGREAS_AXIS;
     }
 
-    public static Axis Tetta_p_axis() {
-        return TETTA_AXIS;
+    public static Axis Tetta_p_rad_axis() {
+        return TETTA_P_RAD_AXIS;
     }
 
-    public static Axis Tettat_p_axis() {
-        return TETTA_T_AXIS;
+    public static Axis Tetta_t_p_rad_axis() {
+        return TETTA_T_P_RAD_AXIS;
     }
 
-    public static Axis Betta_axis() {
-        return BETTA_AXIS;
+    public static Axis Tetta_rad_axis() {
+        return TETTA_RAD_AXIS;
     }
 
-    public static Axis Betta_t_axis() {
-        return BETTA_T_AXIS;
+    public static Axis Tetta_t_rad_axis() {
+        return TETTA_T_RAD_AXIS;
     }
 
     public static Axis Time_axis() {
@@ -197,11 +202,11 @@ class CallbackTetherTraceService {
         return Y1_AXIS;
     }
 
-    public static Axis X1_local_axis() {
+    public static Axis X1_orbit_axis() {
         return X1_LOCAL_AXIS;
     }
 
-    public static Axis Y1_local_axis() {
+    public static Axis Y1_orbit_axis() {
         return Y1_LOCAL_AXIS;
     }
 
@@ -221,11 +226,11 @@ class CallbackTetherTraceService {
         return Y2_AXIS;
     }
 
-    public static Axis X2_local_axis() {
+    public static Axis X2_orbit_axis() {
         return X2_LOCAL_AXIS;
     }
 
-    public static Axis Y2_local_axis() {
+    public static Axis Y2_orbit_axis() {
         return Y2_LOCAL_AXIS;
     }
 
@@ -243,6 +248,10 @@ class CallbackTetherTraceService {
 
     public static Axis Speed_transition_process_axis() {
         return SPEED_TP_AXIS;
+    }
+
+    public static Axis Tetta_transition_process_axis() {
+        return TETTA_TP_AXIS;
     }
 
     public static Axis Power_transition_process_axis() {

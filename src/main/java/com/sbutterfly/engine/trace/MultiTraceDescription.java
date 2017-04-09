@@ -14,6 +14,7 @@ public class MultiTraceDescription implements TraceDescription {
 
     private final String xAxis;
     private final String yAxis;
+    private final String name;
     private final Collection<Pair<Axis, Axis>> collection;
 
     public MultiTraceDescription(String xAxisName, String yAxisName, Pair<Axis, Axis>... values) {
@@ -21,8 +22,13 @@ public class MultiTraceDescription implements TraceDescription {
     }
 
     public MultiTraceDescription(String xAxisName, String yAxisName, Collection<Pair<Axis, Axis>> collection) {
+        this(xAxisName, yAxisName, null, collection);
+    }
+
+    public MultiTraceDescription(String xAxisName, String yAxisName, String name, Collection<Pair<Axis, Axis>> collection) {
         this.xAxis = xAxisName;
         this.yAxis = yAxisName;
+        this.name = name == null ? yAxisName + " / " + xAxisName : name;
         this.collection = collection;
     }
 
@@ -39,6 +45,11 @@ public class MultiTraceDescription implements TraceDescription {
     @Override
     public String getYAxisName() {
         return yAxis;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override
