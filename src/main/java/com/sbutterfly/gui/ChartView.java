@@ -10,6 +10,7 @@ import com.sbutterfly.gui.helpers.EventHandler;
 import com.sbutterfly.gui.helpers.EventListener;
 import com.sbutterfly.gui.panels.Constraint;
 import com.sbutterfly.gui.panels.JGridBagPanel;
+import com.sbutterfly.utils.DoubleUtils;
 import com.sbutterfly.utils.Log;
 import info.monitorenter.gui.chart.Chart2D;
 import info.monitorenter.gui.chart.IAxis;
@@ -144,8 +145,8 @@ public class ChartView extends JGridBagPanel {
 
         double max = Double.MIN_VALUE;
         double min = Double.MAX_VALUE;
-        double first = 0;
-        double last = 0;
+        Point first = null;
+        Point last = null;
 
         for (Trace trace : traces) {
             List<Vector> values = trace.getValues();
@@ -180,8 +181,11 @@ public class ChartView extends JGridBagPanel {
                 min = Math.min(min, vector.get(1));
             }
 
-            first = values.get(0).get(1);
-            last = values.get(length - 1).get(1);
+            Vector firstValues = values.get(0);
+            Vector lastValues = values.get(length - 1);
+
+            first = new Point(firstValues.get(0), firstValues.get(1));
+            last = new Point(lastValues.get(0), lastValues.get(1));
 
             List<ITrace2D> trace2DS = modelToTrace.computeIfAbsent(model, key -> new ArrayList<>());
             trace2DS.add(viewTrace);
@@ -251,10 +255,11 @@ public class ChartView extends JGridBagPanel {
     public static class AxisInformation {
         private final Double max;
         private final Double min;
-        private final Double first;
-        private final Double last;
 
-        AxisInformation(Double max, Double min, Double first, Double last) {
+        private final Point first;
+        private final Point last;
+
+        AxisInformation(Double max, Double min, Point first, Point last) {
             this.max = max;
             this.min = min;
             this.first = first;
@@ -269,11 +274,11 @@ public class ChartView extends JGridBagPanel {
             return min;
         }
 
-        public Double getFirst() {
+        public Point getFirst() {
             return first;
         }
 
-        public Double getLast() {
+        public Point getLast() {
             return last;
         }
 
@@ -281,6 +286,37 @@ public class ChartView extends JGridBagPanel {
             return new AxisInformation(Math.max(axisInformation1.max, axisInformation2.max),
                     Math.min(axisInformation1.min, axisInformation2.min),
                     null, null);
+        }
+    }
+
+    public static class Point {
+        private double x;
+        private double y;
+
+        public Point(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public double getX() {
+            return x;
+        }
+
+        public void setX(double x) {
+            this.x = x;
+        }
+
+        public double getY() {
+            return y;
+        }
+
+        public void setY(double y) {
+            this.y = y;
+        }
+
+        @Override
+        public String toString() {
+            return "x: " + DoubleUtils.toString(x) + ", y: " + DoubleUtils.toString(y);
         }
     }
 }

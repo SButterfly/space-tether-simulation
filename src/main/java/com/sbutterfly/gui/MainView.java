@@ -137,8 +137,8 @@ public class MainView implements Frameable {
             if (axisInformation != null) {
                 Double max = axisInformation.getMax();
                 Double min = axisInformation.getMin();
-                Double first = axisInformation.getFirst();
-                Double last = axisInformation.getLast();
+                ChartView.Point first = axisInformation.getFirst();
+                ChartView.Point last = axisInformation.getLast();
 
                 stringBuilder.append("<html>");
                 if (max != null) {
@@ -152,10 +152,10 @@ public class MainView implements Frameable {
                     stringBuilder.append("Разница: ").append(DoubleUtils.toString(diff)).append("<br>");
                 }
                 if (first != null) {
-                    stringBuilder.append("Начальное: ").append(DoubleUtils.toString(first)).append("<br>");
+                    stringBuilder.append("Начальное: ").append(first).append("<br>");
                 }
                 if (last != null) {
-                    stringBuilder.append("Конечное: ").append(DoubleUtils.toString(last)).append("<br>");
+                    stringBuilder.append("Конечное: ").append(last).append("<br>");
                 }
                 stringBuilder.append("</html>");
             }

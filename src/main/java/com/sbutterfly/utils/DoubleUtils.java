@@ -1,19 +1,19 @@
 package com.sbutterfly.utils;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by Sergei on 05.03.2015.
  */
 public class DoubleUtils {
 
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.###");
+
     private DoubleUtils() {
     }
 
     public static String toString(double value) {
-        String str = Double.toString(value);
-        if (str.endsWith(".0")) {
-            return str.substring(0, str.length() - 2);
-        }
-        return str;
+        return DECIMAL_FORMAT.format(value);
     }
 
     public static double parse(String value) {

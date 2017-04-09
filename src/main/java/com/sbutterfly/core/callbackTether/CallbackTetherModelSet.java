@@ -48,8 +48,8 @@ public class CallbackTetherModelSet extends ModelSet {
                 EMPTY_TRACE_DESCRIPTION,
                 new SingleTraceDescription(Time_axis(), Point_length_axis(), "Расстояние между КА"),
                 new MultiTraceDescription(Y_axis().getHumanReadableName(), X_axis().getHumanReadableName(),
-                        new Pair<>(Y1_local_axis(), X1_local_axis()),
-                        new Pair<>(Y2_local_axis(), X2_local_axis())
+                        new Pair<>(Y2_local_axis(), X2_local_axis()),
+                        new Pair<>(Y1_local_axis(), X1_local_axis())
  ),
                 EMPTY_TRACE_DESCRIPTION,
                 new SingleTraceDescription(Time_axis(), Line_transition_process_axis(),
