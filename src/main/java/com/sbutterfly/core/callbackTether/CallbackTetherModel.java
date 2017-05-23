@@ -92,7 +92,7 @@ public class CallbackTetherModel extends Model {
         setInitialValue(CallbackTetherTraceService.Lp_axis(), 1);
         setInitialValue(CallbackTetherTraceService.V_p_axis(), 2.5);
 
-        setInitialValue(CallbackTetherTraceService.M1_axis(), 50);
+        setInitialValue(CallbackTetherTraceService.M1_axis(), 4);
         setInitialValue(CallbackTetherTraceService.M2_axis(), 100);
         setInitialValue(CallbackTetherTraceService.M3_axis(), 0.2);
 
